@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:settings="clr-namespace:Settings">
+        <settings:AppSettings x:Key="AppSettings"
+        Title="Track"
+        TitlePanelHeader="Track"
+        TitlePanelSubscript="soundboard"
+        AboutTitle="Track"
+        BlogUri="http://www.jan-joris.be/"
+        ExternalContent="website NMBS"
+        ExternalUri="http://www.nmbs.be/"
+        Email="track@outlook.com"
+        EmailSubject="Question about the Track app"/>
+</ResourceDictionary>

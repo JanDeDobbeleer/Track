@@ -6,17 +6,23 @@ using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Settings;
 using Track.Resources;
+using Track.ViewModel;
 
 namespace Track
 {
-    public partial class App : Application
+    public partial class App : Application, ISettings
     {
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
+        public Settings.AppSettings Settings
+        {
+            get { return (Settings.AppSettings)((ResourceDictionary)Resources["Settings"])["AppSettings"]; }
+        } 
 
         /// <summary>
         /// Constructor for the Application object.
@@ -54,7 +60,6 @@ namespace Track
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-
         }
 
         // Code to execute when the application is launching (eg, from Start)
