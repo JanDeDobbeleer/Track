@@ -25,13 +25,13 @@
         <!--Pivot Control-->
         <phone:Pivot x:Name="Pivot">
             <!--Pivot item one-->
-            <phone:PivotItem Header="Nearby">
+            <phone:PivotItem Header="nearby">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <maps:Map Grid.Row="0" x:Name="Map" Loaded="Map_OnLoaded_OnLoaded" common:MapPushPinDependency.ItemsSource="{Binding Path=Locations}">
+                    <maps:Map Grid.Row="0" x:Name="Map" Loaded="Map_OnLoaded" common:MapPushPinDependency.ItemsSource="{Binding Path=Locations}">
                         <toolkit:MapExtensions.Children>
                             <toolkit:MapItemsControl Name="LocationsMapItemsControl">
                                 <toolkit:MapItemsControl.ItemTemplate>
@@ -48,7 +48,12 @@
             </phone:PivotItem>
 
             <!--Pivot item two-->
-            <phone:PivotItem Header="Favorites">
+            <phone:PivotItem Header="favorites">
+                <Grid/>
+            </phone:PivotItem>
+
+            <!--Pivot item three-->
+            <phone:PivotItem Header="stations">
                 <Grid/>
             </phone:PivotItem>
         </phone:Pivot>

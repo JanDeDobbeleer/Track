@@ -7,12 +7,14 @@ using System.Windows;
 using System.Xml.Linq;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using Localization.Resources;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Shell;
 using Tools;
 using Track.Common;
 using TrackApi.Api;
 using TrackApi.Classes;
+using TrackApi.Tools;
 
 namespace Track.ViewModel
 {
@@ -34,17 +36,17 @@ namespace Track.ViewModel
 
         public void LoadStations()
         {
-            SystemTray.ProgressIndicator.Text = "Loading stations";
+            SystemTray.ProgressIndicator.Text = AppResources.ProgressLoadingStations;
             var client = new Client();
             client.GetInfoFinished += client_GetInfoFinished;
-            client.GetInfo(client.Stations, new[] { new KeyValuePair() { Key = client.Lang, Value = Language.EN.ToString() } });
+            client.GetInfo(client.Stations, new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
         }
 
         private void client_GetInfoFinished(object sender, GetInfoCompletedArgs args)
         {
             try
             {
-                var xml = XDocument.Parse(args.Data);
+                var xml = XDocument.Parse(args.Json);
                 var query = from b in xml.Descendants("station")
                            select new Station()
                            {

@@ -2,23 +2,21 @@
 using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Navigation;
+using Localization.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Settings;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Track.View
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private readonly AppSettings _settings = ((ISettings)Application.Current).Settings;
-        
         public MainPage()
         {
             try
             {
                 InitializeComponent();
-                Pivot.Title = _settings.Title;
+                Pivot.Title = AppResources.ApplicationTitle;
             }
             catch (Exception e)
             {
@@ -50,14 +48,14 @@ namespace Track.View
             Tools.Tools.SetProgressIndicator(true);
         }
 
-        private void Map_OnLoaded_OnLoaded(object sender, RoutedEventArgs e)
+        private void Map_OnLoaded(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void Pushpin_Tap(object sender, GestureEventArgs e)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

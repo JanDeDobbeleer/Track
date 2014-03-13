@@ -25,6 +25,8 @@
     <ValidateXaml>true</ValidateXaml>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -98,14 +100,8 @@
     <Compile Include="Controls\StationList.xaml.cs">
       <DependentUpon>StationList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\AppResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Common\FinshedEventArgs.cs" />
     <Compile Include="Common\InfoLocation.cs" />
     <Compile Include="ViewModel\MainpageViewModel.cs" />
@@ -156,12 +152,6 @@
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\AppResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="Controls\StationList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -196,9 +186,9 @@
       <Project>{FD9DF9C8-0E2B-40B6-ADD1-8FA4CFB662EA}</Project>
       <Name>TrackApi</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Settings\Settings\Settings.csproj">
-      <Project>{BF2FA776-8848-406E-BFE5-752DAF23FCAD}</Project>
-      <Name>Settings</Name>
+    <ProjectReference Include="..\Localization\Localization.csproj">
+      <Project>{23714AA3-E67B-4B03-BD15-9D400BD9955F}</Project>
+      <Name>Localization</Name>
     </ProjectReference>
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}</Project>
@@ -215,4 +205,5 @@
   </Target>
   -->
   <ProjectExtensions />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>

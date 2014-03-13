@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Coding4Fun.Toolkit.Controls;
+using Localization.Resources;
 
 namespace Tools
 {
@@ -14,7 +15,7 @@ namespace Tools
             Tools.SetProgressIndicator(false);
             var toast = new ToastPrompt
             {
-                Title = "Track",
+                Title = AppResources.ApplicationTitle,
                 Message = message,
                 //ImageSource = new BitmapImage(new Uri("/Assets/ToastIcon.png", UriKind.RelativeOrAbsolute)),
                 MillisecondsUntilHidden = 3000,

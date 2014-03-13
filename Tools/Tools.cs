@@ -1,17 +1,9 @@
 ﻿using System;
-using System.IO.IsolatedStorage;
-using System.Linq;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 
 namespace Tools
 {
-    public struct KeyValuePair
-    {
-        public object Key;
-        public string Value;
-    }
-
     public static class Tools
     {
         public static void SetProgressIndicator(bool isVisible)

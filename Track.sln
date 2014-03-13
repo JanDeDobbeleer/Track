@@ -1,15 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Track", "Track\Track.csproj", "{0AC99867-BFE2-4031-BCD0-FB7FBBD3F872}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings", "Settings\Settings\Settings.csproj", "{BF2FA776-8848-406E-BFE5-752DAF23FCAD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "Tools\Tools.csproj", "{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackApi", "Api\TrackApi\TrackApi.csproj", "{FD9DF9C8-0E2B-40B6-ADD1-8FA4CFB662EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{51BD869D-AB3E-47F3-B08B-0892CF21F0B9}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization", "Localization\Localization.csproj", "{23714AA3-E67B-4B03-BD15-9D400BD9955F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,18 +46,6 @@ Global
 		{0AC99867-BFE2-4031-BCD0-FB7FBBD3F872}.Release|x86.ActiveCfg = Release|x86
 		{0AC99867-BFE2-4031-BCD0-FB7FBBD3F872}.Release|x86.Build.0 = Release|x86
 		{0AC99867-BFE2-4031-BCD0-FB7FBBD3F872}.Release|x86.Deploy.0 = Release|x86
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Debug|ARM.ActiveCfg = Debug|ARM
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Debug|ARM.Build.0 = Debug|ARM
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Debug|x86.ActiveCfg = Debug|x86
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Debug|x86.Build.0 = Debug|x86
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Release|ARM.ActiveCfg = Release|ARM
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Release|ARM.Build.0 = Release|ARM
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Release|x86.ActiveCfg = Release|x86
-		{BF2FA776-8848-406E-BFE5-752DAF23FCAD}.Release|x86.Build.0 = Release|x86
 		{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}.Debug|ARM.ActiveCfg = Debug|ARM
@@ -75,6 +70,18 @@ Global
 		{FD9DF9C8-0E2B-40B6-ADD1-8FA4CFB662EA}.Release|ARM.Build.0 = Release|ARM
 		{FD9DF9C8-0E2B-40B6-ADD1-8FA4CFB662EA}.Release|x86.ActiveCfg = Release|x86
 		{FD9DF9C8-0E2B-40B6-ADD1-8FA4CFB662EA}.Release|x86.Build.0 = Release|x86
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Debug|ARM.Build.0 = Debug|ARM
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Debug|x86.ActiveCfg = Debug|x86
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Debug|x86.Build.0 = Debug|x86
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Release|ARM.ActiveCfg = Release|ARM
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Release|ARM.Build.0 = Release|ARM
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Release|x86.ActiveCfg = Release|x86
+		{23714AA3-E67B-4B03-BD15-9D400BD9955F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
-﻿using Track.Resources;
+﻿using Localization.Resources;
 
-namespace Track
+namespace Localization
 {
     /// <summary>
     /// Provides access to string resources.

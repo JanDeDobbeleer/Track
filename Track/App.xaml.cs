@@ -1,28 +1,21 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Resources;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
+using Localization.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Settings;
-using Track.Resources;
-using Track.ViewModel;
 
 namespace Track
 {
-    public partial class App : Application, ISettings
+    public partial class App : Application
     {
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
-        public Settings.AppSettings Settings
-        {
-            get { return (Settings.AppSettings)((ResourceDictionary)Resources["Settings"])["AppSettings"]; }
-        } 
 
         /// <summary>
         /// Constructor for the Application object.
