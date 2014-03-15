@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Device.Location;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using GalaSoft.MvvmLight;
@@ -17,6 +18,7 @@ namespace Track.ViewModel
 
     public class MainpageViewModel : ViewModelBase, INotifyPropertyChanged
     {
+        #region properties
         public const string CurrentPositionPropertyName = "CurrentPosition";
         private GeoCoordinate _currentPosition;
         public GeoCoordinate CurrentPosition
@@ -56,6 +58,28 @@ namespace Track.ViewModel
             }
         }
 
+        public const string NearbyPropertyName = "Nearby";
+        private ObservableCollection<Station> _nearby = new ObservableCollection<Station>();
+        public ObservableCollection<Station> Nearby
+        {
+            get
+            {
+                return _nearby;
+            }
+
+            set
+            {
+                if (_nearby == value)
+                {
+                    return;
+                }
+
+                _nearby = value;
+                OnPropertyChanged(NearbyPropertyName);
+            }
+        }
+        #endregion
+
         public MainpageViewModel()
         {
             Messenger.Default.Register<NotificationMessage>(this, (message) =>
@@ -70,6 +94,15 @@ namespace Track.ViewModel
             Locations.Clear();
             Locations = null;
             Locations = ServiceLocator.Current.GetInstance<StationListViewmodel>().Stations;
+            //assign currentposition
+            CurrentPosition = ServiceLocator.Current.GetInstance<StationListViewmodel>().CurrentPosition;
+            var top4Locations = ServiceLocator.Current.GetInstance<MainpageViewModel>().Locations.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(4);
+            //clear nearby locations
+            Nearby.Clear();
+            foreach (var top4Location in top4Locations)
+            {
+                Nearby.Add(top4Location);
+            }
             Messenger.Default.Send(new NotificationMessage("LocationsLoaded"));
         }
 

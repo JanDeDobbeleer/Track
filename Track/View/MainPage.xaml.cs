@@ -68,7 +68,7 @@ namespace Track.View
             //Add the current phone position to be sure it's also visible when changing the view zoom level
             var geoCoordinates = (from station in top4Locations select station.GeoCoordinate).ToList();
             //TODO: check for null?
-            geoCoordinates.Add(ServiceLocator.Current.GetInstance<StationListViewmodel>().CurrentPosition);
+            geoCoordinates.Add(ServiceLocator.Current.GetInstance<MainpageViewModel>().CurrentPosition);
             var locationRectangle = LocationRectangle.CreateBoundingRectangle(geoCoordinates);
 
             Map.SetView(locationRectangle);
