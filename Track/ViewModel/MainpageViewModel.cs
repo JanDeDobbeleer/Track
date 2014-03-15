@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Practices.ServiceLocation;
 using Track.Annotations;
 using Track.Common;
 using TrackApi.Classes;
@@ -14,7 +15,7 @@ namespace Track.ViewModel
 {
     public delegate void InfoFinishedEventHandler(object sender, FinshedEventArgs args);
 
-    public class MainpageViewModel:ViewModelBase, INotifyPropertyChanged
+    public class MainpageViewModel : ViewModelBase, INotifyPropertyChanged
     {
         public const string CurrentPositionPropertyName = "CurrentPosition";
         private GeoCoordinate _currentPosition;
@@ -59,14 +60,17 @@ namespace Track.ViewModel
         {
             Messenger.Default.Register<NotificationMessage>(this, (message) =>
             {
-                if (message.Notification.Equals("LocationsLoaded", StringComparison.OrdinalIgnoreCase))
-                    Deployment.Current.Dispatcher.BeginInvoke(LoadLocations);
+                if (message.Notification.Equals("StationsLoaded", StringComparison.OrdinalIgnoreCase))
+                    Deployment.Current.Dispatcher.BeginInvoke(AssignList);
             });
         }
 
-        private void LoadLocations()
+        private void AssignList()
         {
-            Locations = ((ViewModelLocator) Application.Current.Resources["Locator"]).StationListModel.Stations;
+            Locations.Clear();
+            Locations = null;
+            Locations = ServiceLocator.Current.GetInstance<StationListViewmodel>().Stations;
+            Messenger.Default.Send(new NotificationMessage("LocationsLoaded"));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

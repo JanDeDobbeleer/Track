@@ -22,12 +22,15 @@ namespace Track.Controls
             switch (args.InfoLocation)
             {
                 case InfoLocation.Stations:
-                    LongListSelector.ItemsSource = null;
-                    List<AlphaKeyGroup<Station>> DataSource = AlphaKeyGroup<Station>.CreateGroups(((ViewModelLocator)Application.Current.Resources["Locator"]).StationListModel.Stations.ToList(),
+                    Deployment.Current.Dispatcher.BeginInvoke(delegate
+                    {
+                        LongListSelector.ItemsSource = null;
+                        var dataSource = AlphaKeyGroup<Station>.CreateGroups(((ViewModelLocator)Application.Current.Resources["Locator"]).StationListModel.Stations.ToList(),
                             System.Threading.Thread.CurrentThread.CurrentUICulture,
-                            (Station s) => { return s.Name; }, true);
-                    LongListSelector.ItemsSource = DataSource;
-                    Tools.Tools.SetProgressIndicator(false);
+                            s => s.Name, true);
+                        LongListSelector.ItemsSource = dataSource;
+                        Tools.Tools.SetProgressIndicator(false);
+                    });
                     break;
             }
         }

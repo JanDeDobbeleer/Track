@@ -9,6 +9,7 @@
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Maps.Toolkit;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:common="clr-namespace:Track.Common"
+    xmlns:controls="clr-namespace:Track.Controls"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -28,12 +29,12 @@
             <phone:PivotItem Header="nearby">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="200"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <maps:Map Grid.Row="0" x:Name="Map" Loaded="Map_OnLoaded" common:MapPushPinDependency.ItemsSource="{Binding Path=Locations}">
                         <toolkit:MapExtensions.Children>
-                            <toolkit:MapItemsControl Name="LocationsMapItemsControl">
+                            <toolkit:MapItemsControl x:Name="LocationsMapItemsControl">
                                 <toolkit:MapItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <toolkit:Pushpin GeoCoordinate="{Binding GeoCoordinate}" Visibility="Visible" Content="{Binding Name}" Tap="Pushpin_Tap"/>
@@ -54,7 +55,9 @@
 
             <!--Pivot item three-->
             <phone:PivotItem Header="stations">
-                <Grid/>
+                <Grid>
+                    <controls:StationList/>
+                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>
