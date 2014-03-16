@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Practices.ServiceLocation;
 using Track.Common;
 using Track.ViewModel;
 using TrackApi.Classes;
@@ -10,29 +14,30 @@ namespace Track.Controls
 {
     public partial class StationList : UserControl
     {
+        public ObservableCollection<Station> Stations { get; private set; }
+
         public StationList()
         {
             InitializeComponent();
-            ((ViewModelLocator)Application.Current.Resources["Locator"]).StationListModel.GetInfoFinished += StationListViewmodel_GetInfoFinished;
-            ((ViewModelLocator)Application.Current.Resources["Locator"]).StationListModel.LoadStations();
+            Messenger.Default.Register<NotificationMessage>(this, (message) =>
+            {
+                if (message.Notification.Equals("StationsLoaded", StringComparison.OrdinalIgnoreCase))
+                    Deployment.Current.Dispatcher.BeginInvoke(AssignList);
+            });
         }
 
-        void StationListViewmodel_GetInfoFinished(object sender, FinshedEventArgs args)
+        private void AssignList()
         {
-            switch (args.InfoLocation)
+            Stations = ServiceLocator.Current.GetInstance<MainpageViewModel>().Locations;
+            Deployment.Current.Dispatcher.BeginInvoke(delegate
             {
-                case InfoLocation.Stations:
-                    Deployment.Current.Dispatcher.BeginInvoke(delegate
-                    {
-                        LongListSelector.ItemsSource = null;
-                        var dataSource = AlphaKeyGroup<Station>.CreateGroups(((ViewModelLocator)Application.Current.Resources["Locator"]).StationListModel.Stations.ToList(),
-                            System.Threading.Thread.CurrentThread.CurrentUICulture,
-                            s => s.Name, true);
-                        LongListSelector.ItemsSource = dataSource;
-                        Tools.Tools.SetProgressIndicator(false);
-                    });
-                    break;
-            }
+                LongListSelector.ItemsSource = null;
+                var dataSource = AlphaKeyGroup<Station>.CreateGroups(Stations.ToList(),
+                    System.Threading.Thread.CurrentThread.CurrentUICulture,
+                    s => s.Name, true);
+                LongListSelector.ItemsSource = dataSource;
+                Tools.Tools.SetProgressIndicator(false);
+            });
         }
     }
 }

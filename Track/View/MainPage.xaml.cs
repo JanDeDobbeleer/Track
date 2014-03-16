@@ -20,48 +20,23 @@ namespace Track.View
     {
         public MainPage()
         {
-            try
+            InitializeComponent();
+            Loaded += OnPageLoaded;
+            Messenger.Default.Register<NotificationMessage>(this, (message) =>
             {
-                InitializeComponent();
-                Pivot.Title = AppResources.ApplicationTitle;
-                Messenger.Default.Register<NotificationMessage>(this, (message) =>
-                {
-                    if (message.Notification.Equals("LocationsLoaded", StringComparison.OrdinalIgnoreCase))
-                        Deployment.Current.Dispatcher.BeginInvoke(AdjustMapView);
-                });
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+                if (message.Notification.Equals("LocationsLoaded", StringComparison.OrdinalIgnoreCase))
+                    Deployment.Current.Dispatcher.BeginInvoke(AdjustMapView);
+            });
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
-            if (!IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
-            {
-                MessageBoxResult result =
-                    MessageBox.Show("This app accesses your phone's location. Is that ok?",
-                    "Location",
-                    MessageBoxButton.OKCancel);
-
-                if (result == MessageBoxResult.OK)
-                {
-                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
-                }
-                else
-                {
-                    IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
-                }
-
-                IsolatedStorageSettings.ApplicationSettings.Save();
-            }
-            SystemTray.ProgressIndicator = new ProgressIndicator();
-            Tools.Tools.SetProgressIndicator(true);
+            Messenger.Default.Send(new NotificationMessage("MainPageLoaded"));
+            Loaded -= OnPageLoaded;
         }
 
         private void AdjustMapView()
-        {   
+        {
             //Rectangle around the 4 most nearby
             var top4Locations = ServiceLocator.Current.GetInstance<MainpageViewModel>().Locations.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(4);
 

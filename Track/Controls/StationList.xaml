@@ -36,7 +36,7 @@
     </UserControl.Resources>
     
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
-        <phone:LongListSelector x:Name="LongListSelector" JumpListStyle="{StaticResource LongListSelectorJumpListStyle}" IsGroupingEnabled="True" LayoutMode="List" HideEmptyGroups ="true" GroupHeaderTemplate="{StaticResource AddrBookGroupHeaderTemplate}">
+        <phone:LongListSelector x:Name="LongListSelector" ItemsSource="{Binding StationList}" JumpListStyle="{StaticResource LongListSelectorJumpListStyle}" IsGroupingEnabled="True" LayoutMode="List" HideEmptyGroups ="true" GroupHeaderTemplate="{StaticResource AddrBookGroupHeaderTemplate}">
             <phone:LongListSelector.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" Margin="13,0,0,0" FontSize="{StaticResource PhoneFontSizeLarge}"/>

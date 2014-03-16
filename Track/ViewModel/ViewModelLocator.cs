@@ -43,7 +43,6 @@ namespace Track.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainpageViewModel>();
-            SimpleIoc.Default.Register<StationListViewmodel>();
         }
 
         public MainpageViewModel Main
@@ -51,14 +50,6 @@ namespace Track.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<MainpageViewModel>();
-            }
-        }
-
-        public StationListViewmodel StationListModel
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<StationListViewmodel>();
             }
         }
         

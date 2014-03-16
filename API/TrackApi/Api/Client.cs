@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using PortableRest;
 using TrackApi.Classes;
@@ -78,13 +77,27 @@ namespace TrackApi.Api
         }
         #endregion
 
-        public async Task<List<Station>> GetLocations()
+        public async Task<List<Station>> GetLocations(KeyValuePair<String, String> valuePair)
         {
             var request = new RestRequest
             {
-                Resource = Stations
+                Resource = Stations + ConvertValuePairToQueryString(new[]{valuePair})
             };
-            return await _restClient.ExecuteAsync<List<Station>>(request);
+            var ro = await _restClient.ExecuteAsync<StationRootObject>(request);
+            return ro.Station;
+        }
+
+        private string ConvertValuePairToQueryString(IEnumerable<KeyValuePair<string, string>> valuePair)
+        {
+            var builder = new StringBuilder();
+            foreach (var vp in valuePair)
+            {
+                builder.Append("&");
+                builder.Append(vp.Key);
+                builder.Append("=");
+                builder.Append(vp.Value);
+            }
+            return builder.ToString();
         }
     }
 }

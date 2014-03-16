@@ -107,12 +107,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Cimbalino.Phone.Toolkit">
-      <HintPath>..\..\packages\Cimbalino.Phone.Toolkit.3.2.2\lib\wp8\Cimbalino.Phone.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="Cimbalino.Phone.Toolkit.Background">
-      <HintPath>..\..\packages\Cimbalino.Phone.Toolkit.Background.3.2.2\lib\wp8\Cimbalino.Phone.Toolkit.Background.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.165\lib\wp8\Microsoft.Threading.Tasks.dll</HintPath>
     </Reference>
