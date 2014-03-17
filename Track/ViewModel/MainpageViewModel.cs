@@ -14,7 +14,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using Localization.Resources;
 using Microsoft.Phone.Maps.Services;
-using Microsoft.Practices.ServiceLocation;
 using Track.Annotations;
 using Track.Api;
 using Track.Common;
@@ -145,24 +144,23 @@ namespace Track.ViewModel
         private async Task GetLocations(GeoCoordinate currentPhonePosition)
         {
             var list = await RailService.GetInstance().GetLocations(new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
-            Locations.Clear();
-            Locations = null;
             foreach (var station in list)
-            {
-                Locations.Add(station);
-            }
-            foreach (var station in Locations)
             {
                 station.DistanceToCurrentPhonePosition = Geocoding.CalculateDistanceFrom(currentPhonePosition, station.GeoCoordinate);
             }
-            var top4Locations = Locations.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(4);
+            var nearbyLocations = list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(2);
             //clear nearby locations
             Nearby.Clear();
-            foreach (var top4Location in top4Locations)
-            {
-                Nearby.Add(top4Location);
-            }
+            Nearby = new ObservableCollection<Station>(nearbyLocations);
+            Deployment.Current.Dispatcher.BeginInvoke(()=> AssignList(list));
             Messenger.Default.Send(new NotificationMessage("StationsLoaded"));
+        }
+
+        private void AssignList(IEnumerable<Station> stations)
+        {
+            Locations.Clear();
+            Locations = null;
+            Locations = new ObservableCollection<Station>(stations);
         }
 
         private void HandleReverseGeoCodeQuery()

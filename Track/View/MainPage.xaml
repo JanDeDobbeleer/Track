@@ -23,28 +23,29 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="220"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--Maps control-->
+        <maps:Map Grid.Row="0" x:Name="Map" Loaded="Map_OnLoaded" common:MapPushPinDependency.ItemsSource="{Binding Path=Locations}">
+            <toolkit:MapExtensions.Children>
+                <toolkit:MapItemsControl x:Name="LocationsMapItemsControl">
+                    <toolkit:MapItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <toolkit:Pushpin GeoCoordinate="{Binding GeoCoordinate}" Visibility="Visible" Content="{Binding Name}" Tap="Pushpin_Tap"/>
+                        </DataTemplate>
+                    </toolkit:MapItemsControl.ItemTemplate>
+                </toolkit:MapItemsControl>
+                <toolkit:UserLocationMarker x:Name="UserLocationMarker" GeoCoordinate="{Binding CurrentPosition}"/>
+            </toolkit:MapExtensions.Children>
+        </maps:Map>
         <!--Pivot Control-->
-        <phone:Pivot x:Name="Pivot">
+        <phone:Pivot x:Name="Pivot" Grid.Row="1">
             <!--Pivot item one-->
             <phone:PivotItem Header="nearby">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="200"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <maps:Map Grid.Row="0" x:Name="Map" Loaded="Map_OnLoaded" common:MapPushPinDependency.ItemsSource="{Binding Path=Locations}">
-                        <toolkit:MapExtensions.Children>
-                            <toolkit:MapItemsControl x:Name="LocationsMapItemsControl">
-                                <toolkit:MapItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <toolkit:Pushpin GeoCoordinate="{Binding GeoCoordinate}" Visibility="Visible" Content="{Binding Name}" Tap="Pushpin_Tap"/>
-                                    </DataTemplate>
-                                </toolkit:MapItemsControl.ItemTemplate>
-                            </toolkit:MapItemsControl>
-                            <toolkit:UserLocationMarker x:Name="UserLocationMarker" GeoCoordinate="{Binding CurrentPosition}"/>
-                        </toolkit:MapExtensions.Children>
-                    </maps:Map>
-                    <ListBox Grid.Row="1" x:Name="NearbyListBox"/>
+                    <ListBox x:Name="NearbyListBox"/>
                 </Grid>
             </phone:PivotItem>
 

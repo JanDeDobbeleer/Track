@@ -11,5 +11,10 @@ namespace TrackApi.Classes
         public string Timestamp { get; set; }
         [JsonProperty(PropertyName = "station")]
         public List<Station> Station { get; set; }
+
+        public StationRootObject()
+        {
+            Station = new List<Station>();
+        }
     }
 }

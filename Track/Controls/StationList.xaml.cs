@@ -36,7 +36,7 @@ namespace Track.Controls
                     System.Threading.Thread.CurrentThread.CurrentUICulture,
                     s => s.Name, true);
                 LongListSelector.ItemsSource = dataSource;
-                Tools.Tools.SetProgressIndicator(false);
+                //Tools.Tools.SetProgressIndicator(false);
             });
         }
     }

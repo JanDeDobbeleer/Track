@@ -12,6 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
@@ -43,6 +44,7 @@ namespace Track.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainpageViewModel>();
+            SimpleIoc.Default.Register<IAsyncStorageService, AsyncStorageService>();
         }
 
         public MainpageViewModel Main

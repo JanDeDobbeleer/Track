@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using PortableRest;
@@ -26,26 +27,26 @@ namespace TrackApi.Api
 
         public String Stations
         {
-            get { return "stations/?format=json"; }
+            get { return "/stations/?format=json"; }
         }
 
         public String Connections
         {
-            get { return "connections/?format=json"; }
+            get { return "/connections/?format=json"; }
         }
 
         public String LiveBoard
         {
-            get { return "liveboard/?format=json"; }
+            get { return "/liveboard/?format=json"; }
         }
 
         public String Vehicle
         {
-            get { return "vehicle/?format=json"; }
+            get { return "/vehicle/?format=json"; }
         }
 
         private RestClient _restClient;
-        private string _baseUrl = "http://http://api.irail.be/";
+        private string _baseUrl = "http://api.irail.be";
 
         #region Constructor
         private static Client s_Instance;
@@ -79,11 +80,23 @@ namespace TrackApi.Api
 
         public async Task<List<Station>> GetLocations(KeyValuePair<String, String> valuePair)
         {
-            var request = new RestRequest
+            var ro = new StationRootObject();
+            try
             {
-                Resource = Stations + ConvertValuePairToQueryString(new[]{valuePair})
-            };
-            var ro = await _restClient.ExecuteAsync<StationRootObject>(request);
+                var request = new RestRequest
+                {
+                    Resource = Stations + ConvertValuePairToQueryString(new[] {valuePair})
+                };
+                ro = await _restClient.ExecuteAsync<StationRootObject>(request);
+            }
+            catch (HttpRequestException re)
+            {
+                //TODO: show toast that indicates the call was not succesful
+            }
+            catch (Exception e)
+            {
+                //TODO: allow user to send an error log
+            }
             return ro.Station;
         }
 

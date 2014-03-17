@@ -6,15 +6,14 @@ using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using TrackApi.Api;
 using TrackApi.Classes;
-using TrackApi.Tools;
 
 namespace Track.Api
 {
     public class RailService
     {
         #region Constructor
-        private static RailService s_Instance;
-        private static object s_InstanceSync = new object();
+        private static RailService _sInstance;
+        private static readonly object SInstanceSync = new object();
 
         protected RailService()
         {
@@ -31,29 +30,28 @@ namespace Track.Api
         {
             // This implementation of the singleton design pattern prevents 
             // unnecessary locks (using the double if-test)
-            if (s_Instance == null)
+            if (_sInstance == null)
             {
-                lock (s_InstanceSync)
+                lock (SInstanceSync)
                 {
-                    if (s_Instance == null)
+                    if (_sInstance == null)
                     {
-                        s_Instance = new RailService();
+                        _sInstance = new RailService();
                     }
                 }
             }
-            return s_Instance;
+            return _sInstance;
         }
         #endregion
 
         public async Task<List<Station>> GetLocations(KeyValuePair<String, String> valuePair)
         {
-            bool requestFromInternet = true;
-            string stationCache = string.Empty;
-            //TODO: fix the crashing
-            /*bool stationCacheExists = await ServiceLocator.Current.GetInstance<IAsyncStorageService>().FileExistsAsync(Constants.LOCATIONSSTORE);
+            var requestFromInternet = true;
+            var stationCache = string.Empty;
+            var stationCacheExists = await ServiceLocator.Current.GetInstance<IAsyncStorageService>().FileExistsAsync(Constants.LOCATIONSSTORE);
 
             if(stationCacheExists)
-                stationCache = await ServiceLocator.Current.GetInstance<IAsyncStorageService>().ReadAllTextAsync(Constants.LOCATIONSSTORE);*/
+                stationCache = await ServiceLocator.Current.GetInstance<IAsyncStorageService>().ReadAllTextAsync(Constants.LOCATIONSSTORE);
 
             var locationsList = new List<Station>();
 
@@ -61,7 +59,7 @@ namespace Track.Api
             {
                 try
                 {
-                    StorageCache cache = JsonConvert.DeserializeObject<StorageCache>(stationCache);
+                    var cache = JsonConvert.DeserializeObject<StorageCache>(stationCache);
                     if ((DateTime.Now - cache.CacheDate).Days < 8)
                     {
                         locationsList = cache.CacheData;
@@ -75,20 +73,18 @@ namespace Track.Api
                 }
             }
 
-            if (requestFromInternet)
+            if (!requestFromInternet) 
+                return locationsList;
+            try
             {
-                try
-                {
-                    locationsList = await Client.GetInstance().GetLocations(valuePair);
-                    StorageCache cache = new StorageCache() { CacheDate = DateTime.Now, CacheData = locationsList };
-                    await ServiceLocator.Current.GetInstance<IAsyncStorageService>().WriteAllTextAsync(Constants.LOCATIONSSTORE, JsonConvert.SerializeObject(cache));
-                }
-                catch (Exception ex)
-                {
-                    //TODO: Do something with exception
-                }
+                locationsList = await Client.GetInstance().GetLocations(valuePair);
+                var cache = new StorageCache { CacheDate = DateTime.Now, CacheData = locationsList };
+                await ServiceLocator.Current.GetInstance<IAsyncStorageService>().WriteAllTextAsync(Constants.LOCATIONSSTORE, JsonConvert.SerializeObject(cache));
             }
-
+            catch (Exception)
+            {
+                //TODO: Do something with exception
+            }
             return locationsList;
         }
     }
