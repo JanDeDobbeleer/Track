@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps.Controls;
+using Microsoft.Phone.Shell;
 using Microsoft.Practices.ServiceLocation;
 using Track.ViewModel;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
@@ -25,6 +27,7 @@ namespace Track.View
 
         private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
+            SystemTray.ProgressIndicator = new ProgressIndicator();
             Messenger.Default.Send(new NotificationMessage("MainPageLoaded"));
             Loaded -= OnPageLoaded;
         }
@@ -40,6 +43,7 @@ namespace Track.View
             geoCoordinates.Add(ServiceLocator.Current.GetInstance<MainpageViewModel>().CurrentPosition);
             var locationRectangle = LocationRectangle.CreateBoundingRectangle(geoCoordinates);
             Map.SetView(locationRectangle);
+            Tools.Tools.SetProgressIndicator(false);
         }
 
         private void Map_OnLoaded(object sender, RoutedEventArgs e)

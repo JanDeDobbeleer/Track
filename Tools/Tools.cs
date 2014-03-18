@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Phone.Shell;
 
@@ -6,10 +7,17 @@ namespace Tools
 {
     public static class Tools
     {
-        public static void SetProgressIndicator(bool isVisible)
+        public static void SetProgressIndicator(bool isVisible, String line = "")
         {
             SystemTray.ProgressIndicator.IsIndeterminate = isVisible;
             SystemTray.ProgressIndicator.IsVisible = isVisible;
+            if (!string.IsNullOrWhiteSpace(line))
+                SetProgressIndicatorText(line);
+        }
+
+        public static void SetProgressIndicatorText(String line)
+        {
+            SystemTray.ProgressIndicator.Text = line;
         }
 
         public static ApplicationBarIconButton CreateButton(string uri, string text, bool enabled, EventHandler handler)

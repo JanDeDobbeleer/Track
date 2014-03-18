@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
+using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using TrackApi.Api;
@@ -77,6 +79,7 @@ namespace Track.Api
                 return locationsList;
             try
             {
+                Deployment.Current.Dispatcher.BeginInvoke(() => Tools.Tools.SetProgressIndicatorText(AppResources.ProgressLoadingStations));
                 locationsList = await Client.GetInstance().GetLocations(valuePair);
                 var cache = new StorageCache { CacheDate = DateTime.Now, CacheData = locationsList };
                 await ServiceLocator.Current.GetInstance<IAsyncStorageService>().WriteAllTextAsync(Constants.LOCATIONSSTORE, JsonConvert.SerializeObject(cache));

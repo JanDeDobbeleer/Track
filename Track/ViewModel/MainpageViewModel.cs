@@ -117,8 +117,9 @@ namespace Track.ViewModel
             });
         }
 
-        private async Task GetCurrentPosition()
+        public async Task GetCurrentPosition()
         {
+            Deployment.Current.Dispatcher.BeginInvoke(()=>Tools.Tools.SetProgressIndicator(true, AppResources.ProgressAquiringLocation));
             Geoposition geoposition = null;
 
             var geolocator = new Geolocator
@@ -137,7 +138,7 @@ namespace Track.ViewModel
 #endif
             }
             CurrentPosition = geoposition.Coordinate.ToGeoCoordinate();
-            Deployment.Current.Dispatcher.BeginInvoke(HandleReverseGeoCodeQuery);
+            HandleReverseGeoCodeQuery();
             await Task.Run(() => GetLocations(CurrentPosition));
         }
 
@@ -148,30 +149,36 @@ namespace Track.ViewModel
             {
                 station.DistanceToCurrentPhonePosition = Geocoding.CalculateDistanceFrom(currentPhonePosition, station.GeoCoordinate);
             }
+            AssignList(list);
             var nearbyLocations = list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(2);
             //clear nearby locations
             Nearby.Clear();
             Nearby = new ObservableCollection<Station>(nearbyLocations);
-            Deployment.Current.Dispatcher.BeginInvoke(()=> AssignList(list));
             Messenger.Default.Send(new NotificationMessage("StationsLoaded"));
         }
 
         private void AssignList(IEnumerable<Station> stations)
         {
-            Locations.Clear();
-            Locations = null;
-            Locations = new ObservableCollection<Station>(stations);
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                Locations.Clear();
+                Locations = null;
+                Locations = new ObservableCollection<Station>(stations);
+            });
         }
 
         private void HandleReverseGeoCodeQuery()
         {
-            if (ReferenceEquals(_reverseGeocodeQuery, null) || !_reverseGeocodeQuery.IsBusy)
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                _reverseGeocodeQuery = new ReverseGeocodeQuery();
-                _reverseGeocodeQuery.GeoCoordinate = CurrentPosition;
-                _reverseGeocodeQuery.QueryCompleted += ReverseGeocodeQuery_QueryCompleted;
-                _reverseGeocodeQuery.QueryAsync();
-            }
+                if (ReferenceEquals(_reverseGeocodeQuery, null) || !_reverseGeocodeQuery.IsBusy)
+                {
+                    _reverseGeocodeQuery = new ReverseGeocodeQuery();
+                    _reverseGeocodeQuery.GeoCoordinate = CurrentPosition;
+                    _reverseGeocodeQuery.QueryCompleted += ReverseGeocodeQuery_QueryCompleted;
+                    _reverseGeocodeQuery.QueryAsync();
+                }
+            });
         }
 
         private void ReverseGeocodeQuery_QueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e)

@@ -106,6 +106,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to getting location.
+        /// </summary>
+        public static string ProgressAquiringLocation {
+            get {
+                return ResourceManager.GetString("ProgressAquiringLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to loading stations.
         /// </summary>
         public static string ProgressLoadingStations {

@@ -143,4 +143,7 @@
   <data name="ProgressLoadingStations" xml:space="preserve">
     <value>loading stations</value>
   </data>
+  <data name="ProgressAquiringLocation" xml:space="preserve">
+    <value>getting location</value>
+  </data>
 </root>
