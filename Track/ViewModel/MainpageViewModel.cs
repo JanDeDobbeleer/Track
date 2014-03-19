@@ -22,8 +22,6 @@ using TrackApi.Classes;
 
 namespace Track.ViewModel
 {
-    public delegate void InfoFinishedEventHandler(object sender, FinshedEventArgs args);
-
     public class MainpageViewModel : ViewModelBase, INotifyPropertyChanged
     {
         #region properties
@@ -44,6 +42,24 @@ namespace Track.ViewModel
 
                 _currentPosition = value;
                 OnPropertyChanged(CurrentPositionPropertyName);
+            }
+        }
+
+        public const string LocationLoadedPropertyName = "LocationLoaded";
+        private bool _locationLoaded = false;
+        public bool LocationLoaded
+        {
+            get
+            {
+                return _locationLoaded;
+            }
+            private set
+            {
+                if (_locationLoaded == value)
+                    return;
+
+                _locationLoaded = value;
+                OnPropertyChanged(LocationLoadedPropertyName);
             }
         }
 
@@ -119,7 +135,7 @@ namespace Track.ViewModel
 
         public async Task GetCurrentPosition()
         {
-            Deployment.Current.Dispatcher.BeginInvoke(()=>Tools.Tools.SetProgressIndicator(true, AppResources.ProgressAquiringLocation));
+            Deployment.Current.Dispatcher.BeginInvoke(() => Tools.Tools.SetProgressIndicator(true, AppResources.ProgressAquiringLocation));
             Geoposition geoposition = null;
 
             var geolocator = new Geolocator
@@ -138,33 +154,40 @@ namespace Track.ViewModel
 #endif
             }
             CurrentPosition = geoposition.Coordinate.ToGeoCoordinate();
-            HandleReverseGeoCodeQuery();
+            //TODO: check if you need this, if not needed anywhere by release, remove it
+            //HandleReverseGeoCodeQuery();
             await Task.Run(() => GetLocations(CurrentPosition));
+            Deployment.Current.Dispatcher.BeginInvoke(() => { LocationLoaded = true; });
+            Messenger.Default.Send(new NotificationMessage("StationsLoaded"));
         }
 
         private async Task GetLocations(GeoCoordinate currentPhonePosition)
         {
             var list = await RailService.GetInstance().GetLocations(new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
-            foreach (var station in list)
-            {
-                station.DistanceToCurrentPhonePosition = Geocoding.CalculateDistanceFrom(currentPhonePosition, station.GeoCoordinate);
-            }
-            AssignList(list);
-            var nearbyLocations = list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(2);
-            //clear nearby locations
-            Nearby.Clear();
-            Nearby = new ObservableCollection<Station>(nearbyLocations);
-            Messenger.Default.Send(new NotificationMessage("StationsLoaded"));
+            //parallelize this for optimization
+            var tasks = Enumerable.Range(0, list.Count).Select(i =>
+              Task.Run(() =>
+              {
+                  list[i].DistanceToCurrentPhonePosition = Geocoding.CalculateDistanceFrom(currentPhonePosition, list[i].GeoCoordinate);
+              }));
+            await Task.WhenAll(tasks);
+            //send the list to the StationList control
+            Messenger.Default.Send(list);
+            //assign the visible pins on the map, limited to 10 to improve speed
+            await Task.Run(() => AssignList(Locations,list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(10).ToList()));
+            //assign the nearby list
+            await Task.Run(() => AssignList(Nearby, list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(3).ToList()));
         }
 
-        private void AssignList(IEnumerable<Station> stations)
+        private async Task AssignList(ICollection<Station> input, IReadOnlyList<Station> stations)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                Locations.Clear();
-                Locations = null;
-                Locations = new ObservableCollection<Station>(stations);
-            });
+            //parallelize this for optimization
+            var tasks = Enumerable.Range(0, stations.Count).Select(i =>
+              Task.Run(() =>
+              {
+                  Deployment.Current.Dispatcher.BeginInvoke(() => input.Add(stations[i]));
+              }));
+            await Task.WhenAll(tasks);
         }
 
         private void HandleReverseGeoCodeQuery()

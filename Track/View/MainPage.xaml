@@ -19,16 +19,23 @@
     DataContext="{Binding Main, Source={StaticResource Locator}}">
     
     <phone:PhoneApplicationPage.Resources>
+        <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="220"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="3"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Width="{Binding ElementName=Pivot, Path=ActualWidth}" Margin="-7,0,0,0">
+            <Image Source="/Assets/logo.png" />
+            <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+        </StackPanel>
         <!--Maps control-->
-        <maps:Map Grid.Row="0" x:Name="Map" Loaded="Map_OnLoaded" common:MapPushPinDependency.ItemsSource="{Binding Path=Locations}">
+        <maps:Map Grid.Row="1" Margin="0,10,0,0" x:Name="Map" Loaded="Map_OnLoaded" common:MapPushPinDependency.ItemsSource="{Binding Path=Locations}" Center="50.8500, 4.3500" ZoomLevel="7">
             <toolkit:MapExtensions.Children>
                 <toolkit:MapItemsControl x:Name="LocationsMapItemsControl">
                     <toolkit:MapItemsControl.ItemTemplate>
@@ -37,11 +44,12 @@
                         </DataTemplate>
                     </toolkit:MapItemsControl.ItemTemplate>
                 </toolkit:MapItemsControl>
-                <toolkit:UserLocationMarker x:Name="UserLocationMarker" GeoCoordinate="{Binding CurrentPosition}"/>
+                <toolkit:UserLocationMarker x:Name="UserLocationMarker" GeoCoordinate="{Binding CurrentPosition}" Visibility="{Binding LocationLoaded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             </toolkit:MapExtensions.Children>
         </maps:Map>
+        <Rectangle Grid.Row="2" Height="3" Width="{Binding ElementName=Pivot, Path=ActualWidth}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="DodgerBlue"/>
         <!--Pivot Control-->
-        <phone:Pivot x:Name="Pivot" Grid.Row="1">
+        <phone:Pivot x:Name="Pivot" Grid.Row="3">
             <!--Pivot item one-->
             <phone:PivotItem Header="nearby">
                 <Grid>
@@ -52,13 +60,6 @@
             <!--Pivot item two-->
             <phone:PivotItem Header="favorites">
                 <Grid/>
-            </phone:PivotItem>
-
-            <!--Pivot item three-->
-            <phone:PivotItem Header="stations">
-                <Grid>
-                    <controls:StationList/>
-                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>
