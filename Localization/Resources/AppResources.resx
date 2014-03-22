@@ -146,4 +146,13 @@
   <data name="ProgressAquiringLocation" xml:space="preserve">
     <value>getting location</value>
   </data>
+  <data name="Kilometer" xml:space="preserve">
+    <value>kilometer</value>
+  </data>
+  <data name="Kilometers" xml:space="preserve">
+    <value>kilometers</value>
+  </data>
+  <data name="Meters" xml:space="preserve">
+    <value>meters</value>
+  </data>
 </root>

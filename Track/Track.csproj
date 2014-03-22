@@ -102,6 +102,8 @@
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\Geocoding.cs" />
     <Compile Include="Common\MapPushPinDependency.cs" />
+    <Compile Include="Controls\PathControl.cs" />
+    <Compile Include="Controls\SplitPanel.cs" />
     <Compile Include="Controls\StationList.xaml.cs">
       <DependentUpon>StationList.xaml</DependentUpon>
     </Compile>
@@ -131,10 +133,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
+    <Content Include="Assets\AppBar\feature.search.png" />
+    <Content Include="Assets\AppBar\refresh.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\logo.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -161,6 +164,10 @@
     <Page Include="Controls\StationList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\MainPage.xaml">
       <SubType>Designer</SubType>

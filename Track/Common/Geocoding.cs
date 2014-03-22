@@ -11,7 +11,7 @@ namespace Track.Common
 
     public static class Geocoding
     {
-        const Double EarthRadiusInMiles = 3956.0;
+        //const Double EarthRadiusInMiles = 3956.0;
         const Double EarthRadiusInKm = 6366.707019;
 
         //helper method to make reading the lambda a bit easier
@@ -56,6 +56,35 @@ namespace Track.Common
             ;
 
             return CalcDistance(fromLat, fromLon, toLat, toLong);
+        }
+
+        /*Position, decimal degrees
+         lat = 51.0
+         lon = 0.0
+
+         //Earth’s radius, sphere
+         R=6378137
+
+         //offsets in meters
+         dn = 100
+         de = 100
+
+         //Coordinate offsets in radians
+         dLat = dn/R
+         dLon = de/(R*Cos(Pi*lat/180))
+
+         //OffsetPosition, decimal degrees
+         latO = lat + dLat * 180/Pi
+         lonO = lon + dLon * 180/Pi */
+
+        public static GeoCoordinate OffsetCoordinate(this GeoCoordinate cord, int offset)
+        {
+            var temp = new GeoCoordinate
+            {
+                Longitude = cord.Longitude + (offset/(6378137*Math.Cos(Math.PI*(cord.Longitude/180))))*180/Math.PI,
+                Latitude = cord.Latitude + (offset/(double) 6378137)*180/Math.PI
+            };
+            return temp;
         }
     }
 }

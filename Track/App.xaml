@@ -4,7 +4,9 @@
   <Application.Resources>
         <model:ViewModelLocator x:Key="Locator" d:IsDataSource="true" />
         <localization:LocalizedStrings x:Key="LocalizedStrings" />
-  </Application.Resources>
+        <SolidColorBrush x:Key="TrackColorBrush">#00acb6</SolidColorBrush>
+        <Color x:Key="TrackColor">#00acb6</Color>
+    </Application.Resources>
   <Application.ApplicationLifetimeObjects>
     <!--Required object that handles lifetime events for the application-->
     <shell:PhoneApplicationService Launching="Application_Launching" Closing="Application_Closing" Activated="Application_Activated" Deactivated="Application_Deactivated" />

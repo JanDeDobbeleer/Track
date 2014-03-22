@@ -8,60 +8,180 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Maps.Toolkit;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:controls="clr-namespace:Track.Controls"
     xmlns:common="clr-namespace:Track.Common"
+    xmlns:controls="clr-namespace:Track.Controls"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:behaviors="clr-namespace:Cimbalino.Phone.Toolkit.Behaviors;assembly=Cimbalino.Phone.Toolkit"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Main, Source={StaticResource Locator}}">
-    
+    DataContext="{Binding Main, Source={StaticResource Locator}}"
+    shell:SystemTray.ForegroundColor="White"
+    shell:SystemTray.BackgroundColor="{StaticResource TrackColor}">
+
     <phone:PhoneApplicationPage.Resources>
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" To="{StaticResource PhoneInactiveColor}" Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ContentContainer" d:IsOptimized="True"/>
+                                            <ColorAnimation Duration="0" To="{StaticResource PhoneInactiveColor}" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ContentContainer" d:IsOptimized="True"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" To="White" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ContentContainer" d:IsOptimized="True"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="SelectedUnfocused">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" To="White" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ContentContainer" d:IsOptimized="True"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="#FF1BA1E2" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Background="Black" BorderBrush="Black"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
+        <i:Interaction.Behaviors>
+            <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}">
+                <behaviors:ApplicationBarIconButton IsVisible="True"
+                                                    IconUri="/Assets/AppBar/refresh.png"
+                                                    Text="refresh"
+                                                    Command="{Binding RefreshCommand}"/>
+                <behaviors:ApplicationBarIconButton IsVisible="True"
+                                                    IconUri="/Assets/AppBar/feature.search.png"
+                                                    Text="search"
+                                                    Command="{Binding SettingsCommand}"/>
+            </behaviors:ApplicationBarBehavior>
+        </i:Interaction.Behaviors>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="200"/>
-            <RowDefinition Height="3"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Width="{Binding ElementName=Pivot, Path=ActualWidth}" Margin="-7,0,0,0">
-            <Image Source="/Assets/logo.png" />
-            <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
-        </StackPanel>
-        <!--Maps control-->
-        <maps:Map Grid.Row="1" Margin="0,10,0,0" x:Name="Map" Loaded="Map_OnLoaded" common:MapPushPinDependency.ItemsSource="{Binding Path=Locations}" Center="50.8500, 4.3500" ZoomLevel="7">
-            <toolkit:MapExtensions.Children>
-                <toolkit:MapItemsControl x:Name="LocationsMapItemsControl">
-                    <toolkit:MapItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <toolkit:Pushpin GeoCoordinate="{Binding GeoCoordinate}" Visibility="Visible" Content="{Binding Name}" Tap="Pushpin_Tap"/>
-                        </DataTemplate>
-                    </toolkit:MapItemsControl.ItemTemplate>
-                </toolkit:MapItemsControl>
-                <toolkit:UserLocationMarker x:Name="UserLocationMarker" GeoCoordinate="{Binding CurrentPosition}" Visibility="{Binding LocationLoaded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            </toolkit:MapExtensions.Children>
-        </maps:Map>
-        <Rectangle Grid.Row="2" Height="3" Width="{Binding ElementName=Pivot, Path=ActualWidth}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="DodgerBlue"/>
+        <Rectangle Grid.Row="0" Grid.RowSpan="2" Fill="{StaticResource TrackColorBrush}" Margin="0,-40,0,0"/>
+        <TextBlock Grid.Row="0" Width="{Binding ElementName=Pivot, Path=ActualWidth}" Margin="20,0,0,0" Foreground="White" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+        <Rectangle Grid.Row="2" Fill="{StaticResource TrackColorBrush}" Margin="0,-10,0,0"/>
+        <ListBox x:Name="ImageBar"
+                     Grid.Row="1"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     ItemContainerStyle="{StaticResource ListBoxItemStyle}"                     
+                     SelectedIndex="{Binding SelectedIndex, ElementName=ContentPivot, Mode=TwoWay}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <controls:SplitPanel />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBoxItem>
+                <controls:PathControl Content="M2.925457,45.511272C10.741428,45.502132,18.48247,50.500496,21.411001,52.619106L20.564001,62.264 0,53.770779 2.1689987,45.528053C2.4211235,45.517071,2.6733284,45.511566,2.925457,45.511272z M43.952001,43.591896C55.724,52.525307,62.183001,53.360489,62.789,53.421089L64,61.205421 44.424,54.828056 44.396,54.156773z M40.450001,43.115406L40.919001,54.26947 40.950001,54.990753 24.056,62.232002 24.903,52.581406z M32.606,36.478134L32.606,43.690895 25.280001,48.306694 26.096001,39.011951z M59.924001,35.005447L62.139,49.239574C59.452001,49.095078 54.612,46.333439 50.368,43.548397 53.144,35.378548 59.758,35.013317 59.924001,35.005447z M16.933001,22.882633L23.807001,25.352081 23.771,25.766691 23.009001,34.433929C13.212002,29.659979,16.569,23.494579,16.933001,22.882633z M8.8899994,19.993994L13.364,21.601459C9.25,30.491262,18.677,36.603863,22.634001,38.703369L21.754,48.719387C6.2389984,39.027451,3.1920013,41.771053,3.1920013,41.771053L2.8279991,43.028809z M39.475,19.857397L40.272,38.861565 36.321,41.351074 36.242001,33.327076C35.919001,31.54977,33.817,31.872763,33.817,31.872763L26.479,34.649315 27.239,25.997887 27.308001,25.195833z M42.948,19.718L46.328,20.843176 48.265,28.147562 49.341001,32.198376 51.812,28.815638 55.427,23.871042 58.343,24.841661 59.338,31.237457C50.179,32.483341,47.031,41.246284,47.031,41.246284L47.372,41.519039C45.925,40.510029,44.669,39.595921,43.755,38.916862z M53.679668,4.3845386C51.646579,4.4165239 49.847217,5.8707604 49.457722,7.9460926 49.009715,10.31923 50.56956,12.603175 52.941967,13.049685 55.314495,13.496293 57.60103,11.937162 58.046438,9.5640144 58.494245,7.1922369 56.93172,4.9063015 54.561872,4.4602423 54.26532,4.4044247 53.970109,4.3799686 53.679668,4.3845386z M53.876964,0.00037478212C54.370403,0.0050314565 54.870273,0.05313564 55.372135,0.14771746 59.963256,1.0122223 62.984005,5.4340973 62.119318,10.023382 61.814724,11.634684 61.072536,13.050685 60.038754,14.176887L55.179538,20.820293 50.197683,27.634001 48.033721,19.474491 45.924445,11.519484C45.372331,10.095582 45.19521,8.50704 45.497207,6.8932085 46.267306,2.8053779 49.85896,-0.037543376 53.876964,0.00037478212z" />
+            </ListBoxItem>
+            <ListBoxItem>
+                <controls:PathControl Content="M51.790001,24.177999L44.657009,31.310526 42.412151,33.555641 42.360149,33.608337 40.141289,31.392622 33.010998,24.259096 33.010998,30.443459 39.294868,36.728317 42.38615,39.820999 45.479931,36.728317 45.45393,36.701019 45.505932,36.64822 51.790001,30.363361z M42.398598,16.777C50.804901,16.777 57.619999,23.591635 57.619999,32 57.619999,40.406467 50.804901,47.223 42.398598,47.223 33.9897,47.223 27.174,40.406467 27.174,32 27.174,23.591635 33.9897,16.777 42.398598,16.777z M0,0L31.899,0C40.984901,0.20117199,42.398998,8.6806602,42.398998,8.6806602L42.398998,13.110001 41.91222,13.116181C31.719772,13.375278 23.508001,21.74651 23.508001,31.99995 23.508001,42.252407 31.719772,50.623718 41.91222,50.88282L42.398998,50.889 42.398998,64 25.8801,47.848598 9.2863798,64 9.2863798,8.6806602C8.2785301,1.00879,0,0,0,0z" />
+            </ListBoxItem>
+            <ListBoxItem>
+                <controls:PathControl Content="M29.9314,44.295944L34.223,44.295944 34.223,48.586002 29.9314,48.586002z M29.749001,26.198L34.390999,26.198 34.390999,31.451971 33.290699,42.814522 30.8636,42.814522 29.749001,31.451971z M32,10.338882L8.2226601,54.42371 55.777302,54.42371z M32,0L48,29.665951 64,59.331001 32,59.331001 0,59.331001 16,29.665951z" />
+            </ListBoxItem>
+        </ListBox>
+
         <!--Pivot Control-->
-        <phone:Pivot x:Name="Pivot" Grid.Row="3">
+        <phone:Pivot x:Name="ContentPivot" Grid.Row="3" Background="White">
             <!--Pivot item one-->
-            <phone:PivotItem Header="nearby">
+            <phone:PivotItem Margin="0,0,0,0">
                 <Grid>
-                    <ListBox x:Name="NearbyListBox"/>
+                    <!--Maps control-->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="200"/>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <maps:Map Grid.Row="0" Margin="0,-10,0,0" Height="200" VerticalAlignment="Top" IsEnabled="False" x:Name="Map" Loaded="Map_OnLoaded"  common:MapPushPinDependency.ItemsSource="{Binding Path=Nearby}" Center="50.8500, 4.3500" ZoomLevel="7">
+                        <toolkit:MapExtensions.Children>
+                            <toolkit:MapItemsControl x:Name="LocationsMapItemsControl">
+                                <toolkit:MapItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <toolkit:Pushpin GeoCoordinate="{Binding GeoCoordinate}" Visibility="Visible" Content="{Binding Name}" Tap="Pushpin_Tap"/>
+                                    </DataTemplate>
+                                </toolkit:MapItemsControl.ItemTemplate>
+                            </toolkit:MapItemsControl>
+                            <toolkit:UserLocationMarker x:Name="UserLocationMarker" GeoCoordinate="{Binding CurrentPosition}" Visibility="{Binding LocationLoaded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        </toolkit:MapExtensions.Children>
+                    </maps:Map>
+                    <Rectangle Grid.Row="1" Margin="0,-20,0,0" Fill="{StaticResource TrackColorBrush}" Width="{Binding Width, ElementName=LayoutRoot}" Height="3"/>
+                    <ProgressBar Grid.Row="2" x:Name="ProgressBar"
+                             IsIndeterminate="{Binding IsBusy}"
+                             Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                             Foreground="Black"
+                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                             Margin="10,0,10,0"/>
+                    <ListBox Grid.Row="2" Margin="10,0,10,0" x:Name="NearbyListBox" ItemsSource="{Binding Locations}">
+                        <ListBox.ItemTemplate >
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding Name}" Margin="10,0,10,0" TextWrapping="Wrap" Foreground="Black" FontSize="40" FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
+                                    <TextBlock Text="{Binding Distance}" Foreground="Black" Margin="20,0,10,0" FontFamily="{StaticResource PhoneFontFamilyLight}" FontSize="20"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </phone:PivotItem>
 
             <!--Pivot item two-->
-            <phone:PivotItem Header="favorites">
-                <Grid/>
+            <phone:PivotItem>
+                <Grid>
+                    <TextBlock Text="Favorites" Style="{StaticResource PhoneTextTitle2Style}" FontWeight="Bold"/>
+                    <RichTextBox Margin="0,12,0,0">
+                        <Paragraph>
+                            <Run>
+                                Integer eget molestie lacus. Nam facilisis purus sed vehicula rutrum. Integer auctor imperdiet lectus a ultricies. Vivamus erat magna, feugiat et cursus nec, feugiat id enim. Aliquam tempus, turpis sed gravida pretium, sapien arcu commodo massa, ut congue tellus urna eu magna. Sed ligula tellus, consectetur et ornare id, porttitor congue libero. Morbi justo neque, varius ac commodo a, fermentum a arcu. Integer lectus mi, ultrices nec dui cursus, molestie dictum quam. Pellentesque mollis, eros at blandit vulputate, arcu massa tincidunt risus, at tempor urna metus at nulla. Morbi ultricies sem metus, at aliquet purus faucibus sed.
+                            </Run>
+                        </Paragraph>
+                    </RichTextBox>
+                </Grid>
+            </phone:PivotItem>
+
+            <!--Pivot item three-->
+            <phone:PivotItem>
+                <Grid>
+                    <TextBlock Text="Disruptions" Style="{StaticResource PhoneTextTitle2Style}" FontWeight="Bold"/>
+                    <RichTextBox Margin="0,12,0,0">
+                        <Paragraph>
+                            <Run>
+                                Integer eget molestie lacus. Nam facilisis purus sed vehicula rutrum. Integer auctor imperdiet lectus a ultricies. Vivamus erat magna, feugiat et cursus nec, feugiat id enim. Aliquam tempus, turpis sed gravida pretium, sapien arcu commodo massa, ut congue tellus urna eu magna. Sed ligula tellus, consectetur et ornare id, porttitor congue libero. Morbi justo neque, varius ac commodo a, fermentum a arcu. Integer lectus mi, ultrices nec dui cursus, molestie dictum quam. Pellentesque mollis, eros at blandit vulputate, arcu massa tincidunt risus, at tempor urna metus at nulla. Morbi ultricies sem metus, at aliquet purus faucibus sed.
+                            </Run>
+                        </Paragraph>
+                    </RichTextBox>
+                </Grid>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>
-    
+
 </phone:PhoneApplicationPage>

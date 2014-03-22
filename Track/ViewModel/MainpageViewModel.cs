@@ -122,6 +122,27 @@ namespace Track.ViewModel
                 OnPropertyChanged(NearbyPropertyName);
             }
         }
+
+        public const string IsBusyPropertyName = "IsBusy";
+        private bool _isBusy = false;
+        public bool IsBusy
+        {
+            get
+            {
+                return _isBusy;
+            }
+
+            set
+            {
+                if (_isBusy == value)
+                {
+                    return;
+                }
+
+                _isBusy = value;
+                RaisePropertyChanged(IsBusyPropertyName);
+            }
+        }
         #endregion
 
         public MainpageViewModel()
@@ -135,6 +156,7 @@ namespace Track.ViewModel
 
         public async Task GetCurrentPosition()
         {
+            IsBusy = true;
             Deployment.Current.Dispatcher.BeginInvoke(() => Tools.Tools.SetProgressIndicator(true, AppResources.ProgressAquiringLocation));
             Geoposition geoposition = null;
 
@@ -158,6 +180,7 @@ namespace Track.ViewModel
             //HandleReverseGeoCodeQuery();
             await Task.Run(() => GetLocations(CurrentPosition));
             Deployment.Current.Dispatcher.BeginInvoke(() => { LocationLoaded = true; });
+            Deployment.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
             Messenger.Default.Send(new NotificationMessage("StationsLoaded"));
         }
 

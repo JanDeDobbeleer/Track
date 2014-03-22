@@ -79,6 +79,24 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to kilometer.
+        /// </summary>
+        public static string Kilometer {
+            get {
+                return ResourceManager.GetString("Kilometer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to kilometers.
+        /// </summary>
+        public static string Kilometers {
+            get {
+                return ResourceManager.GetString("Kilometers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to favorites.
         /// </summary>
         public static string MainViewFavorites {
@@ -102,6 +120,15 @@ namespace Localization.Resources {
         public static string MainViewStations {
             get {
                 return ResourceManager.GetString("MainViewStations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to meters.
+        /// </summary>
+        public static string Meters {
+            get {
+                return ResourceManager.GetString("Meters", resourceCulture);
             }
         }
         

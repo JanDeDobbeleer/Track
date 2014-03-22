@@ -7,6 +7,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Practices.ServiceLocation;
+using Track.Common;
 using Track.ViewModel;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
@@ -38,7 +39,7 @@ namespace Track.View
             var nearbyLocations = ServiceLocator.Current.GetInstance<MainpageViewModel>().Nearby;
 
             //Add the current phone position to be sure it's also visible when changing the view zoom level
-            var geoCoordinates = (from station in nearbyLocations select station.GeoCoordinate).ToList();
+            var geoCoordinates = (from station in nearbyLocations select station.GeoCoordinate.OffsetCoordinate(500)).ToList();
             //TODO: check for null?
             geoCoordinates.Add(ServiceLocator.Current.GetInstance<MainpageViewModel>().CurrentPosition);
             var locationRectangle = LocationRectangle.CreateBoundingRectangle(geoCoordinates);

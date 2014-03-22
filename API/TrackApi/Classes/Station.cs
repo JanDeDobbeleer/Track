@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Device.Location;
+using Localization.Resources;
 using Newtonsoft.Json;
 
 namespace TrackApi.Classes
@@ -32,5 +33,17 @@ namespace TrackApi.Classes
         }
 
         public double DistanceToCurrentPhonePosition { get; set; }
+
+        public string Distance
+        {
+            get
+            {
+                if (DistanceToCurrentPhonePosition > 2)
+                    return Math.Round(DistanceToCurrentPhonePosition, 2) + " " +  AppResources.Kilometers;
+                if (DistanceToCurrentPhonePosition > 1)
+                    return Math.Round(DistanceToCurrentPhonePosition, 2) + " " + AppResources.Kilometer;
+                return Math.Round((DistanceToCurrentPhonePosition * 1000), 0) + " " + AppResources.Meters;
+            }
+        }
     }
 }
