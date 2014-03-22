@@ -123,24 +123,21 @@ namespace Track.ViewModel
             }
         }
 
-        public const string IsBusyPropertyName = "IsBusy";
-        private bool _isBusy = false;
-        public bool IsBusy
+        public const string LoadingPropertyName = "Loading";
+        private bool _loading = false;
+        public bool Loading
         {
             get
             {
-                return _isBusy;
+                return _loading;
             }
-
-            set
+            private set
             {
-                if (_isBusy == value)
-                {
+                if (_loading == value)
                     return;
-                }
 
-                _isBusy = value;
-                RaisePropertyChanged(IsBusyPropertyName);
+                _loading = value;
+                OnPropertyChanged(LoadingPropertyName);
             }
         }
         #endregion
@@ -156,8 +153,8 @@ namespace Track.ViewModel
 
         public async Task GetCurrentPosition()
         {
-            IsBusy = true;
-            Deployment.Current.Dispatcher.BeginInvoke(() => Tools.Tools.SetProgressIndicator(true, AppResources.ProgressAquiringLocation));
+            Deployment.Current.Dispatcher.BeginInvoke(() => Loading = true);
+            //Deployment.Current.Dispatcher.BeginInvoke(() => Tools.Tools.SetProgressIndicator(true, AppResources.ProgressAquiringLocation));
             Geoposition geoposition = null;
 
             var geolocator = new Geolocator
@@ -180,8 +177,8 @@ namespace Track.ViewModel
             //HandleReverseGeoCodeQuery();
             await Task.Run(() => GetLocations(CurrentPosition));
             Deployment.Current.Dispatcher.BeginInvoke(() => { LocationLoaded = true; });
-            Deployment.Current.Dispatcher.BeginInvoke(() => IsBusy = false);
             Messenger.Default.Send(new NotificationMessage("StationsLoaded"));
+            Deployment.Current.Dispatcher.BeginInvoke(() => Loading = false);
         }
 
         private async Task GetLocations(GeoCoordinate currentPhonePosition)

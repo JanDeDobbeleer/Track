@@ -136,10 +136,13 @@
                     </maps:Map>
                     <Rectangle Grid.Row="1" Margin="0,-20,0,0" Fill="{StaticResource TrackColorBrush}" Width="{Binding Width, ElementName=LayoutRoot}" Height="3"/>
                     <ProgressBar Grid.Row="2" x:Name="ProgressBar"
-                             IsIndeterminate="{Binding IsBusy}"
-                             Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"
+                             IsIndeterminate="{Binding Loading}"
+                             Visibility="{Binding Loading, Converter={StaticResource BooleanToVisibilityConverter}}"
                              Foreground="Black"
+                             Width="200"
+                             Height="20"
                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                             HorizontalContentAlignment="Stretch"
                              Margin="10,0,10,0"/>
                     <ListBox Grid.Row="2" Margin="10,0,10,0" x:Name="NearbyListBox" ItemsSource="{Binding Locations}">
                         <ListBox.ItemTemplate >

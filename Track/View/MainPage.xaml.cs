@@ -28,7 +28,7 @@ namespace Track.View
 
         private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
-            SystemTray.ProgressIndicator = new ProgressIndicator();
+            //SystemTray.ProgressIndicator = new ProgressIndicator();
             Messenger.Default.Send(new NotificationMessage("MainPageLoaded"));
             Loaded -= OnPageLoaded;
         }
@@ -44,7 +44,7 @@ namespace Track.View
             geoCoordinates.Add(ServiceLocator.Current.GetInstance<MainpageViewModel>().CurrentPosition);
             var locationRectangle = LocationRectangle.CreateBoundingRectangle(geoCoordinates);
             Map.SetView(locationRectangle);
-            Tools.Tools.SetProgressIndicator(false);
+            //Tools.Tools.SetProgressIndicator(false);
         }
 
         private void Map_OnLoaded(object sender, RoutedEventArgs e)
