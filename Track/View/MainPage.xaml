@@ -88,7 +88,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Rectangle Grid.Row="0" Grid.RowSpan="2" Fill="{StaticResource TrackColorBrush}" Margin="0,-40,0,0"/>
-        <TextBlock Grid.Row="0" Width="{Binding ElementName=Pivot, Path=ActualWidth}" Margin="20,0,0,0" Foreground="White" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
+        <TextBlock Grid.Row="0" Width="{Binding ElementName=Pivot, Path=ActualWidth}" Margin="20,0,0,5" Foreground="White" Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" FontSize="{StaticResource PhoneFontSizeLarge}" />
         <Rectangle Grid.Row="2" Fill="{StaticResource TrackColorBrush}" Margin="0,-10,0,0"/>
         <ListBox x:Name="ImageBar"
                      Grid.Row="1"
@@ -135,12 +135,13 @@
                         </toolkit:MapExtensions.Children>
                     </maps:Map>
                     <Rectangle Grid.Row="1" Margin="0,-20,0,0" Fill="{StaticResource TrackColorBrush}" Width="{Binding Width, ElementName=LayoutRoot}" Height="3"/>
-                    <ProgressBar Grid.Row="2" x:Name="ProgressBar"
+                    <controls:LoadingBar Grid.Row="2"
                              IsIndeterminate="{Binding Loading}"
                              Visibility="{Binding Loading, Converter={StaticResource BooleanToVisibilityConverter}}"
                              Foreground="Black"
+                             Text="{Binding Path=LocalizedResources.Loading, Source={StaticResource LocalizedStrings}}"
                              Width="200"
-                             Height="20"
+                             Height="50"
                              HorizontalAlignment="Center" VerticalAlignment="Center"
                              HorizontalContentAlignment="Stretch"
                              Margin="10,0,10,0"/>

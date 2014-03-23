@@ -79,7 +79,6 @@ namespace Track.Api
                 return locationsList;
             try
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() => Tools.Tools.SetProgressIndicatorText(AppResources.ProgressLoadingStations));
                 locationsList = await Client.GetInstance().GetLocations(valuePair);
                 var cache = new StorageCache { CacheDate = DateTime.Now, CacheData = locationsList };
                 await ServiceLocator.Current.GetInstance<IAsyncStorageService>().WriteAllTextAsync(Constants.LOCATIONSSTORE, JsonConvert.SerializeObject(cache));

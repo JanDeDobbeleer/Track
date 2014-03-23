@@ -102,6 +102,9 @@
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\Geocoding.cs" />
     <Compile Include="Common\MapPushPinDependency.cs" />
+    <Compile Include="Controls\LoadingBar.xaml.cs">
+      <DependentUpon>LoadingBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PathControl.cs" />
     <Compile Include="Controls\SplitPanel.cs" />
     <Compile Include="Controls\StationList.xaml.cs">
@@ -161,6 +164,10 @@
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\LoadingBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\StationList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
