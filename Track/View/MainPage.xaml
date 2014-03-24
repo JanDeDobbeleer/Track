@@ -24,7 +24,6 @@
 
     <phone:PhoneApplicationPage.Resources>
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <common:IndexToBrushConverter x:Key="IndexToBrushConverter"/>
         <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -32,39 +31,13 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Top"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
-                        <Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal"/>
-                                    <VisualState x:Name="MouseOver"/>
-                                </VisualStateGroup>
-                                <VisualStateGroup x:Name="SelectionStates">
-                                    <VisualState x:Name="Unselected">
-                                        <Storyboard>
-                                            <ColorAnimation Duration="0" To="{StaticResource PhoneInactiveColor}" Storyboard.TargetProperty="(Control.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ContentContainer" d:IsOptimized="True"/>
-                                            <ColorAnimation Duration="0" To="{StaticResource PhoneInactiveColor}" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ContentContainer" d:IsOptimized="True"/>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Selected">
-                                        <Storyboard>
-                                            <ColorAnimation Duration="0" To="White" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ContentContainer" d:IsOptimized="True"/>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="SelectedUnfocused">
-                                        <Storyboard>
-                                            <ColorAnimation Duration="0" To="White" Storyboard.TargetProperty="(Control.Foreground).(SolidColorBrush.Color)" Storyboard.TargetName="ContentContainer" d:IsOptimized="True"/>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="#FF1BA1E2" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Background="Black" BorderBrush="Black"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+        </Style>
+        <Style x:Key="IndexedPathStyle" TargetType="controls:IndexedPath">
+            <Setter Property="Stretch" Value="Uniform"/>
+            <Setter Property="Width" Value="65"/>
+            <Setter Property="Height" Value="65"/>
+            <Setter Property="Margin" Value="0,0,0,0"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
         </Style>
     </phone:PhoneApplicationPage.Resources>
 
@@ -102,13 +75,13 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBoxItem>
-                <controls:PathControl Content="M2.925457,45.511272C10.741428,45.502132,18.48247,50.500496,21.411001,52.619106L20.564001,62.264 0,53.770779 2.1689987,45.528053C2.4211235,45.517071,2.6733284,45.511566,2.925457,45.511272z M43.952001,43.591896C55.724,52.525307,62.183001,53.360489,62.789,53.421089L64,61.205421 44.424,54.828056 44.396,54.156773z M40.450001,43.115406L40.919001,54.26947 40.950001,54.990753 24.056,62.232002 24.903,52.581406z M32.606,36.478134L32.606,43.690895 25.280001,48.306694 26.096001,39.011951z M59.924001,35.005447L62.139,49.239574C59.452001,49.095078 54.612,46.333439 50.368,43.548397 53.144,35.378548 59.758,35.013317 59.924001,35.005447z M16.933001,22.882633L23.807001,25.352081 23.771,25.766691 23.009001,34.433929C13.212002,29.659979,16.569,23.494579,16.933001,22.882633z M8.8899994,19.993994L13.364,21.601459C9.25,30.491262,18.677,36.603863,22.634001,38.703369L21.754,48.719387C6.2389984,39.027451,3.1920013,41.771053,3.1920013,41.771053L2.8279991,43.028809z M39.475,19.857397L40.272,38.861565 36.321,41.351074 36.242001,33.327076C35.919001,31.54977,33.817,31.872763,33.817,31.872763L26.479,34.649315 27.239,25.997887 27.308001,25.195833z M42.948,19.718L46.328,20.843176 48.265,28.147562 49.341001,32.198376 51.812,28.815638 55.427,23.871042 58.343,24.841661 59.338,31.237457C50.179,32.483341,47.031,41.246284,47.031,41.246284L47.372,41.519039C45.925,40.510029,44.669,39.595921,43.755,38.916862z M53.679668,4.3845386C51.646579,4.4165239 49.847217,5.8707604 49.457722,7.9460926 49.009715,10.31923 50.56956,12.603175 52.941967,13.049685 55.314495,13.496293 57.60103,11.937162 58.046438,9.5640144 58.494245,7.1922369 56.93172,4.9063015 54.561872,4.4602423 54.26532,4.4044247 53.970109,4.3799686 53.679668,4.3845386z M53.876964,0.00037478212C54.370403,0.0050314565 54.870273,0.05313564 55.372135,0.14771746 59.963256,1.0122223 62.984005,5.4340973 62.119318,10.023382 61.814724,11.634684 61.072536,13.050685 60.038754,14.176887L55.179538,20.820293 50.197683,27.634001 48.033721,19.474491 45.924445,11.519484C45.372331,10.095582 45.19521,8.50704 45.497207,6.8932085 46.267306,2.8053779 49.85896,-0.037543376 53.876964,0.00037478212z" />
+                <controls:IndexedPath Index="0" SelectedIndex="{Binding SelectedIndex, ElementName=ContentPivot, Mode=TwoWay}" Style="{StaticResource IndexedPathStyle}" Data="M2.925457,45.511272C10.741428,45.502132,18.48247,50.500496,21.411001,52.619106L20.564001,62.264 0,53.770779 2.1689987,45.528053C2.4211235,45.517071,2.6733284,45.511566,2.925457,45.511272z M43.952001,43.591896C55.724,52.525307,62.183001,53.360489,62.789,53.421089L64,61.205421 44.424,54.828056 44.396,54.156773z M40.450001,43.115406L40.919001,54.26947 40.950001,54.990753 24.056,62.232002 24.903,52.581406z M32.606,36.478134L32.606,43.690895 25.280001,48.306694 26.096001,39.011951z M59.924001,35.005447L62.139,49.239574C59.452001,49.095078 54.612,46.333439 50.368,43.548397 53.144,35.378548 59.758,35.013317 59.924001,35.005447z M16.933001,22.882633L23.807001,25.352081 23.771,25.766691 23.009001,34.433929C13.212002,29.659979,16.569,23.494579,16.933001,22.882633z M8.8899994,19.993994L13.364,21.601459C9.25,30.491262,18.677,36.603863,22.634001,38.703369L21.754,48.719387C6.2389984,39.027451,3.1920013,41.771053,3.1920013,41.771053L2.8279991,43.028809z M39.475,19.857397L40.272,38.861565 36.321,41.351074 36.242001,33.327076C35.919001,31.54977,33.817,31.872763,33.817,31.872763L26.479,34.649315 27.239,25.997887 27.308001,25.195833z M42.948,19.718L46.328,20.843176 48.265,28.147562 49.341001,32.198376 51.812,28.815638 55.427,23.871042 58.343,24.841661 59.338,31.237457C50.179,32.483341,47.031,41.246284,47.031,41.246284L47.372,41.519039C45.925,40.510029,44.669,39.595921,43.755,38.916862z M53.679668,4.3845386C51.646579,4.4165239 49.847217,5.8707604 49.457722,7.9460926 49.009715,10.31923 50.56956,12.603175 52.941967,13.049685 55.314495,13.496293 57.60103,11.937162 58.046438,9.5640144 58.494245,7.1922369 56.93172,4.9063015 54.561872,4.4602423 54.26532,4.4044247 53.970109,4.3799686 53.679668,4.3845386z M53.876964,0.00037478212C54.370403,0.0050314565 54.870273,0.05313564 55.372135,0.14771746 59.963256,1.0122223 62.984005,5.4340973 62.119318,10.023382 61.814724,11.634684 61.072536,13.050685 60.038754,14.176887L55.179538,20.820293 50.197683,27.634001 48.033721,19.474491 45.924445,11.519484C45.372331,10.095582 45.19521,8.50704 45.497207,6.8932085 46.267306,2.8053779 49.85896,-0.037543376 53.876964,0.00037478212z"/>
             </ListBoxItem>
             <ListBoxItem>
-                <controls:IndexedPath Index="1" SelectedIndex="{Binding SelectedIndex, ElementName=ContentPivot, Mode=TwoWay}" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z" Stretch="Uniform" Width="65" Height="65" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"/>
+                <controls:IndexedPath Index="1" SelectedIndex="{Binding SelectedIndex, ElementName=ContentPivot, Mode=TwoWay}" Style="{StaticResource IndexedPathStyle}" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z"/>
             </ListBoxItem>
             <ListBoxItem>
-                <controls:PathControl Content="M29.9314,44.295944L34.223,44.295944 34.223,48.586002 29.9314,48.586002z M29.749001,26.198L34.390999,26.198 34.390999,31.451971 33.290699,42.814522 30.8636,42.814522 29.749001,31.451971z M32,10.338882L8.2226601,54.42371 55.777302,54.42371z M32,0L48,29.665951 64,59.331001 32,59.331001 0,59.331001 16,29.665951z" />
+                <controls:IndexedPath Index="2" SelectedIndex="{Binding SelectedIndex, ElementName=ContentPivot, Mode=TwoWay}" Style="{StaticResource IndexedPathStyle}" Data="F1M874.094,289.369L854.3,254.63C854.028,254.151 853.515,253.856 852.958,253.856 852.403,253.856 851.89,254.151 851.617,254.63L831.824,289.369C831.555,289.84 831.559,290.416 831.835,290.883 832.111,291.348 832.618,291.634 833.165,291.634L872.752,291.634C873.299,291.634 873.805,291.348 874.081,290.883 874.357,290.416 874.361,289.84 874.094,289.369 M855.653,287.189L850.264,287.189 850.264,282.745 855.653,282.745 855.653,287.189z M855.653,279.41L850.264,279.41 850.264,266.077 855.653,266.077 855.653,279.41z"/>
             </ListBoxItem>
         </ListBox>
 
@@ -159,16 +132,7 @@
                                         <TextBlock Text="{Binding Name}" Margin="10,0,10,0" TextWrapping="Wrap" Foreground="Black" FontSize="40" FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
                                         <TextBlock Text="{Binding Distance}" Foreground="Black" Margin="10,0,10,0" FontFamily="{StaticResource PhoneFontFamilyLight}" FontSize="20"/>
                                     </StackPanel>
-                                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,0,30,0">
-                                        <Grid Width="60" Height="60">
-                                            <Rectangle Fill="{StaticResource TrackColorBrush}" />
-                                            <Image Source="/Assets\Images/favs.png" />
-                                        </Grid>
-                                        <Grid Width="60" Height="60" Margin="10,0,0,0">
-                                            <Rectangle Fill="{StaticResource TrackColorBrush}" />
-                                            <Image Source="/Assets\Images/list.png" />
-                                        </Grid>
-                                    </StackPanel>
+                                    <Path RenderTransformOrigin="0.5,0.5" Margin="0,0,25,0" Fill="LightGray" Stretch="Uniform" Width="40" Height="40" Grid.Column="2" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z"/>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
