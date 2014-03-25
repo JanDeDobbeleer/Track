@@ -144,17 +144,20 @@ namespace Track.ViewModel
 
         public MainpageViewModel()
         {
-            Messenger.Default.Register<NotificationMessage>(this, async (message) =>
+            Messenger.Default.Register<NotificationMessage>(this, (message) =>
             {
-                if (message.Notification.Equals("MainPageLoaded", StringComparison.OrdinalIgnoreCase))
-                    await GetCurrentPosition();
+                if (!message.Notification.Equals("MainPageLoaded", StringComparison.OrdinalIgnoreCase)) 
+                    return;
+                Task[] task = { Task.Factory.StartNew(() => GetCurrentPosition()), Task.Factory.StartNew(() => Rss.GetInstance().GetDisruptions("nl")) };
+                Task.WaitAll(task);
+                //await GetCurrentPosition();
+                //await Rss.GetInstance().GetDisruptions("nl");
             });
         }
 
         public async Task GetCurrentPosition()
         {
             Deployment.Current.Dispatcher.BeginInvoke(() => Loading = true);
-            //Deployment.Current.Dispatcher.BeginInvoke(() => Tools.Tools.SetProgressIndicator(true, AppResources.ProgressAquiringLocation));
             Geoposition geoposition = null;
 
             var geolocator = new Geolocator

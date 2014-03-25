@@ -13,18 +13,6 @@ namespace TrackApi.Api
 
     public class Client
     {
-        #region eventHandling
-        public event GetInfoFinishedEventHandler GetInfoFinished;
-
-        protected void OnGetInfoFinished(GetInfoCompletedArgs args)
-        {
-            if (GetInfoFinished != null)
-            {
-                GetInfoFinished(this, args);
-            }
-        }
-        #endregion
-
         public String Stations
         {
             get { return "/stations/?format=json"; }
@@ -46,7 +34,7 @@ namespace TrackApi.Api
         }
 
         private RestClient _restClient;
-        private string _baseUrl = "http://api.irail.be";
+        private const string _baseUrl = "http://api.irail.be";
 
         #region Constructor
         private static Client s_Instance;

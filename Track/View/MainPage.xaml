@@ -39,6 +39,14 @@
             <Setter Property="Margin" Value="0,0,0,0"/>
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
         </Style>
+        <Style x:Key="PathStyle" TargetType="Path">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="Stretch" Value="Uniform"/>
+            <Setter Property="Fill" Value="LightGray"/>
+        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -127,12 +135,14 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Orientation="Vertical">
-                                        <TextBlock Text="{Binding Name}" Margin="10,0,10,0" TextWrapping="Wrap" Foreground="Black" FontSize="40" FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
-                                        <TextBlock Text="{Binding Distance}" Foreground="Black" Margin="10,0,10,0" FontFamily="{StaticResource PhoneFontFamilyLight}" FontSize="20"/>
+                                    <StackPanel Grid.Column="0" Orientation="Vertical" Margin="10,0,0,0">
+                                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Foreground="Black" FontSize="40" FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
+                                        <TextBlock Text="{Binding Distance}" Foreground="Black" FontFamily="{StaticResource PhoneFontFamilyLight}" FontSize="20"/>
                                     </StackPanel>
-                                    <Path RenderTransformOrigin="0.5,0.5" Margin="0,0,25,0" Fill="LightGray" Stretch="Uniform" Width="40" Height="40" Grid.Column="2" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z"/>
+                                    <Path Grid.Column="2" Style="{StaticResource PathStyle}" Data="F1M582.961,492.242L557.554,517.865 557.554,467.049 582.961,467.049 582.961,492.242z"/>
+                                    <Path Grid.Column="3" Width="45" Height="45" Style="{StaticResource PathStyle}" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z"/>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

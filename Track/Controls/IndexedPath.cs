@@ -16,7 +16,7 @@ namespace Track.Controls
 
         private static void OnSelectedIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((IndexedPath)d).Fill = ((int)e.NewValue == ((IndexedPath)d).Index) ? new SolidColorBrush(Colors.White) : (SolidColorBrush)Application.Current.Resources["PhoneInactiveBrush"];
+            ((IndexedPath)d).Fill = ((int)e.NewValue == ((IndexedPath)d).Index) ? new SolidColorBrush(Colors.White) : (SolidColorBrush)Application.Current.Resources["InactiveBrush"];
         }
 
         private int _index;
@@ -26,7 +26,7 @@ namespace Track.Controls
             set
             {
                 _index = value;
-                Fill = (value == SelectedIndex) ? new SolidColorBrush(Colors.White) : (SolidColorBrush)Application.Current.Resources["PhoneInactiveBrush"];
+                Fill = (value == SelectedIndex) ? new SolidColorBrush(Colors.White) : (SolidColorBrush)Application.Current.Resources["InactiveBrush"];
             }
         }
     }

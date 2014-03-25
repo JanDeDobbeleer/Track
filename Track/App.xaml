@@ -1,14 +1,15 @@
 ﻿<Application x:Class="Track.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:model="clr-namespace:Track.ViewModel" xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone" xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:localization="clr-namespace:Localization;assembly=Localization">
-  <!--Application Resources-->
-  <Application.Resources>
+    <!--Application Resources-->
+    <Application.Resources>
         <model:ViewModelLocator x:Key="Locator" d:IsDataSource="true" />
         <localization:LocalizedStrings x:Key="LocalizedStrings" />
         <SolidColorBrush x:Key="TrackColorBrush">#00acb6</SolidColorBrush>
+        <SolidColorBrush x:Key="InactiveBrush">#33FFFFFF</SolidColorBrush>
         <Color x:Key="TrackColor">#00acb6</Color>
     </Application.Resources>
-  <Application.ApplicationLifetimeObjects>
-    <!--Required object that handles lifetime events for the application-->
-    <shell:PhoneApplicationService Launching="Application_Launching" Closing="Application_Closing" Activated="Application_Activated" Deactivated="Application_Deactivated" />
-  </Application.ApplicationLifetimeObjects>
+    <Application.ApplicationLifetimeObjects>
+        <!--Required object that handles lifetime events for the application-->
+        <shell:PhoneApplicationService Launching="Application_Launching" Closing="Application_Closing" Activated="Application_Activated" Deactivated="Application_Deactivated" />
+    </Application.ApplicationLifetimeObjects>
 </Application>
