@@ -23,7 +23,7 @@ namespace Track.Controls
             });
         }
 
-        private void AssignList(IEnumerable<Station> stations)
+        public void AssignList(IEnumerable<Station> stations)
         {
             Deployment.Current.Dispatcher.BeginInvoke(delegate
             {

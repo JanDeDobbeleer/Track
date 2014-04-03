@@ -48,7 +48,7 @@ namespace Track.ViewModel
                     return;
 
                 _currentPosition = value;
-                OnPropertyChanged(CurrentPositionPropertyName);
+                RaisePropertyChanged(CurrentPositionPropertyName);
             }
         }
 
@@ -66,7 +66,7 @@ namespace Track.ViewModel
                     return;
 
                 _selectedStation = value;
-                OnPropertyChanged(SelectedStationPropertyName);
+                RaisePropertyChanged(SelectedStationPropertyName);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Track.ViewModel
                     return;
 
                 _locationLoaded = value;
-                OnPropertyChanged(LocationLoadedPropertyName);
+                RaisePropertyChanged(LocationLoadedPropertyName);
             }
         }
 
@@ -123,7 +123,7 @@ namespace Track.ViewModel
                 }
 
                 _locations = value;
-                OnPropertyChanged(LocationsPropertyName);
+                RaisePropertyChanged(LocationsPropertyName);
             }
         }
 
@@ -144,7 +144,7 @@ namespace Track.ViewModel
                 }
 
                 _nearby = value;
-                OnPropertyChanged(NearbyPropertyName);
+                RaisePropertyChanged(NearbyPropertyName);
             }
         }
 
@@ -201,7 +201,7 @@ namespace Track.ViewModel
                     return;
 
                 _loadingDisruptions = value;
-                OnPropertyChanged(LoadingDisruptionsPropertyName);
+                OnPropertyChanged(LoadingPropertyName);
             }
         }
         #endregion
@@ -271,38 +271,45 @@ namespace Track.ViewModel
 
         private async Task GetLocations(GeoCoordinate currentPhonePosition)
         {
-            var list = await RailService.GetInstance().GetLocations(new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
-            //parallelize this for optimization
-            var tasks = Enumerable.Range(0, list.Count).Select(i =>
-              Task.Run(() =>
-              {
-                  list[i].DistanceToCurrentPhonePosition = Geocoding.CalculateDistanceFrom(currentPhonePosition, list[i].GeoCoordinate);
-              }));
-            await Task.WhenAll(tasks);
-            //send the list to the StationList control
-            Messenger.Default.Send(list);
-            //assign the visible pins on the map, limited to 10 to improve speed
-            await Task.Run(() => AssignList(Locations,list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(10).ToList()));
-            //assign the nearby list
-            await Task.Run(() => AssignList(Nearby, list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(3).ToList()));
+            try
+            {
+                var list = await RailService.GetInstance().GetLocations(new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
+                //parallelize this for optimization
+                var tasks = Enumerable.Range(0, list.Count).Select(i =>
+                    Task.Run(() =>
+                    {
+                        list[i].DistanceToCurrentPhonePosition = Geocoding.CalculateDistanceFrom(currentPhonePosition, list[i].GeoCoordinate);
+                    }));
+                await Task.WhenAll(tasks);
+                //send the list to the StationList control
+                Messenger.Default.Send(list);
+                //assign the visible pins on the map, limited to 10 to improve speed
+                await Task.Run(() => AssignList(Locations,list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(10).ToList()));
+                //assign the nearby list
+                await Task.Run(() => AssignList(Nearby, list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(3).ToList()));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         private async Task AssignList(ICollection<Station> input, IReadOnlyList<Station> stations)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            /*Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
                 foreach (var station in stations)
                 {
                     input.Add(station);
                 }
-            });
+            });*/
             //parallelize this for optimization
-            /*var tasks = Enumerable.Range(0, stations.Count).Select(i =>
+            var tasks = Enumerable.Range(0, stations.Count).Select(i =>
               Task.Run(() =>
               {
                   Deployment.Current.Dispatcher.BeginInvoke(() => input.Add(stations[i]));
               }));
-            await Task.WhenAll(tasks);*/
+            await Task.WhenAll(tasks);
         }
 
         private void HandleReverseGeoCodeQuery()

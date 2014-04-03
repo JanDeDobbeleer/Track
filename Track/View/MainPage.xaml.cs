@@ -43,7 +43,7 @@ namespace Track.View
             geoCoordinates.Add(ServiceLocator.Current.GetInstance<MainpageViewModel>().CurrentPosition);
             var locationRectangle = LocationRectangle.CreateBoundingRectangle(geoCoordinates);
             
-            //Map.SetView(locationRectangle);
+            Map.SetView(locationRectangle);
         }
 
         private void Map_OnLoaded(object sender, RoutedEventArgs e)
