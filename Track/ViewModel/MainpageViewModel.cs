@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Device.Location;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Windows.Devices.Geolocation;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Localization.Resources;
 using Microsoft.Phone.Maps.Services;
@@ -24,6 +26,11 @@ namespace Track.ViewModel
 {
     public class MainpageViewModel : ViewModelBase, INotifyPropertyChanged
     {
+        #region commands
+        public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand DirectionsCommand { get; private set; }
+        #endregion
+
         #region properties
         private ReverseGeocodeQuery _reverseGeocodeQuery = null;
 
@@ -42,6 +49,24 @@ namespace Track.ViewModel
 
                 _currentPosition = value;
                 OnPropertyChanged(CurrentPositionPropertyName);
+            }
+        }
+
+        public const string SelectedStationPropertyName = "SelectedStation";
+        private Station _selectedStation = new Station();
+        public Station SelectedStation
+        {
+            get
+            {
+                return _selectedStation;
+            }
+            private set
+            {
+                if (_selectedStation == value)
+                    return;
+
+                _selectedStation = value;
+                OnPropertyChanged(SelectedStationPropertyName);
             }
         }
 
@@ -123,41 +148,101 @@ namespace Track.ViewModel
             }
         }
 
-        public const string LoadingPropertyName = "Loading";
-        private bool _loading = false;
-        public bool Loading
+        public const string DisruptionsPropertyName = "Disruptions";
+        private ObservableCollection<Disruption> _disruptions = new ObservableCollection<Disruption>();
+        public ObservableCollection<Disruption> Disruptions
         {
             get
             {
-                return _loading;
+                return _disruptions;
+            }
+
+            set
+            {
+                if (_disruptions == value)
+                {
+                    return;
+                }
+
+                _disruptions = value;
+                OnPropertyChanged(DisruptionsPropertyName);
+            }
+        }
+
+        public const string LoadingPropertyName = "LoadingLocations";
+        private bool _loadingLocations = false;
+        public bool LoadingLocations
+        {
+            get
+            {
+                return _loadingLocations;
             }
             private set
             {
-                if (_loading == value)
+                if (_loadingLocations == value)
                     return;
 
-                _loading = value;
+                _loadingLocations = value;
                 OnPropertyChanged(LoadingPropertyName);
+            }
+        }
+
+        public const string LoadingDisruptionsPropertyName = "LoadingDisruptions";
+        private bool _loadingDisruptions = false;
+        public bool LoadingDisruptions
+        {
+            get
+            {
+                return _loadingDisruptions;
+            }
+            private set
+            {
+                if (_loadingDisruptions == value)
+                    return;
+
+                _loadingDisruptions = value;
+                OnPropertyChanged(LoadingDisruptionsPropertyName);
             }
         }
         #endregion
 
         public MainpageViewModel()
         {
-            Messenger.Default.Register<NotificationMessage>(this, (message) =>
+            Messenger.Default.Register<NotificationMessage>(this, async (message) =>
             {
                 if (!message.Notification.Equals("MainPageLoaded", StringComparison.OrdinalIgnoreCase)) 
                     return;
-                Task[] task = { Task.Factory.StartNew(() => GetCurrentPosition()), Task.Factory.StartNew(() => Rss.GetInstance().GetDisruptions("nl")) };
-                Task.WaitAll(task);
-                //await GetCurrentPosition();
-                //await Rss.GetInstance().GetDisruptions("nl");
+                Task.WaitAll(Task.Factory.StartNew(() => GetDisruptions()));
+                await GetCurrentPosition();
+            });
+            //set commands to work
+            DirectionsCommand = new RelayCommand(async () =>
+            {
+                Uri uri = new Uri(string.Format("ms-drive-to:?destination.latitude={0}&destination.longitude={1}&destination.name={2}", SelectedStation.GeoCoordinate.Latitude.ToString(new CultureInfo("en-US")), SelectedStation.GeoCoordinate.Longitude.ToString(new CultureInfo("en-US")), SelectedStation.Name));
+                await Windows.System.Launcher.LaunchUriAsync(uri);
+            });
+            RefreshCommand = new RelayCommand(async () =>
+            {
+                await GetCurrentPosition();
             });
         }
 
-        public async Task GetCurrentPosition()
+        private async Task GetDisruptions()
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => Loading = true);
+            Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDisruptions = true);
+            var list = await Rss.GetInstance().GetDisruptions(AppResources.ClientLang);
+            var tasks = Enumerable.Range(0, list.Disruptions.Count).Select(i =>
+              Task.Run(() =>
+              {
+                  Deployment.Current.Dispatcher.BeginInvoke(() => Disruptions.Add(list.Disruptions[i]));
+              }));
+            await Task.WhenAll(tasks);
+            Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDisruptions = false);
+        }
+
+        private async Task GetCurrentPosition()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() => LoadingLocations = true);
             Geoposition geoposition = null;
 
             var geolocator = new Geolocator
@@ -181,7 +266,7 @@ namespace Track.ViewModel
             await Task.Run(() => GetLocations(CurrentPosition));
             Deployment.Current.Dispatcher.BeginInvoke(() => { LocationLoaded = true; });
             Messenger.Default.Send(new NotificationMessage("StationsLoaded"));
-            Deployment.Current.Dispatcher.BeginInvoke(() => Loading = false);
+            Deployment.Current.Dispatcher.BeginInvoke(() => LoadingLocations = false);
         }
 
         private async Task GetLocations(GeoCoordinate currentPhonePosition)
@@ -204,13 +289,20 @@ namespace Track.ViewModel
 
         private async Task AssignList(ICollection<Station> input, IReadOnlyList<Station> stations)
         {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                foreach (var station in stations)
+                {
+                    input.Add(station);
+                }
+            });
             //parallelize this for optimization
-            var tasks = Enumerable.Range(0, stations.Count).Select(i =>
+            /*var tasks = Enumerable.Range(0, stations.Count).Select(i =>
               Task.Run(() =>
               {
                   Deployment.Current.Dispatcher.BeginInvoke(() => input.Add(stations[i]));
               }));
-            await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks);*/
         }
 
         private void HandleReverseGeoCodeQuery()

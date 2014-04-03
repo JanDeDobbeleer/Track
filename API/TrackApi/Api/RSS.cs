@@ -1,15 +1,15 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using PortableRest;
+using System.Xml.Linq;
+using TrackApi.Classes;
 
 namespace TrackApi.Api
 {
     public class Rss
     {
-        private RestClient _restClient;
-        private const string _baseUrl = "http://www.railtime.be/website/RSS/";
+        private const string BaseUrl = "http://www.railtime.be/website/RSS/";
 
         public String Disruptions
         {
@@ -17,43 +17,54 @@ namespace TrackApi.Api
         }
 
         #region Constructor
-        private static Rss s_Instance;
-        private static object s_InstanceSync = new object();
+        private static Rss _sInstance;
+        private static readonly object SInstanceSync = new object();
 
         protected Rss()
         {
-            _restClient = new RestClient
-            {
-                BaseUrl = _baseUrl
-            };
+            
         }
 
         public static Rss GetInstance()
         {
             // This implementation of the singleton design pattern prevents 
             // unnecessary locks (using the double if-test)
-            if (s_Instance == null)
+            if (_sInstance != null) 
+                return _sInstance;
+            lock (SInstanceSync)
             {
-                lock (s_InstanceSync)
+                if (_sInstance == null)
                 {
-                    if (s_Instance == null)
-                    {
-                        s_Instance = new Rss();
-                    }
+                    _sInstance = new Rss();
                 }
             }
-            return s_Instance;
+            return _sInstance;
         }
         #endregion
 
-        public async Task<string> GetDisruptions(string language)
+        public async Task<DisruptionRootObject> GetDisruptions(string language)
         {
-            string ro = string.Empty;
+            var ro = new DisruptionRootObject();
             try
             {
-                var wc = new HttpClient {BaseAddress = new Uri(_baseUrl)};
-                var message = await wc.GetAsync(string.Format(Disruptions, language));
-                ro = await message.Content.ReadAsStringAsync();
+                string temp;
+                using (var wc = new HttpClient { BaseAddress = new Uri(BaseUrl) })
+                {
+                    var message = await wc.GetAsync(string.Format(Disruptions, language));
+                    temp = await message.Content.ReadAsStringAsync();
+                }
+                var xml = XDocument.Parse(temp, LoadOptions.None);
+                foreach (var item in xml.Descendants("item"))
+                {
+                    var d = new Disruption();
+                    d.Decription = item.Element("description").Value.Trim();
+                    d.Timestamp = DateTime.Parse(item.Element("pubDate").Value);
+                    d.Title = item.Element("title").Value.Trim();
+                    d.Link = item.Element("link").Value.Trim();
+                }
+                //TODO: remove this after debugging
+                if (ro.Disruptions.Count == 0)
+                    ro.Disruptions = TestData();
                 //TODO: add lovely to object here
             }
             catch (HttpRequestException re)
@@ -66,5 +77,32 @@ namespace TrackApi.Api
             }
             return ro;
         }
+
+        private List<Disruption> TestData()
+        {
+            var list = new List<Disruption>();
+            var d1 = new Disruption
+            {
+                Decription =
+                    "11:40 (26/03/2014) Er is een wissel defect ter hoogte van station Nossegem. Hierdoor duurt de reistijd 5 tot 10 minuten langer.   "
+                        .Trim(),
+                Timestamp = DateTime.Parse("Wed, 26 Mar 2014 10:45:00 GMT"),
+                Link = "http://www.railtime.be/website/Pages/InfobarList.aspx?l=NL".Trim(),
+                Title = "Lijn 36 : Brussel-Zuid - Luik-Guillemins Vertraagd verkeer. "
+            };
+            var d2 = new Disruption
+            {
+                Decription =
+                    "12:10 (26/03/2014) Er is een storing aan de seininrichting tussen station Edingen en station Aat. Verstoord verkeer.   "
+                        .Trim(),
+                Timestamp = DateTime.Parse("Wed, 26 Mar 2014 11:13:00 GMT"),
+                Link = "http://www.railtime.be/website/Pages/InfobarList.aspx?l=NL".Trim(),
+                Title = "Lijn 94 : Brussel-Zuid - Doornik Verstoord verkeer. "
+            };
+            list.Add(d1);
+            list.Add(d2);
+            return list;
+        }
+
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Device.Location;
+using System.Linq;
+using Microsoft.Phone.Maps.Controls;
 
 namespace Track.Common
 {
@@ -85,6 +88,23 @@ namespace Track.Common
                 Latitude = cord.Latitude + (offset/(double) 6378137)*180/Math.PI
             };
             return temp;
+        }
+
+        public static GeoCoordinate OffsetCoordinate(this GeoCoordinate cord, double offset)
+        {
+            var temp = new GeoCoordinate
+            {
+                Longitude = cord.Longitude,
+                Latitude = cord.Latitude + (offset)
+            };
+            return temp;
+        }
+
+        public static LocationRectangle OffSetRectangle(this LocationRectangle rect, List<GeoCoordinate> coordinates)
+        {
+            var list = coordinates.OrderByDescending(x => x.Latitude);
+            coordinates.OrderByDescending(x => x.Latitude).ElementAt(0).OffsetCoordinate(rect.HeightInDegrees);
+            return LocationRectangle.CreateBoundingRectangle(coordinates);
         }
     }
 }

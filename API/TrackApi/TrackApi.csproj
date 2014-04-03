@@ -88,6 +88,8 @@
     <Compile Include="Api\Arguments.cs" />
     <Compile Include="Api\Client.cs" />
     <Compile Include="Api\Rss.cs" />
+    <Compile Include="Classes\Disruption.cs" />
+    <Compile Include="Classes\DisruptionRootObject.cs" />
     <Compile Include="Classes\Station.cs" />
     <Compile Include="Classes\StationRootObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

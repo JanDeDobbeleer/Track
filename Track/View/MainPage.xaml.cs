@@ -28,23 +28,22 @@ namespace Track.View
 
         private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
-            //SystemTray.ProgressIndicator = new ProgressIndicator();
             Messenger.Default.Send(new NotificationMessage("MainPageLoaded"));
             Loaded -= OnPageLoaded;
         }
 
         private void AdjustMapView()
         {
-            //Rectangle around the 2 most nearby
+            //Rectangle around the 3 most nearby
             var nearbyLocations = ServiceLocator.Current.GetInstance<MainpageViewModel>().Nearby;
-
+            //calculate offset for displaying the 3 loctions properly
             //Add the current phone position to be sure it's also visible when changing the view zoom level
-            var geoCoordinates = (from station in nearbyLocations select station.GeoCoordinate.OffsetCoordinate(500)).ToList();
+            var geoCoordinates = (from station in nearbyLocations select station.GeoCoordinate.OffsetCoordinate(1000)).ToList();
             //TODO: check for null?
             geoCoordinates.Add(ServiceLocator.Current.GetInstance<MainpageViewModel>().CurrentPosition);
             var locationRectangle = LocationRectangle.CreateBoundingRectangle(geoCoordinates);
-            Map.SetView(locationRectangle);
-            //Tools.Tools.SetProgressIndicator(false);
+            
+            //Map.SetView(locationRectangle);
         }
 
         private void Map_OnLoaded(object sender, RoutedEventArgs e)

@@ -44,15 +44,18 @@ namespace Track.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainpageViewModel>();
+            SimpleIoc.Default.Register<StationDetailsViewModel>();
             SimpleIoc.Default.Register<IAsyncStorageService, AsyncStorageService>();
         }
 
         public MainpageViewModel Main
         {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainpageViewModel>();
-            }
+            get { return ServiceLocator.Current.GetInstance<MainpageViewModel>(); }
+        }
+
+        public StationDetailsViewModel StationDetails
+        {
+            get { return ServiceLocator.Current.GetInstance<StationDetailsViewModel>(); }
         }
         
         public static void Cleanup()
