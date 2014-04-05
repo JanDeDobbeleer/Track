@@ -4,10 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Device.Location;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Windows.Devices.Geolocation;
@@ -69,24 +67,6 @@ namespace Track.ViewModel
 
                 _locationLoaded = value;
                 OnPropertyChanged(LocationLoadedPropertyName);
-            }
-        }
-
-        public const string CurrentPositionAsTextPropertyName = "CurrentPositionAsText";
-        private string _currentPositionAsText;
-        public string CurrentPositionAsText
-        {
-            get
-            {
-                return _currentPositionAsText;
-            }
-            private set
-            {
-                if (_currentPositionAsText == value)
-                    return;
-
-                _currentPositionAsText = value;
-                RaisePropertyChanged(CurrentPositionAsTextPropertyName);
             }
         }
 
@@ -185,7 +165,7 @@ namespace Track.ViewModel
                     return;
 
                 _loadingDisruptions = value;
-                OnPropertyChanged(LoadingPropertyName);
+                OnPropertyChanged(LoadingDisruptionsPropertyName);
             }
         }
         #endregion
@@ -227,7 +207,12 @@ namespace Track.ViewModel
             RefreshCommand = new RelayCommand(async () =>
             {
                 Deployment.Current.Dispatcher.BeginInvoke(Locations.Clear);
+                Deployment.Current.Dispatcher.BeginInvoke(()=> { CurrentPosition = new GeoCoordinate(); });
+                Deployment.Current.Dispatcher.BeginInvoke(()=> { LocationLoaded = false; });
+                Deployment.Current.Dispatcher.BeginInvoke(()=> { LoadingDisruptions = false; });
+                Deployment.Current.Dispatcher.BeginInvoke(Disruptions.Clear);
                 Deployment.Current.Dispatcher.BeginInvoke(Nearby.Clear);
+                Task.WaitAll(Task.Factory.StartNew(() => GetDisruptions()));
                 await GetCurrentPosition();
             });
         }
