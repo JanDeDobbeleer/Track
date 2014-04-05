@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>HereLaunchers</id>
+    <version>1.2</version>
+    <authors>Lawrence Gripper</authors>
+    <owners>Lawrence Gripper</owners>
+    <licenseUrl>http://developer.nokia.com/Resources/Library/Lumia/#!maps-and-navigation/here-launchers.html;#toc_Termsandconditions</licenseUrl>
+    <projectUrl>http://developer.nokia.com/Resources/Library/Lumia/#!maps-and-navigation/here-launchers.html</projectUrl>
+    <iconUrl>http://bing.com/</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Instlls the Here Launchers to your windows phone 8 project</description>
+    <tags>WP8 WinPhone Here maps here launchers</tags>
+  </metadata>
+</package>
