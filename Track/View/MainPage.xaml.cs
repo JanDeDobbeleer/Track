@@ -34,15 +34,12 @@ namespace Track.View
 
         private void AdjustMapView()
         {
-            //Rectangle around the 3 most nearby
-            var nearbyLocations = ServiceLocator.Current.GetInstance<MainpageViewModel>().Nearby;
-            //calculate offset for displaying the 3 loctions properly
+            //Rectangle around the 6 most nearby
+            var nearbyLocations = ServiceLocator.Current.GetInstance<MainpageViewModel>().Locations.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(5).ToList();
+            var geoCoordinates = (from station in nearbyLocations select station.GeoCoordinate).ToList();
             //Add the current phone position to be sure it's also visible when changing the view zoom level
-            var geoCoordinates = (from station in nearbyLocations select station.GeoCoordinate.OffsetCoordinate(1000)).ToList();
-            //TODO: check for null?
             geoCoordinates.Add(ServiceLocator.Current.GetInstance<MainpageViewModel>().CurrentPosition);
             var locationRectangle = LocationRectangle.CreateBoundingRectangle(geoCoordinates);
-            
             Map.SetView(locationRectangle);
         }
 

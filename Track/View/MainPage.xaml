@@ -24,6 +24,32 @@
     shell:SystemTray.Opacity="0">
 
     <phone:PhoneApplicationPage.Resources>
+        <ControlTemplate x:Key="PushPinTemplate" TargetType="toolkit:Pushpin">
+            <Grid Height="50" Width="50" RenderTransformOrigin="0.5,0.5" Margin="-30,0,0,0">
+                <Grid.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </Grid.RenderTransform>
+                <Path Data="F1M530.476,-557.154L530.476,-554.325C530.286,-553.798 530.45,-553.069 530.217,-552.517 529.155,-543.24 521.215,-534.812 512.004,-533.189 511.07,-532.821 509.963,-532.83 508.997,-532.673L505.477,-532.673C504.515,-532.83 503.411,-532.821 502.469,-533.189 492.538,-534.899 484.454,-544.468 484.001,-554.408L484.001,-557.328C484.314,-559.271 484.713,-561.287 485.482,-563.142 486.26,-564.641 487.059,-566.125 487.977,-567.525L490.891,-571.479C497.425,-579.243,503.15,-587.586,507.452,-596.672L508.635,-594.163C512.195,-585.499 517.807,-577.83 523.93,-570.618 524.594,-569.649 525.303,-568.702 526.077,-567.784 527.23,-566.013 528.352,-564.228 529.257,-562.288 529.876,-560.647 530.26,-558.877 530.476,-557.154z" Stretch="Uniform" Fill="White" Width="50" Height="50" Margin="0" RenderTransformOrigin="0.5,0.6" Stroke="{StaticResource TrackColorBrush}" StrokeThickness="2"/>
+                <Path Data="M6.9173141,41.870999L3.9739652,44.814 27.159739,44.814 24.217059,41.870999z M9.7486491,39.039998L8.2504706,40.537999 22.884203,40.537999 21.386366,39.039998z M24.845999,27.029853C23.127301,27.029853 21.734,28.423223 21.734,30.140487 21.734,31.857951 23.127301,33.251222 24.845999,33.251222 26.563401,33.251222 27.956601,31.857951 27.956601,30.140487 27.956601,28.423223 26.563401,27.029853 24.845999,27.029853z M6.0165715,27.029853C4.2977004,27.029853 2.9046304,28.423223 2.9046304,30.140487 2.9046304,31.857951 4.2977004,33.251222 6.0165715,33.251222 7.7353206,33.251222 9.1285105,31.857951 9.128511,30.140487 9.1285105,28.423223 7.7353206,27.029853 6.0165715,27.029853z M16.539999,12.638255L16.539999,22.214854 27.8473,22.214854 27.8473,12.638255z M3.2300707,12.638255L3.2300707,22.214854 14.5374,22.214854 14.5374,12.638255z M1.3890004,5.7659994L5.2847605,5.7659994 25.5752,5.7659994 29.470999,5.7659994 29.470999,9.6630177 29.470999,35.144382 29.470999,39.039998 25.5752,39.039998 23.271603,39.039998 31.456999,47.226197 30.514372,48.169 28.389,46.043397 28.389,46.147 2.7980001,46.147 2.7980001,45.989827 0.94260952,47.844998 0,46.902181 6.2600007,40.642877 6.2600007,40.537999 6.3648891,40.537999 7.8630571,39.039998 5.2847605,39.039998 1.3890004,39.039998 1.3890004,35.144382 1.3890004,9.6630177z M18.33335,0C19.751223,0 20.901,1.1496997 20.901,2.5676448 20.901,3.98431 19.751223,5.1339998 18.33335,5.1340001 16.916678,5.1339998 15.767001,3.98431 15.767001,2.5676448 15.767001,1.1496997 16.916678,0 18.33335,0z M12.924401,0C14.342301,0 15.492,1.1496997 15.492,2.5676448 15.492,3.98431 14.342301,5.1339998 12.924401,5.1340001 11.5076,5.1339998 10.358,3.98431 10.358,2.5676448 10.358,1.1496997 11.5076,0 12.924401,0z" Stretch="Uniform" Fill="Black" Width="25" Height="25" Margin="0,0,0,0" RenderTransformOrigin="0.324,0.65">
+                    <Path.RenderTransform>
+                        <CompositeTransform Rotation="180"/>
+                    </Path.RenderTransform>
+                </Path>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="MyLocationTemplate" TargetType="toolkit:UserLocationMarker">
+            <Grid Height="50" Width="50" RenderTransformOrigin="0.5,0.5" Margin="-30,0,0,0">
+                <Grid.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </Grid.RenderTransform>
+                <Path Data="F1M530.476,-557.154L530.476,-554.325C530.286,-553.798 530.45,-553.069 530.217,-552.517 529.155,-543.24 521.215,-534.812 512.004,-533.189 511.07,-532.821 509.963,-532.83 508.997,-532.673L505.477,-532.673C504.515,-532.83 503.411,-532.821 502.469,-533.189 492.538,-534.899 484.454,-544.468 484.001,-554.408L484.001,-557.328C484.314,-559.271 484.713,-561.287 485.482,-563.142 486.26,-564.641 487.059,-566.125 487.977,-567.525L490.891,-571.479C497.425,-579.243,503.15,-587.586,507.452,-596.672L508.635,-594.163C512.195,-585.499 517.807,-577.83 523.93,-570.618 524.594,-569.649 525.303,-568.702 526.077,-567.784 527.23,-566.013 528.352,-564.228 529.257,-562.288 529.876,-560.647 530.26,-558.877 530.476,-557.154z" Stretch="Uniform" Fill="White" Width="50" Height="50" Margin="0" RenderTransformOrigin="0.5,0.6" Stroke="{StaticResource TrackColorBrush}" StrokeThickness="2"/>
+                <Path Data="M13.534166,6.1154052C14.514049,6.1440173 16.904682,7.6780081 17.309616,8.0822682 17.731413,8.5068288 19.91239,14.90205 20.191086,15.113551 20.473583,15.324551 26.942316,17.784155 26.942316,17.784155 26.942316,17.784155 27.856306,18.695658 27.573811,19.892859 27.289911,21.087461 25.322533,20.805662 25.322533,20.805662 25.322533,20.805662 18.295206,18.346656 17.731413,17.925356 17.170218,17.504155 16.609024,16.590153 16.609024,16.590153L14.007552,23.056265C14.007552,23.056265 18.576504,28.747675 18.787401,29.592077 18.998299,30.436378 19.629892,40.769297 19.629892,40.769297 19.629892,40.769297 19.420195,42.666998 17.383816,42.666998 15.342137,42.666998 15.20284,40.487295 15.20284,40.487295 15.20284,40.487295 14.357748,31.56078 14.288749,30.997078 14.218449,30.436378 10.704186,26.921471 10.704186,26.921471L4.1690846,41.260695C4.1690846,41.260695 2.900848,42.877901 1.213366,42.1742 -0.47149656,41.4737 0.089715579,39.431894 0.089715318,39.431894L7.6807581,22.424164C7.6807581,22.424164 6.9086161,21.299061 6.8370166,20.876562 6.7667075,20.455359 6.6976781,19.610959 6.6976781,18.977457 6.6976781,18.346656 8.8057461,11.808244 8.8057461,11.808244 8.8057461,11.808244 6.8370166,12.019745 6.6273089,12.511246 6.4138709,13.005447 5.3605323,19.188457 5.3605323,19.188457 5.3605323,19.188457 4.7992583,20.59736 3.5336514,20.38576 2.2706645,20.172159 1.9867875,18.766558 1.9867873,18.766558 1.9867875,18.766558 3.1144057,10.261941 3.7420195,9.5601213 4.3773323,8.8563795 12.529667,6.1870647 13.443857,6.1174245 13.472416,6.115126 13.502558,6.1144825 13.534166,6.1154052z M18.0515,0C19.852135,0 21.313,1.4642191 21.313,3.2677498 21.313,5.0744507 19.852135,6.538 18.0515,6.538 16.241865,6.538 14.781,5.0744507 14.781,3.2677498 14.781,1.4642191 16.241865,0 18.0515,0z" Stretch="Uniform" Fill="Black" Width="25" Height="25" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <CompositeTransform Rotation="180" TranslateX="-10" TranslateY="7"/>
+                    </Path.RenderTransform>
+                </Path>
+            </Grid>
+        </ControlTemplate>
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style x:Key="ListBoxItemStyle" TargetType="ListBoxItem">
             <Setter Property="Background" Value="Transparent"/>
@@ -61,7 +87,7 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Margin="0,35,0,0">
         <i:Interaction.Behaviors>
-            <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}">
+            <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}" ForegroundColor="White">
                 <behaviors:ApplicationBarIconButton IsVisible="True"
                                                     IconUri="/Assets/AppBar/refresh.png"
                                                     Text="refresh"
@@ -117,11 +143,11 @@
                             <toolkit:MapItemsControl x:Name="LocationsMapItemsControl">
                                 <toolkit:MapItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <toolkit:Pushpin GeoCoordinate="{Binding GeoCoordinate}" Visibility="Visible" Content="{Binding Name}" Tap="Pushpin_Tap"/>
+                                        <toolkit:Pushpin GeoCoordinate="{Binding GeoCoordinate}" Template="{StaticResource PushPinTemplate}" Visibility="Visible" Tap="Pushpin_Tap"/>
                                     </DataTemplate>
                                 </toolkit:MapItemsControl.ItemTemplate>
                             </toolkit:MapItemsControl>
-                            <toolkit:UserLocationMarker x:Name="UserLocationMarker" GeoCoordinate="{Binding CurrentPosition}" Visibility="{Binding LocationLoaded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <toolkit:UserLocationMarker x:Name="UserLocationMarker" Template="{StaticResource MyLocationTemplate}" GeoCoordinate="{Binding CurrentPosition}" Visibility="{Binding LocationLoaded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </toolkit:MapExtensions.Children>
                     </maps:Map>
                     <Rectangle Grid.Row="1" Margin="0,-20,0,0" Fill="{StaticResource TrackColorBrush}" Width="{Binding Width, ElementName=LayoutRoot}" Height="3"/>
@@ -148,7 +174,7 @@
                                     <Path Grid.Column="2" Style="{StaticResource PathStyle}" Data="F1M582.961,492.242L557.554,517.865 557.554,467.049 582.961,467.049 582.961,492.242z">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Tap">
-                                                <command:EventToCommand Command="{Binding Main.DirectionsCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding Mode=OneWay}" />
+                                                <command:EventToCommand Command="{Binding Main.DirectionsCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Path>

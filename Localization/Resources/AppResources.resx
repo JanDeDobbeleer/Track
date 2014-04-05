@@ -158,4 +158,7 @@
   <data name="Loading" xml:space="preserve">
     <value>loading</value>
   </data>
+  <data name="NavigationStation" xml:space="preserve">
+    <value>{0} station</value>
+  </data>
 </root>

@@ -16,11 +16,13 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Localization.Resources;
 using Microsoft.Phone.Maps.Services;
+using Microsoft.Phone.Tasks;
 using Track.Annotations;
 using Track.Api;
 using Track.Common;
 using TrackApi.Api;
 using TrackApi.Classes;
+using Nokia.Phone.HereLaunchers;
 
 namespace Track.ViewModel
 {
@@ -28,7 +30,7 @@ namespace Track.ViewModel
     {
         #region commands
         public RelayCommand RefreshCommand { get; private set; }
-        public RelayCommand DirectionsCommand { get; private set; }
+        public RelayCommand<Station> DirectionsCommand { get; private set; }
         #endregion
 
         #region properties
@@ -48,25 +50,7 @@ namespace Track.ViewModel
                     return;
 
                 _currentPosition = value;
-                RaisePropertyChanged(CurrentPositionPropertyName);
-            }
-        }
-
-        public const string SelectedStationPropertyName = "SelectedStation";
-        private Station _selectedStation = new Station();
-        public Station SelectedStation
-        {
-            get
-            {
-                return _selectedStation;
-            }
-            private set
-            {
-                if (_selectedStation == value)
-                    return;
-
-                _selectedStation = value;
-                RaisePropertyChanged(SelectedStationPropertyName);
+                OnPropertyChanged(CurrentPositionPropertyName);
             }
         }
 
@@ -84,7 +68,7 @@ namespace Track.ViewModel
                     return;
 
                 _locationLoaded = value;
-                RaisePropertyChanged(LocationLoadedPropertyName);
+                OnPropertyChanged(LocationLoadedPropertyName);
             }
         }
 
@@ -216,13 +200,34 @@ namespace Track.ViewModel
                 await GetCurrentPosition();
             });
             //set commands to work
-            DirectionsCommand = new RelayCommand(async () =>
+            DirectionsCommand = new RelayCommand<Station>((station) =>
             {
-                Uri uri = new Uri(string.Format("ms-drive-to:?destination.latitude={0}&destination.longitude={1}&destination.name={2}", SelectedStation.GeoCoordinate.Latitude.ToString(new CultureInfo("en-US")), SelectedStation.GeoCoordinate.Longitude.ToString(new CultureInfo("en-US")), SelectedStation.Name));
-                await Windows.System.Launcher.LaunchUriAsync(uri);
+                var manufacturer= string.Empty;
+                object temp;
+                if (Microsoft.Phone.Info.DeviceExtendedProperties.TryGetValue("DeviceManufacturer", out temp))
+                    manufacturer = temp.ToString();
+                if (manufacturer.Equals("NOKIA"))
+                {
+                    var routeTo = new DirectionsRouteDestinationTask
+                    {
+                        Destination = station.GeoCoordinate,
+                        Mode = RouteMode.Unknown
+                    };
+                    routeTo.Show();
+                }
+                else
+                {
+                    var bingMapsDirectionsTask = new BingMapsDirectionsTask();
+                    var mapLocation = new LabeledMapLocation(string.Format(AppResources.NavigationStation, station.Name), station.GeoCoordinate);
+                    bingMapsDirectionsTask.End = mapLocation;
+                    // If bingMapsDirectionsTask.Start is not set, the user's current location is used as the start point.
+                    bingMapsDirectionsTask.Show();
+                }
             });
             RefreshCommand = new RelayCommand(async () =>
             {
+                Deployment.Current.Dispatcher.BeginInvoke(Locations.Clear);
+                Deployment.Current.Dispatcher.BeginInvoke(Nearby.Clear);
                 await GetCurrentPosition();
             });
         }
@@ -261,8 +266,6 @@ namespace Track.ViewModel
 #endif
             }
             CurrentPosition = geoposition.Coordinate.ToGeoCoordinate();
-            //TODO: check if you need this, if not needed anywhere by release, remove it
-            //HandleReverseGeoCodeQuery();
             await Task.Run(() => GetLocations(CurrentPosition));
             Deployment.Current.Dispatcher.BeginInvoke(() => { LocationLoaded = true; });
             Messenger.Default.Send(new NotificationMessage("StationsLoaded"));
@@ -284,64 +287,28 @@ namespace Track.ViewModel
                 //send the list to the StationList control
                 Messenger.Default.Send(list);
                 //assign the visible pins on the map, limited to 10 to improve speed
-                await Task.Run(() => AssignList(Locations,list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(10).ToList()));
+                AssignList(Locations,list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(10).ToList());
                 //assign the nearby list
-                await Task.Run(() => AssignList(Nearby, list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(3).ToList()));
+                AssignList(Nearby, list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(3).ToList());
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                //TODO: Handle exception!
+#if(DEBUG)
+                Debug.WriteLine("MainViewmodel - GetLocation: " + e.Message);
+#endif
             }
         }
 
-        private async Task AssignList(ICollection<Station> input, IReadOnlyList<Station> stations)
+        private void AssignList(ICollection<Station> input, IEnumerable<Station> stations)
         {
-            /*Deployment.Current.Dispatcher.BeginInvoke(() =>
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
                 foreach (var station in stations)
                 {
                     input.Add(station);
                 }
-            });*/
-            //parallelize this for optimization
-            var tasks = Enumerable.Range(0, stations.Count).Select(i =>
-              Task.Run(() =>
-              {
-                  Deployment.Current.Dispatcher.BeginInvoke(() => input.Add(stations[i]));
-              }));
-            await Task.WhenAll(tasks);
-        }
-
-        private void HandleReverseGeoCodeQuery()
-        {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                if (ReferenceEquals(_reverseGeocodeQuery, null) || !_reverseGeocodeQuery.IsBusy)
-                {
-                    _reverseGeocodeQuery = new ReverseGeocodeQuery();
-                    _reverseGeocodeQuery.GeoCoordinate = CurrentPosition;
-                    _reverseGeocodeQuery.QueryCompleted += ReverseGeocodeQuery_QueryCompleted;
-                    _reverseGeocodeQuery.QueryAsync();
-                }
             });
-        }
-
-        private void ReverseGeocodeQuery_QueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e)
-        {
-            if (e.Error == null)
-            {
-                if (e.Result.Count > 0)
-                {
-                    MapAddress address = e.Result[0].Information.Address;
-                    StringBuilder addressDisplay = new StringBuilder();
-                    addressDisplay.Append(address.Street);
-                    addressDisplay.Append(string.IsNullOrEmpty(address.HouseNumber) ? string.Empty : string.Concat(" ", address.HouseNumber));
-                    addressDisplay.Append(string.IsNullOrEmpty(address.PostalCode) ? string.Empty : string.Concat(", ", address.PostalCode));
-                    addressDisplay.Append(string.IsNullOrEmpty(address.City) ? string.Empty : string.Concat(" ", address.City));
-                    addressDisplay.Append(string.IsNullOrEmpty(address.Country) ? string.Empty : string.Concat(", ", address.Country));
-                    CurrentPositionAsText = addressDisplay.ToString();
-                }
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

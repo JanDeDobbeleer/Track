@@ -142,6 +142,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} station.
+        /// </summary>
+        public static string NavigationStation {
+            get {
+                return ResourceManager.GetString("NavigationStation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to getting location.
         /// </summary>
         public static string ProgressAquiringLocation {
