@@ -9,10 +9,12 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using Windows.Devices.Geolocation;
+using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Localization.Resources;
+using Microsoft.Phone.Info;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Tasks;
 using Track.Annotations;
@@ -32,7 +34,7 @@ namespace Track.ViewModel
         #endregion
 
         #region properties
-        private ReverseGeocodeQuery _reverseGeocodeQuery = null;
+        private INavigationService _navigationService;
 
         public const string CurrentPositionPropertyName = "CurrentPosition";
         private GeoCoordinate _currentPosition;
@@ -170,8 +172,9 @@ namespace Track.ViewModel
         }
         #endregion
 
-        public MainpageViewModel()
+        public MainpageViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService;
             Messenger.Default.Register<NotificationMessage>(this, async (message) =>
             {
                 if (!message.Notification.Equals("MainPageLoaded", StringComparison.OrdinalIgnoreCase)) 
@@ -182,38 +185,70 @@ namespace Track.ViewModel
             //set commands to work
             DirectionsCommand = new RelayCommand<Station>((station) =>
             {
-                var manufacturer= string.Empty;
-                object temp;
-                if (Microsoft.Phone.Info.DeviceExtendedProperties.TryGetValue("DeviceManufacturer", out temp))
-                    manufacturer = temp.ToString();
-                if (manufacturer.Equals("NOKIA"))
+                try
                 {
-                    var routeTo = new DirectionsRouteDestinationTask
+                    var manufacturer= string.Empty;
+                    object temp;
+                    if (DeviceExtendedProperties.TryGetValue("DeviceManufacturer", out temp))
+                        manufacturer = temp.ToString();
+                    if (manufacturer.Equals("NOKIA"))
                     {
-                        Destination = station.GeoCoordinate,
-                        Mode = RouteMode.Unknown
-                    };
-                    routeTo.Show();
+                        try
+                        {
+                            OpenHereMaps(station);
+                        }
+                        catch (Exception)
+                        {
+                            OpenDefaultmaps(station);
+                        }
+                    }
+                    else
+                    {
+                        OpenDefaultmaps(station);
+                    }
                 }
-                else
+                catch (Exception)
                 {
-                    var bingMapsDirectionsTask = new BingMapsDirectionsTask();
-                    var mapLocation = new LabeledMapLocation(string.Format(AppResources.NavigationStation, station.Name), station.GeoCoordinate);
-                    bingMapsDirectionsTask.End = mapLocation;
-                    // If bingMapsDirectionsTask.Start is not set, the user's current location is used as the start point.
-                    bingMapsDirectionsTask.Show();
+                    //TODO: handle this, guide the user to doznload a maps app?
                 }
             });
             RefreshCommand = new RelayCommand(async () =>
             {
-                Deployment.Current.Dispatcher.BeginInvoke(Locations.Clear);
-                Deployment.Current.Dispatcher.BeginInvoke(()=> { CurrentPosition = new GeoCoordinate(); });
-                Deployment.Current.Dispatcher.BeginInvoke(()=> { LocationLoaded = false; });
-                Deployment.Current.Dispatcher.BeginInvoke(()=> { LoadingDisruptions = false; });
-                Deployment.Current.Dispatcher.BeginInvoke(Disruptions.Clear);
-                Deployment.Current.Dispatcher.BeginInvoke(Nearby.Clear);
+                ClearItems();   
                 Task.WaitAll(Task.Factory.StartNew(() => GetDisruptions()));
                 await GetCurrentPosition();
+            });
+        }
+
+        private void OpenDefaultmaps(Station station)
+        {
+            var bingMapsDirectionsTask = new BingMapsDirectionsTask();
+            var mapLocation = new LabeledMapLocation(string.Format(AppResources.NavigationStation, station.Name), station.GeoCoordinate);
+            bingMapsDirectionsTask.End = mapLocation;
+            // If bingMapsDirectionsTask.Start is not set, the user's current location is used as the start point.
+            bingMapsDirectionsTask.Show();
+        }
+
+        private void OpenHereMaps(Station station)
+        {
+            var routeTo = new DirectionsRouteDestinationTask
+            {
+                Destination = station.GeoCoordinate,
+                Mode = RouteMode.Unknown
+            };
+            routeTo.Show();
+        }
+
+        private void ClearItems()
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                Locations.Clear();
+                Disruptions.Clear();
+                Nearby.Clear();
+                CurrentPosition = new GeoCoordinate();
+                LocationLoaded = false;
+                LoadingDisruptions = false; 
             });
         }
 
