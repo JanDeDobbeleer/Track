@@ -40,6 +40,7 @@
         <ControlTemplate x:Key="MyLocationTemplate" TargetType="toolkit:UserLocationMarker">
             <Grid Height="25" Width="25" RenderTransformOrigin="0.5,0.5" Margin="-26,0,0,0">
                 <Ellipse Width="25" Height="25" Fill="White" Stroke="{StaticResource TrackColorBrush}" StrokeThickness="2"/>
+                <Ellipse Width="15" Height="15" Fill="{StaticResource TrackColorBrush}" Margin="0"/>
             </Grid>
         </ControlTemplate>
         <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
