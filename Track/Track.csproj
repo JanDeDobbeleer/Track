@@ -118,13 +118,13 @@
     <Compile Include="Common\FinshedEventArgs.cs" />
     <Compile Include="Common\InfoLocation.cs" />
     <Compile Include="ViewModel\MainpageViewModel.cs" />
-    <Compile Include="ViewModel\StationDetailsViewModel.cs" />
+    <Compile Include="ViewModel\StationOverviewViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\StationDetailsView.xaml.cs">
-      <DependentUpon>StationDetailsView.xaml</DependentUpon>
+    <Compile Include="View\StationOverview.xaml.cs">
+      <DependentUpon>StationOverview.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -189,7 +189,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\StationDetailsView.xaml">
+    <Page Include="View\StationOverview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

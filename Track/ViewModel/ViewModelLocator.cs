@@ -12,6 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using System;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
@@ -25,6 +26,7 @@ namespace Track.ViewModel
     /// </summary>
     public class ViewModelLocator
     {
+        public static readonly Uri StationOverviewPageUri = new Uri("/View/StationOverview.xaml", UriKind.Relative);
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
@@ -43,8 +45,9 @@ namespace Track.ViewModel
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
 
+            SimpleIoc.Default.Register<INavigationService, NavigationService>();
             SimpleIoc.Default.Register<MainpageViewModel>();
-            SimpleIoc.Default.Register<StationDetailsViewModel>();
+            SimpleIoc.Default.Register<StationOverviewViewModel>();
             SimpleIoc.Default.Register<IAsyncStorageService, AsyncStorageService>();
         }
 
@@ -53,9 +56,9 @@ namespace Track.ViewModel
             get { return ServiceLocator.Current.GetInstance<MainpageViewModel>(); }
         }
 
-        public StationDetailsViewModel StationDetails
+        public StationOverviewViewModel StationOverview
         {
-            get { return ServiceLocator.Current.GetInstance<StationDetailsViewModel>(); }
+            get { return ServiceLocator.Current.GetInstance<StationOverviewViewModel>(); }
         }
         
         public static void Cleanup()

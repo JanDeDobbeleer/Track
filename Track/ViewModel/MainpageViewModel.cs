@@ -15,8 +15,8 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Localization.Resources;
 using Microsoft.Phone.Info;
-using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Tasks;
+using Microsoft.Practices.ServiceLocation;
 using Track.Annotations;
 using Track.Api;
 using Track.Common;
@@ -31,6 +31,7 @@ namespace Track.ViewModel
         #region commands
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand<Station> DirectionsCommand { get; private set; }
+        public RelayCommand<Station> StationOverviewCommand { get; private set; }
         #endregion
 
         #region properties
@@ -217,6 +218,11 @@ namespace Track.ViewModel
                 ClearItems();   
                 Task.WaitAll(Task.Factory.StartNew(() => GetDisruptions()));
                 await GetCurrentPosition();
+            });
+            StationOverviewCommand = new RelayCommand<Station>(station =>
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = station);
+                _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
         }
 

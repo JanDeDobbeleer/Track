@@ -1,14 +1,18 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using Track.Annotations;
 using TrackApi.Classes;
 
 namespace Track.ViewModel
 {
-    public class StationDetailsViewModel : ViewModelBase, INotifyPropertyChanged
+    public class StationOverviewViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        public const string CurrentPositionPropertyName = "Station";
+        #region properties
+        private INavigationService _navigationService;
+
+        public const string StationPropertyName = "Station";
         private Station _station;
         public Station Station
         {
@@ -16,14 +20,20 @@ namespace Track.ViewModel
             {
                 return _station;
             }
-            private set
+            set
             {
                 if (_station == value)
                     return;
 
                 _station = value;
-                OnPropertyChanged(CurrentPositionPropertyName);
+                OnPropertyChanged(StationPropertyName);
             }
+        }
+        #endregion
+
+        public StationOverviewViewModel(INavigationService navigationService)
+        {
+            _navigationService = navigationService;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

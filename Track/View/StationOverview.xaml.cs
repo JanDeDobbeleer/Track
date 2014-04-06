@@ -10,9 +10,9 @@ using Microsoft.Phone.Shell;
 
 namespace Track.View
 {
-    public partial class StationDetailsView : PhoneApplicationPage
+    public partial class StationOverview : PhoneApplicationPage
     {
-        public StationDetailsView()
+        public StationOverview()
         {
             InitializeComponent();
         }

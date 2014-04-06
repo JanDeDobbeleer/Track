@@ -161,6 +161,11 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Grid.Column="0" Orientation="Vertical" Margin="10,0,0,0">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Tap">
+                                                <command:EventToCommand Command="{Binding Main.StationOverviewCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
                                         <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Foreground="Black" FontSize="40" FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
                                         <TextBlock Text="{Binding Distance}" Foreground="Black" FontFamily="{StaticResource PhoneFontFamilyLight}" FontSize="20"/>
                                     </StackPanel>
