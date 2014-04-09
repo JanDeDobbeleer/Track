@@ -89,5 +89,10 @@ namespace Track.Api
             }
             return locationsList;
         }
+
+        public async Task<List<Departure>> GetLiveBoard(Station station)
+        {
+            return await Client.GetInstance().GetLiveBoard(new[] { new KeyValuePair<string, string>(Arguments.Id.ToString().ToLower(), station.Id), new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang)} );
+        }
     }
 }

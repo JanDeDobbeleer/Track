@@ -15,14 +15,12 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Localization.Resources;
 using Microsoft.Phone.Info;
-using Microsoft.Phone.Tasks;
 using Microsoft.Practices.ServiceLocation;
 using Track.Annotations;
 using Track.Api;
 using Track.Common;
 using TrackApi.Api;
 using TrackApi.Classes;
-using Nokia.Phone.HereLaunchers;
 
 namespace Track.ViewModel
 {
@@ -36,6 +34,7 @@ namespace Track.ViewModel
 
         #region properties
         private INavigationService _navigationService;
+        private readonly Helper _helper;
 
         public const string CurrentPositionPropertyName = "CurrentPosition";
         private GeoCoordinate _currentPosition;
@@ -156,6 +155,7 @@ namespace Track.ViewModel
 
         public const string LoadingDisruptionsPropertyName = "LoadingDisruptions";
         private bool _loadingDisruptions = false;
+
         public bool LoadingDisruptions
         {
             get
@@ -176,6 +176,7 @@ namespace Track.ViewModel
         public MainpageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
+            _helper = new Helper();
             Messenger.Default.Register<NotificationMessage>(this, async (message) =>
             {
                 if (!message.Notification.Equals("MainPageLoaded", StringComparison.OrdinalIgnoreCase)) 
@@ -196,16 +197,16 @@ namespace Track.ViewModel
                     {
                         try
                         {
-                            OpenHereMaps(station);
+                            _helper.OpenHereMaps(station);
                         }
                         catch (Exception)
                         {
-                            OpenDefaultmaps(station);
+                            _helper.OpenDefaultmaps(station);
                         }
                     }
                     else
                     {
-                        OpenDefaultmaps(station);
+                        _helper.OpenDefaultmaps(station);
                     }
                 }
                 catch (Exception)
@@ -224,25 +225,6 @@ namespace Track.ViewModel
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = station);
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
-        }
-
-        private void OpenDefaultmaps(Station station)
-        {
-            var bingMapsDirectionsTask = new BingMapsDirectionsTask();
-            var mapLocation = new LabeledMapLocation(string.Format(AppResources.NavigationStation, station.Name), station.GeoCoordinate);
-            bingMapsDirectionsTask.End = mapLocation;
-            // If bingMapsDirectionsTask.Start is not set, the user's current location is used as the start point.
-            bingMapsDirectionsTask.Show();
-        }
-
-        private void OpenHereMaps(Station station)
-        {
-            var routeTo = new DirectionsRouteDestinationTask
-            {
-                Destination = station.GeoCoordinate,
-                Mode = RouteMode.Unknown
-            };
-            routeTo.Show();
         }
 
         private void ClearItems()
@@ -313,9 +295,9 @@ namespace Track.ViewModel
                 //send the list to the StationList control
                 Messenger.Default.Send(list);
                 //assign the visible pins on the map, limited to 10 to improve speed
-                AssignList(Locations,list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(10).ToList());
+                _helper.AssignList(Locations,list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(10).ToList());
                 //assign the nearby list
-                AssignList(Nearby, list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(3).ToList());
+                _helper.AssignList(Nearby, list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(3).ToList());
             }
             catch (Exception e)
             {
@@ -324,17 +306,6 @@ namespace Track.ViewModel
                 Debug.WriteLine("MainViewmodel - GetLocation: " + e.Message);
 #endif
             }
-        }
-
-        private void AssignList(ICollection<Station> input, IEnumerable<Station> stations)
-        {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                foreach (var station in stations)
-                {
-                    input.Add(station);
-                }
-            });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

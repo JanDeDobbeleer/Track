@@ -25,7 +25,7 @@ namespace TrackApi.Api
 
         public String LiveBoard
         {
-            get { return "/liveboard/?format=json"; }
+            get { return "/liveboard/?format=json&fast=true"; }
         }
 
         public String Vehicle
@@ -66,7 +66,7 @@ namespace TrackApi.Api
         }
         #endregion
 
-        public async Task<List<Station>> GetLocations(KeyValuePair<String, String> valuePair)
+        public async Task<List<Station>> GetLocations(KeyValuePair<string, string> valuePair)
         {
             var ro = new StationRootObject();
             try
@@ -77,15 +77,37 @@ namespace TrackApi.Api
                 };
                 ro = await _restClient.ExecuteAsync<StationRootObject>(request);
             }
-            catch (HttpRequestException re)
+            catch (HttpRequestException)
             {
                 //TODO: show toast that indicates the call was not succesful
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //TODO: allow user to send an error log
             }
             return ro.Station;
+        }
+
+        public async Task<List<Departure>> GetLiveBoard(KeyValuePair<string, string>[] valuePair)
+        {
+            var ro = new LiveBoardRootObject();
+            try
+            {
+                var request = new RestRequest
+                {
+                    Resource = LiveBoard + ConvertValuePairToQueryString(valuePair)
+                };
+                ro = await _restClient.ExecuteAsync<LiveBoardRootObject>(request);
+            }
+            catch (HttpRequestException)
+            {
+                //TODO: show toast that indicates the call was not succesful
+            }
+            catch (Exception)
+            {
+                //TODO: allow user to send an error log
+            }
+            return ro.departures.departure;
         }
 
         private string ConvertValuePairToQueryString(IEnumerable<KeyValuePair<string, string>> valuePair)
