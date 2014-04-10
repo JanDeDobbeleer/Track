@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:behaviors="clr-namespace:Cimbalino.Phone.Toolkit.Behaviors;assembly=Cimbalino.Phone.Toolkit"
+    xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -50,8 +51,23 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ListBox>
-                
+            <ListBox ItemsSource="{Binding Departures}">
+                <ListBox.ItemTemplate >
+                    <DataTemplate>
+                        <Grid Width="{Binding ActualWidth, ElementName=ContentPivot}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Station}" Style="{StaticResource DefaultTextStyle}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Time}" Style="{StaticResource DefaultTextStyle}"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Delay}" Style="{StaticResource DefaultTextStyle}"/>
+                            <TextBlock Grid.Column="3" Text="{Binding Platform}" Style="{StaticResource DefaultTextStyle}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
     </Grid>

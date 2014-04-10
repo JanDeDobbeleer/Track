@@ -2,11 +2,16 @@
              xmlns:localization="clr-namespace:Localization;assembly=Localization">
     <!--Application Resources-->
     <Application.Resources>
-        <model:ViewModelLocator x:Key="Locator" d:IsDataSource="true" />
-        <localization:LocalizedStrings x:Key="LocalizedStrings" />
-        <SolidColorBrush x:Key="TrackColorBrush">#00acb6</SolidColorBrush>
-        <SolidColorBrush x:Key="InactiveBrush">#33FFFFFF</SolidColorBrush>
-        <Color x:Key="TrackColor">#00acb6</Color>
+        <ResourceDictionary>
+            <model:ViewModelLocator x:Key="Locator" d:IsDataSource="true" />
+            <localization:LocalizedStrings x:Key="LocalizedStrings" />
+            <SolidColorBrush x:Key="TrackColorBrush">#00acb6</SolidColorBrush>
+            <SolidColorBrush x:Key="InactiveBrush">#33FFFFFF</SolidColorBrush>
+            <Color x:Key="TrackColor">#00acb6</Color>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->

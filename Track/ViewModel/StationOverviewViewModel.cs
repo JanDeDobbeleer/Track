@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using Track.Annotations;
@@ -49,13 +50,14 @@ namespace Track.ViewModel
                     return;
 
                 _departures = value;
-                OnPropertyChanged(DeparturesPropertyName);
+                RaisePropertyChanged(DeparturesPropertyName);
             }
         }
         #endregion
 
         private async void GetLiveBoard(Station station)
         {
+            Deployment.Current.Dispatcher.BeginInvoke(Departures.Clear);
             var list = await RailService.GetInstance().GetLiveBoard(station);
             _helper.AssignList(Departures, list);
         }
