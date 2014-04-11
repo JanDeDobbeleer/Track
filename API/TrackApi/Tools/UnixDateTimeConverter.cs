@@ -8,29 +8,15 @@ namespace TrackApi.Tools
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            long ticks;
-            if (value is DateTime)
-            {
-                var epoc = new DateTime(1970, 1, 1);
-                var delta = ((DateTime)value) - epoc;
-                if (delta.TotalSeconds < 0)
-                {
-                    throw new ArgumentOutOfRangeException("Unix epoc starts January 1st, 1970");
-                }
-                ticks = (long)delta.TotalSeconds;
-            }
-            else
-            {
-                throw new Exception("Expected date object value.");
-            }
-            writer.WriteValue(ticks);
+            
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(double.Parse(reader.Value.ToString())).ToLocalTime();
-            return dtDateTime;
+            var time = dtDateTime.TimeOfDay.ToString();
+            return dtDateTime.TimeOfDay.ToString().Remove(dtDateTime.TimeOfDay.ToString().IndexOf(":00", StringComparison.Ordinal),3);
         }
     }
 }

@@ -11,12 +11,13 @@ namespace TrackApi.Classes
         [JsonProperty(PropertyName = "delay")]
         public string Delay { get; set; }
         [JsonProperty(PropertyName = "station")]
+        [JsonConverter(typeof(StationNameConverter))]
         public string Station { get; set; }
         [JsonProperty(PropertyName = "stationinfo")]
         public Station Stationinfo { get; set; }
         [JsonProperty(PropertyName = "time")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime Time { get; set; }
+        public String Time { get; set; }
         [JsonProperty(PropertyName = "vehicle")]
         public string Vehicle { get; set; }
         [JsonProperty(PropertyName = "platform")]

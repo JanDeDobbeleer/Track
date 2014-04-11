@@ -104,7 +104,7 @@
         </ListBox>
 
         <!--Pivot Control-->
-        <phone:Pivot x:Name="ContentPivot" Grid.Row="2" Background="White" Margin="0,-10,0,0">
+        <phone:Pivot x:Name="ContentPivot" Grid.Row="2" Background="White">
             <!--Pivot item one-->
             <phone:PivotItem Margin="0,0,0,0">
                 <Grid>
@@ -133,8 +133,8 @@
                              Foreground="Black"
                              Text="{Binding Path=LocalizedResources.Loading, Source={StaticResource LocalizedStrings}}"
                              Style="{StaticResource LoadingBarStyle}"/>
-                    <ListBox Grid.Row="2" ItemsSource="{Binding Locations}" >
-                        <ListBox.ItemTemplate >
+                    <ListBox Grid.Row="2" ItemsSource="{Binding Locations}" Margin="0,-10,0,0">
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Width="{Binding ActualWidth, ElementName=ContentPivot}">
                                     <Grid.ColumnDefinitions>

@@ -101,9 +101,11 @@
     </Compile>
     <Compile Include="Common\AlphaKeyGroup.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Common\DelayVisibilityConverter.cs" />
     <Compile Include="Common\Geocoding.cs" />
     <Compile Include="Common\IndexToBrushConverter.cs" />
     <Compile Include="Common\MapPushPinDependency.cs" />
+    <Compile Include="Common\PlatformInfoColorConverter.cs" />
     <Compile Include="Controls\IndexedPath.cs" />
     <Compile Include="Controls\LoadingBar.xaml.cs">
       <DependentUpon>LoadingBar.xaml</DependentUpon>

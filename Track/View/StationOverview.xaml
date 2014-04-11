@@ -9,6 +9,7 @@
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:behaviors="clr-namespace:Cimbalino.Phone.Toolkit.Behaviors;assembly=Cimbalino.Phone.Toolkit"
     xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
+    xmlns:common="clr-namespace:Track.Common"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -18,6 +19,11 @@
     shell:SystemTray.ForegroundColor="White"
     shell:SystemTray.Opacity="0"
     DataContext="{Binding StationOverview, Source={StaticResource Locator}}">
+
+    <phone:PhoneApplicationPage.Resources>
+        <common:DelayVisibilityConverter x:Key="DelayVisibilityConverter"/>
+        <common:PlatformInfoColorConverter x:Key="PlatformInfoColorConverter"/>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="White">
@@ -39,32 +45,43 @@
         </i:Interaction.Behaviors>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <Rectangle Grid.Row="0" Fill="{StaticResource TrackColorBrush}" Margin="0,-35,0,65" RenderTransformOrigin="0.5,-1.2"/>
-        <StackPanel Grid.Row="0" Margin="0,20,0,28" Background="{StaticResource TrackColorBrush}">
+        <Rectangle Grid.Row="0"  Grid.Column="0" Grid.ColumnSpan="3" Fill="{StaticResource TrackColorBrush}" Margin="0,-35,0,65" RenderTransformOrigin="0.5,-1.2"/>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,20,0,5" Background="{StaticResource TrackColorBrush}">
             <TextBlock Text="{Binding Station.Name, Mode=TwoWay}" Margin="21,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" Foreground="White"/>
+            <Rectangle Fill="{StaticResource TrackColorBrush}" Height="5" Width="{Binding ActualWidth, ElementName=LayoutRoot}"/>
         </StackPanel>
-        
-
+        <Path Grid.Row="1" Grid.Column="0" Margin="0,0,10,0" HorizontalAlignment="Center" Style="{StaticResource PathStyle}" Data="M30.695017,13.620034L33.317017,13.620034 33.317017,28.919743 33.524267,29.019681C34.184819,29.37884,34.712941,29.951163,35.016142,30.643819L35.08231,30.810035 46.039017,30.810035 46.039017,33.432034 34.978114,33.432034 34.889634,33.615611C34.315306,34.672444 33.195316,35.390985 31.908503,35.390985 30.035774,35.390985 28.517994,33.870769 28.517994,32.000501 28.517994,30.5978 29.371745,29.392002 30.588678,28.876772L30.695017,28.837811z M31.999999,4.0299997C16.551,4.0299997 4.0259991,16.55 4.0259991,32.000001 4.0259991,47.450002 16.551,59.969998 31.999999,59.969998 47.448999,59.969998 59.973999,47.450002 59.973999,32.000001 59.973999,16.55 47.448999,4.0299997 31.999999,4.0299997z M31.999999,0C49.672998,0 63.999998,14.33 63.999998,32.000001 63.999998,49.669999 49.672998,64.000001 31.999999,64.000001 14.327,64.000001 0,49.669999 0,32.000001 0,14.33 14.327,0 31.999999,0z"/>
+        <Path Grid.Row="1" Grid.Column="1" Margin="5,0,0,0" HorizontalAlignment="Left" Style="{StaticResource PathStyle}" Data="M6.9173141,41.870999L3.9739652,44.814 27.159739,44.814 24.217059,41.870999z M9.7486491,39.039998L8.2504706,40.537999 22.884203,40.537999 21.386366,39.039998z M24.845999,27.029853C23.127301,27.029853 21.734,28.423223 21.734,30.140487 21.734,31.857951 23.127301,33.251222 24.845999,33.251222 26.563401,33.251222 27.956601,31.857951 27.956601,30.140487 27.956601,28.423223 26.563401,27.029853 24.845999,27.029853z M6.0165715,27.029853C4.2977004,27.029853 2.9046304,28.423223 2.9046304,30.140487 2.9046304,31.857951 4.2977004,33.251222 6.0165715,33.251222 7.7353206,33.251222 9.1285105,31.857951 9.128511,30.140487 9.1285105,28.423223 7.7353206,27.029853 6.0165715,27.029853z M16.539999,12.638255L16.539999,22.214854 27.8473,22.214854 27.8473,12.638255z M3.2300707,12.638255L3.2300707,22.214854 14.5374,22.214854 14.5374,12.638255z M1.3890004,5.7659994L5.2847605,5.7659994 25.5752,5.7659994 29.470999,5.7659994 29.470999,9.6630177 29.470999,35.144382 29.470999,39.039998 25.5752,39.039998 23.271603,39.039998 31.456999,47.226197 30.514372,48.169 28.389,46.043397 28.389,46.147 2.7980001,46.147 2.7980001,45.989827 0.94260952,47.844998 0,46.902181 6.2600007,40.642877 6.2600007,40.537999 6.3648891,40.537999 7.8630571,39.039998 5.2847605,39.039998 1.3890004,39.039998 1.3890004,35.144382 1.3890004,9.6630177z M18.33335,0C19.751223,0 20.901,1.1496997 20.901,2.5676448 20.901,3.98431 19.751223,5.1339998 18.33335,5.1340001 16.916678,5.1339998 15.767001,3.98431 15.767001,2.5676448 15.767001,1.1496997 16.916678,0 18.33335,0z M12.924401,0C14.342301,0 15.492,1.1496997 15.492,2.5676448 15.492,3.98431 14.342301,5.1339998 12.924401,5.1340001 11.5076,5.1339998 10.358,3.98431 10.358,2.5676448 10.358,1.1496997 11.5076,0 12.924401,0z"/>
+        <Path Grid.Row="1" Grid.Column="2" Margin="0,0,10,0" HorizontalAlignment="Right" Style="{StaticResource PathStyle}" Data="M15.8125,40.126663L13.75,49.501663 21.6875,49.501663 23.6875,40.126663z M15.125,24.251663L19.0625,24.251663 16.4375,36.814163 24.3125,36.814163 27,24.251663 30.84375,24.251663 28.21875,36.814163 36.4375,36.814163 35.71875,40.126663 27.5625,40.126663 25.59375,49.501663 34.375,49.501663 33.53125,52.814163 24.9375,52.814163 22.1875,65.220413 18.25,65.220413 20.9375,52.814163 13.125,52.814163 10.5,65.220413 6.59375,65.220413 9.21875,52.814163 1.0312501,52.814163 1.65625,49.501663 9.9375,49.501663 11.84375,40.126663 3.1874998,40.126663 3.8437502,36.814163 12.5,36.814163z"/>
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="12,0,12,0">
             <ListBox ItemsSource="{Binding Departures}">
                 <ListBox.ItemTemplate >
                     <DataTemplate>
-                        <Grid Width="{Binding ActualWidth, ElementName=ContentPivot}">
+                        <Grid Width="{Binding ActualWidth, ElementName=ContentPanel}" Margin="0,10,0,0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="90"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding Station}" Style="{StaticResource DefaultTextStyle}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Time}" Style="{StaticResource DefaultTextStyle}"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Delay}" Style="{StaticResource DefaultTextStyle}"/>
-                            <TextBlock Grid.Column="3" Text="{Binding Platform}" Style="{StaticResource DefaultTextStyle}"/>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Text="{Binding Time}" Style="{StaticResource DefaultTextStyle}" FontWeight="Light" FontSize="30"/>
+                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Station}" Style="{StaticResource DefaultTextStyle}" FontWeight="SemiBold" FontSize="30"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1" FontWeight="SemiBold" Text="{Binding Delay}" Style="{StaticResource DefaultTextStyle}" Foreground="Red" Visibility="{Binding Delay, Converter={StaticResource DelayVisibilityConverter}}"/>
+                            <TextBlock Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right" Style="{StaticResource DefaultTextStyle}" FontWeight="SemiBold" Text="{Binding Platform}" FontSize="30"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
