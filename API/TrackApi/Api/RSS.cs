@@ -63,9 +63,8 @@ namespace TrackApi.Api
                     d.Link = item.Element("link").Value.Trim();
                 }
                 //TODO: remove this after debugging
-                if (ro.Disruptions.Count == 0)
-                    ro.Disruptions = TestData();
-                //TODO: add lovely to object here
+                /*if (ro.Disruptions.Count == 0)
+                    ro.Disruptions = TestData();*/
             }
             catch (HttpRequestException re)
             {

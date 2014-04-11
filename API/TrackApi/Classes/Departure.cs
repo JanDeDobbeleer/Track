@@ -9,6 +9,7 @@ namespace TrackApi.Classes
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
         [JsonProperty(PropertyName = "delay")]
+        [JsonConverter(typeof(DelayConverter))]
         public string Delay { get; set; }
         [JsonProperty(PropertyName = "station")]
         [JsonConverter(typeof(StationNameConverter))]
@@ -19,6 +20,7 @@ namespace TrackApi.Classes
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public String Time { get; set; }
         [JsonProperty(PropertyName = "vehicle")]
+        [JsonConverter(typeof(VehicleNameConverter))]
         public string Vehicle { get; set; }
         [JsonProperty(PropertyName = "platform")]
         public string Platform { get; set; }

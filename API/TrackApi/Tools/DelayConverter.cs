@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace TrackApi.Tools
 {
-    public class StationNameConverter: JsonConverter
+    public class DelayConverter:JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -12,8 +12,13 @@ namespace TrackApi.Tools
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var index = reader.Value.ToString().IndexOf("[NMBS/SNCB]", StringComparison.Ordinal);
-            return reader.Value.ToString().Remove(index).Trim();
+            int delay;
+            if (!int.TryParse(reader.Value.ToString(), out delay)) 
+                return "0";
+            if(delay == 0)
+                return "0";
+            var minutes = delay/60;
+            return "+ " + minutes + "'";
         }
 
         public override bool CanConvert(Type objectType)

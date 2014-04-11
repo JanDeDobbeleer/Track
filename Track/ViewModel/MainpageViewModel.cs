@@ -153,6 +153,24 @@ namespace Track.ViewModel
             }
         }
 
+        public const string AllClearVisibilityPropertyName = "AllClearVisibility";
+        private bool _allClearVisibility = false;
+        public bool AllClearVisibility
+        {
+            get
+            {
+                return _allClearVisibility;
+            }
+            private set
+            {
+                if (_allClearVisibility == value)
+                    return;
+
+                _allClearVisibility = value;
+                OnPropertyChanged(AllClearVisibilityPropertyName);
+            }
+        }
+
         public const string LoadingDisruptionsPropertyName = "LoadingDisruptions";
         private bool _loadingDisruptions = false;
 
@@ -185,35 +203,7 @@ namespace Track.ViewModel
                 await GetCurrentPosition();
             });
             //set commands to work
-            DirectionsCommand = new RelayCommand<Station>((station) =>
-            {
-                try
-                {
-                    var manufacturer= string.Empty;
-                    object temp;
-                    if (DeviceExtendedProperties.TryGetValue("DeviceManufacturer", out temp))
-                        manufacturer = temp.ToString();
-                    if (manufacturer.Equals("NOKIA"))
-                    {
-                        try
-                        {
-                            _helper.OpenHereMaps(station);
-                        }
-                        catch (Exception)
-                        {
-                            _helper.OpenDefaultmaps(station);
-                        }
-                    }
-                    else
-                    {
-                        _helper.OpenDefaultmaps(station);
-                    }
-                }
-                catch (Exception)
-                {
-                    //TODO: handle this, guide the user to doznload a maps app?
-                }
-            });
+            DirectionsCommand = new RelayCommand<Station>((station) => _helper.OpenMaps(station));
             RefreshCommand = new RelayCommand(async () =>
             {
                 ClearItems();   
@@ -236,20 +226,29 @@ namespace Track.ViewModel
                 Nearby.Clear();
                 CurrentPosition = new GeoCoordinate();
                 LocationLoaded = false;
-                LoadingDisruptions = false; 
+                LoadingDisruptions = false;
+                AllClearVisibility = false;
             });
         }
 
         private async Task GetDisruptions()
         {
             Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDisruptions = true);
+            Deployment.Current.Dispatcher.BeginInvoke(() => AllClearVisibility = false);
             var list = await Rss.GetInstance().GetDisruptions(AppResources.ClientLang);
-            var tasks = Enumerable.Range(0, list.Disruptions.Count).Select(i =>
-              Task.Run(() =>
-              {
-                  Deployment.Current.Dispatcher.BeginInvoke(() => Disruptions.Add(list.Disruptions[i]));
-              }));
-            await Task.WhenAll(tasks);
+            if (!list.Disruptions.Any())
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => AllClearVisibility = true);
+            }
+            else
+            {
+                var tasks = Enumerable.Range(0, list.Disruptions.Count).Select(i =>
+                Task.Run(() =>
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() => Disruptions.Add(list.Disruptions[i]));
+                }));
+                await Task.WhenAll(tasks);
+            }
             Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDisruptions = false);
         }
 

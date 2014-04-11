@@ -170,20 +170,18 @@
             <!--Pivot item two-->
             <phone:PivotItem Margin="0,0,0,0">
                 <Grid>
-                    <TextBlock Text="Favorites" Style="{StaticResource DefaultTextStyle}" FontWeight="Bold"/>
-                    <RichTextBox Margin="0,12,0,0">
-                        <Paragraph>
-                            <Run>
-                                Integer eget molestie lacus. Nam facilisis purus sed vehicula rutrum. Integer auctor imperdiet lectus a ultricies. Vivamus erat magna, feugiat et cursus nec, feugiat id enim. Aliquam tempus, turpis sed gravida pretium, sapien arcu commodo massa, ut congue tellus urna eu magna. Sed ligula tellus, consectetur et ornare id, porttitor congue libero. Morbi justo neque, varius ac commodo a, fermentum a arcu. Integer lectus mi, ultrices nec dui cursus, molestie dictum quam. Pellentesque mollis, eros at blandit vulputate, arcu massa tincidunt risus, at tempor urna metus at nulla. Morbi ultricies sem metus, at aliquet purus faucibus sed.
-                            </Run>
-                        </Paragraph>
-                    </RichTextBox>
                 </Grid>
             </phone:PivotItem>
 
             <!--Pivot item three-->
             <phone:PivotItem Margin="10,-10,10,0">
                 <Grid>
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{Binding Path=LocalizedResources.MainViewAllClear, Source={StaticResource LocalizedStrings}}"
+                               Style="{StaticResource DefaultTextStyle}"
+                               FontWeight="SemiBold"
+                               Visibility="{Binding AllClearVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     <controls:LoadingBar
                              IsIndeterminate="{Binding LoadingDisruptions}"
                              Visibility="{Binding LoadingDisruptions, Converter={StaticResource BooleanToVisibilityConverter}}"

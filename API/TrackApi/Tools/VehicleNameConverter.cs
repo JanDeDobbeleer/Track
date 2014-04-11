@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace TrackApi.Tools
 {
-    public class StationNameConverter: JsonConverter
+    public class VehicleNameConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -12,8 +12,7 @@ namespace TrackApi.Tools
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var index = reader.Value.ToString().IndexOf("[NMBS/SNCB]", StringComparison.Ordinal);
-            return reader.Value.ToString().Remove(index).Trim();
+            return reader.Value.ToString().Remove(0,8).Trim();
         }
 
         public override bool CanConvert(Type objectType)

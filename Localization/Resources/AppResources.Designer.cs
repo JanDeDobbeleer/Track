@@ -106,6 +106,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to all clear!.
+        /// </summary>
+        public static string MainViewAllClear {
+            get {
+                return ResourceManager.GetString("MainViewAllClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to favorites.
         /// </summary>
         public static string MainViewFavorites {
