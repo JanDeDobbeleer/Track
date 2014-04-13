@@ -48,10 +48,5 @@ namespace Track.View
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "0690e3e3-9f4b-4aa4-854a-759d938675ba";
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "CLdqXlhvtu2QchQbHTNCdg";
         }
-
-        private void Pushpin_Tap(object sender, GestureEventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
     }
 }

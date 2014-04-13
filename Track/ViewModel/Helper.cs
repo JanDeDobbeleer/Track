@@ -81,5 +81,16 @@ namespace Track.ViewModel
                 }
             });
         }
+
+        public void AssignList(ICollection<Stop> input, IEnumerable<Stop> stops)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                foreach (var stop in stops)
+                {
+                    input.Add(stop);
+                }
+            });
+        }
     }
 }

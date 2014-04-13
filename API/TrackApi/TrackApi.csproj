@@ -96,9 +96,13 @@
     <Compile Include="Classes\PlatformInfo.cs" />
     <Compile Include="Classes\Station.cs" />
     <Compile Include="Classes\StationRootObject.cs" />
+    <Compile Include="Classes\Stop.cs" />
+    <Compile Include="Classes\Stops.cs" />
+    <Compile Include="Classes\VehicleInfo.cs" />
+    <Compile Include="Classes\VehicleRootObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\DelayConverter.cs" />
-    <Compile Include="Tools\GetInfoCompletedArgs.cs" />
+    <Compile Include="Tools\PlatformConverter.cs" />
     <Compile Include="Tools\StationNameConverter.cs" />
     <Compile Include="Tools\UnixDateTimeConverter.cs" />
     <Compile Include="Tools\VehicleNameConverter.cs" />

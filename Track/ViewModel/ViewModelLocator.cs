@@ -27,6 +27,7 @@ namespace Track.ViewModel
     public class ViewModelLocator
     {
         public static readonly Uri StationOverviewPageUri = new Uri("/View/StationOverview.xaml", UriKind.Relative);
+        public static readonly Uri VehicleOverviewPageUri = new Uri("/View/VehicleOverview.xaml", UriKind.Relative);
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
@@ -48,6 +49,7 @@ namespace Track.ViewModel
             SimpleIoc.Default.Register<INavigationService, NavigationService>();
             SimpleIoc.Default.Register<MainpageViewModel>();
             SimpleIoc.Default.Register<StationOverviewViewModel>();
+            SimpleIoc.Default.Register<VehicleOverviewViewModel>();
             SimpleIoc.Default.Register<IAsyncStorageService, AsyncStorageService>();
         }
 
@@ -59,6 +61,11 @@ namespace Track.ViewModel
         public StationOverviewViewModel StationOverview
         {
             get { return ServiceLocator.Current.GetInstance<StationOverviewViewModel>(); }
+        }
+
+        public VehicleOverviewViewModel VehicleOverView
+        {
+            get { return ServiceLocator.Current.GetInstance<VehicleOverviewViewModel>(); }
         }
         
         public static void Cleanup()

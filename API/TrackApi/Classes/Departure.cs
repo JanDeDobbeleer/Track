@@ -23,18 +23,16 @@ namespace TrackApi.Classes
         [JsonConverter(typeof(VehicleNameConverter))]
         public string Vehicle { get; set; }
         [JsonProperty(PropertyName = "platform")]
+        [JsonConverter(typeof(PlatformConverter))]
         public string Platform { get; set; }
         [JsonProperty(PropertyName = "platforminfo")]
         public PlatformInfo PlatformInfo { get; set; }
         [JsonProperty(PropertyName = "left")]
         public string Left { get; set; }
 
-        private DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+        public string VehicleName()
         {
-            // Unix timestamp is seconds past epoch
-            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
-            return dtDateTime;
+            return "BE.NMBS." + Vehicle;
         }
     }
 }

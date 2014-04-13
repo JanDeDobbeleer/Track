@@ -58,6 +58,15 @@
             <Setter Property="Margin" Value="0,0,0,0"/>
             <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
         </Style>
+        <Style x:Key="PathStyle" TargetType="Path">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="Stretch" Value="Uniform"/>
+            <Setter Property="Fill" Value="LightGray"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -76,11 +85,11 @@
         </i:Interaction.Behaviors>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="15"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Rectangle Grid.Row="0" Fill="{StaticResource TrackColorBrush}" Margin="0,-35,0,65" RenderTransformOrigin="0.5,-1.2"/>
-        <Rectangle Grid.Row="1" Fill="{StaticResource TrackColorBrush}" Margin="0,-10,0,0"/>
+        <Rectangle Grid.Row="1" Fill="{StaticResource TrackColorBrush}" Margin="0,-15,0,0"/>
         <ListBox x:Name="ImageBar"
                      Grid.Row="0"
                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -119,7 +128,7 @@
                             <toolkit:MapItemsControl x:Name="LocationsMapItemsControl">
                                 <toolkit:MapItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <toolkit:Pushpin GeoCoordinate="{Binding GeoCoordinate}" Template="{StaticResource PushPinTemplate}" Visibility="Visible" Tap="Pushpin_Tap"/>
+                                        <toolkit:Pushpin GeoCoordinate="{Binding GeoCoordinate}" Template="{StaticResource PushPinTemplate}" Visibility="Visible"/>
                                     </DataTemplate>
                                 </toolkit:MapItemsControl.ItemTemplate>
                             </toolkit:MapItemsControl>
@@ -136,30 +145,39 @@
                     <ListBox Grid.Row="2" ItemsSource="{Binding Locations}" Margin="0,-10,0,0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid Width="{Binding ActualWidth, ElementName=ContentPivot}">
+                                <Grid Margin="10,0,0,0" Width="{Binding ActualWidth, ElementName=ContentPivot}">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="300"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Orientation="Vertical" Margin="10,0,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Name}" Style="{StaticResource DefaultTextStyle}" FontSize="40" FontFamily="{StaticResource PhoneFontFamilySemiLight}">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Tap">
                                                 <command:EventToCommand Command="{Binding Main.StationOverviewCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
-                                        <TextBlock Text="{Binding Name}" Style="{StaticResource DefaultTextStyle}" FontSize="40" FontFamily="{StaticResource PhoneFontFamilySemiLight}"/>
-                                        <TextBlock Text="{Binding Distance}" Style="{StaticResource DefaultTextStyle}" FontFamily="{StaticResource PhoneFontFamilyLight}" FontSize="20"/>
-                                    </StackPanel>
-                                    <Path Grid.Column="2" Style="{StaticResource PathStyle}" Data="F1M582.961,492.242L557.554,517.865 557.554,467.049 582.961,467.049 582.961,492.242z">
+                                    </TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Distance}" Style="{StaticResource DefaultTextStyle}" FontFamily="{StaticResource PhoneFontFamilyLight}" FontSize="20">
+                                          <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Tap">
+                                                <command:EventToCommand Command="{Binding Main.StationOverviewCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>  
+                                    </TextBlock>
+                                    <Path Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource PathStyle}" Data="F1M582.961,492.242L557.554,517.865 557.554,467.049 582.961,467.049 582.961,492.242z">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Tap">
                                                 <command:EventToCommand Command="{Binding Main.DirectionsCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Path>
-                                    <Path Grid.Column="3" Width="45" Height="45" Style="{StaticResource PathStyle}" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z"/>
+                                    <Path Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" Width="45" Height="45" Style="{StaticResource PathStyle}" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z"/>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -176,12 +194,8 @@
             <!--Pivot item three-->
             <phone:PivotItem Margin="10,-10,10,0">
                 <Grid>
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Text="{Binding Path=LocalizedResources.MainViewAllClear, Source={StaticResource LocalizedStrings}}"
-                               Style="{StaticResource DefaultTextStyle}"
-                               FontWeight="SemiBold"
-                               Visibility="{Binding AllClearVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Ellipse Stroke="{StaticResource TrackColorBrush}" Width="150" Height="150" StrokeThickness="10" Visibility="{Binding AllClearVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Path Width="100" Height="100" Margin="1,0,0,10" Fill="{StaticResource TrackColorBrush}" Visibility="{Binding AllClearVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Data="F1M23.6804,40.528C23.6804,40.528 28.0085,39.4225 31.8777,34.2644 33.4441,32.0533 34.8249,28.0027 35.8387,24.4088 36.7605,22.3815 36.4839,21.4596 40.812,19.7096 43.5756,18.1452 47.9057,14.9205 49.8393,9.76236 50.392,7.45959 49.6101,2.33264 53.8016,2.39383 58.1765,2.47986 58.4988,6.90689 58.7748,9.94785 58.4057,15.3815 54.1693,20.6315 54.1693,20.6315L50.4852,26.6199C50.4852,26.6199 51.8563,26.5417 56.1968,26.7838 59.6415,26.9753 63.2456,26.3483 68.0789,27.817 79.0392,33.3444 69.7359,37.2136 69.7359,37.2136 75.7235,41.5417 70.3804,46.1472 70.3804,46.1472 74.1589,52.9636 67.9911,54.3815 68.3549,54.4381 69.5523,54.6217 73.6968,58.9519 66.6049,62.7272 66.6049,62.7272 58.8667,66.1373 54.6297,66.1373 51.866,66.5964 43.9448,66.6901 37.9579,64.2019 30.8647,63.0045 29.4929,63.778 23.5977,64.8835L23.6804,40.528z" Style="{StaticResource PathStyle}"/>
                     <controls:LoadingBar
                              IsIndeterminate="{Binding LoadingDisruptions}"
                              Visibility="{Binding LoadingDisruptions, Converter={StaticResource BooleanToVisibilityConverter}}"

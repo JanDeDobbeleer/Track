@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using PortableRest;
 using TrackApi.Classes;
-using TrackApi.Tools;
 
 namespace TrackApi.Api
 {
-    public delegate void GetInfoFinishedEventHandler(object sender, GetInfoCompletedArgs args);
 
     public class Client
     {
@@ -30,7 +29,7 @@ namespace TrackApi.Api
 
         public String Vehicle
         {
-            get { return "/vehicle/?format=json"; }
+            get { return "/vehicle/?format=json&fast=true"; }
         }
 
         private RestClient _restClient;
@@ -110,6 +109,28 @@ namespace TrackApi.Api
             return ro.departures.departure;
         }
 
+        public async Task<List<Stop>> GetVehicle(KeyValuePair<string, string> valuePair)
+        {
+            var ro = new VehicleRootObject();
+            try
+            {
+                var request = new RestRequest
+                {
+                    Resource = Vehicle + ConvertValuePairToQueryString(new[] { valuePair })
+                };
+                ro = await _restClient.ExecuteAsync<VehicleRootObject>(request);
+            }
+            catch (HttpRequestException)
+            {
+                //TODO: show toast that indicates the call was not succesful
+            }
+            catch (Exception)
+            {
+                //TODO: allow user to send an error log
+            }
+            return ro.Stops.Stop;
+        }
+
         private string ConvertValuePairToQueryString(IEnumerable<KeyValuePair<string, string>> valuePair)
         {
             var builder = new StringBuilder();
@@ -122,5 +143,15 @@ namespace TrackApi.Api
             }
             return builder.ToString();
         }
+
+        /*
+         * var vehicleName = "BE.NMBS." + vehicle;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://api.irail.be/", UriKind.RelativeOrAbsolute);
+                var temp = await client.GetStringAsync("vehicle/?format=json&fast=true" + "&id=" + vehicleName);
+                var test = temp + "test";
+            }
+         */
     }
 }

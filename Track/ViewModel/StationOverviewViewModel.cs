@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Practices.ServiceLocation;
 using Track.Annotations;
 using Track.Api;
 using TrackApi.Classes;
@@ -19,6 +21,7 @@ namespace Track.ViewModel
 
         public RelayCommand DirectionsCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand<Departure> VehicleOverViewCommand { get; private set; }
 
         #region properties
         public const string StationPropertyName = "Station";
@@ -76,13 +79,21 @@ namespace Track.ViewModel
 
         private async void GetLiveBoard(Station station)
         {
-            Deployment.Current.Dispatcher.BeginInvoke(()=>{
-                Departures.Clear();
-                LoadingDepartures = true;
-            });
-            var list = await RailService.GetInstance().GetLiveBoard(station);
-            _helper.AssignList(Departures, list);
-            Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDepartures = false);
+            try
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    Departures.Clear();
+                    LoadingDepartures = true;
+                });
+                var list = await RailService.GetInstance().GetLiveBoard(station);
+                _helper.AssignList(Departures, list);
+                Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDepartures = false);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         public StationOverviewViewModel(INavigationService navigationService)
@@ -91,6 +102,11 @@ namespace Track.ViewModel
             _helper = new Helper();
             DirectionsCommand = new RelayCommand(() => _helper.OpenMaps(Station));
             RefreshCommand = new RelayCommand(() => Task.WaitAll(Task.Factory.StartNew(() => GetLiveBoard(Station))));
+            VehicleOverViewCommand = new RelayCommand<Departure>((departure) =>
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<VehicleOverviewViewModel>().Vehicle = departure.Vehicle);
+                _navigationService.NavigateTo(ViewModelLocator.VehicleOverviewPageUri);
+            });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -105,7 +105,6 @@
     <Compile Include="Common\Geocoding.cs" />
     <Compile Include="Common\IndexToBrushConverter.cs" />
     <Compile Include="Common\MapPushPinDependency.cs" />
-    <Compile Include="Common\PlatformInfoColorConverter.cs" />
     <Compile Include="Controls\IndexedPath.cs" />
     <Compile Include="Controls\LoadingBar.xaml.cs">
       <DependentUpon>LoadingBar.xaml</DependentUpon>
@@ -122,12 +121,16 @@
     <Compile Include="ViewModel\Helper.cs" />
     <Compile Include="ViewModel\MainpageViewModel.cs" />
     <Compile Include="ViewModel\StationOverviewViewModel.cs" />
+    <Compile Include="ViewModel\VehicleOverviewViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StationOverview.xaml.cs">
       <DependentUpon>StationOverview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\VehicleOverview.xaml.cs">
+      <DependentUpon>VehicleOverview.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +151,7 @@
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\AppBar\appbar.information.png" />
     <Content Include="Assets\AppBar\appbar.location.png" />
+    <Content Include="Assets\AppBar\favs.png" />
     <Content Include="Assets\AppBar\feature.search.png" />
     <Content Include="Assets\AppBar\refresh.png" />
     <Content Include="Assets\ApplicationIcon.png">
@@ -199,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\StationOverview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\VehicleOverview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

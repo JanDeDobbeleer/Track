@@ -3,14 +3,7 @@
                     xmlns:common="clr-namespace:Track.Common"
                     xmlns:controls="clr-namespace:Track.Controls">
     <common:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <Style x:Key="PathStyle" TargetType="Path">
-        <Setter Property="Width" Value="40"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-        <Setter Property="Margin" Value="0,0,20,0"/>
-        <Setter Property="Stretch" Value="Uniform"/>
-        <Setter Property="Fill" Value="LightGray"/>
-    </Style>
+    <common:DelayVisibilityConverter x:Key="DelayVisibilityConverter"/>
     <Style x:Key="LoadingBarStyle" TargetType="controls:LoadingBar">
         <Setter Property="Width" Value="200"/>
         <Setter Property="Height" Value="50"/>

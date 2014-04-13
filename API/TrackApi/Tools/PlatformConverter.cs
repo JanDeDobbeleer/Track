@@ -3,19 +3,15 @@ using Newtonsoft.Json;
 
 namespace TrackApi.Tools
 {
-    public class StationNameConverter: JsonConverter
+    public class PlatformConverter:JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (!reader.Value.ToString().Contains("[NMBS/SNCB]")) 
-                return reader.Value.ToString();
-            var index = reader.Value.ToString().IndexOf("[NMBS/SNCB]", StringComparison.Ordinal);
-            return reader.Value.ToString().Remove(index).Trim();
+            return (string.IsNullOrWhiteSpace(reader.Value.ToString()))?"?":reader.Value.ToString();
         }
 
         public override bool CanConvert(Type objectType)

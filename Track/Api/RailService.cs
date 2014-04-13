@@ -94,5 +94,10 @@ namespace Track.Api
         {
             return await Client.GetInstance().GetLiveBoard(new[] { new KeyValuePair<string, string>(Arguments.Id.ToString().ToLower(), station.Id), new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang)} );
         }
+
+        public async Task<List<Stop>> GetVehicle(string vehicle)
+        {
+            return await Client.GetInstance().GetVehicle(new KeyValuePair<string, string>("id", "BE.NMBS." + vehicle));
+        }
     }
 }

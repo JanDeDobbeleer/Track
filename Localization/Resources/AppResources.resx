@@ -161,9 +161,6 @@
   <data name="NavigationStation" xml:space="preserve">
     <value>{0} station</value>
   </data>
-  <data name="MainViewAllClear" xml:space="preserve">
-    <value>all clear!</value>
-  </data>
   <data name="StationOverviewDelay" xml:space="preserve">
     <value>delay</value>
   </data>

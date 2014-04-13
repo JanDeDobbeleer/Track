@@ -12,7 +12,7 @@ namespace TrackApi.Tools
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return reader.Value.ToString().Remove(0,8).Trim();
+            return !reader.Value.ToString().Contains("BE.NMBS.") ? reader.Value.ToString() : reader.Value.ToString().Remove(0,8).Trim();
         }
 
         public override bool CanConvert(Type objectType)
