@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
-using System.Windows;
+using Cimbalino.Phone.Toolkit.Extensions;
 using Cimbalino.Phone.Toolkit.Services;
 using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
@@ -92,7 +93,8 @@ namespace Track.Api
 
         public async Task<List<Departure>> GetLiveBoard(Station station)
         {
-            if(!string.IsNullOrWhiteSpace(station.Id))
+            if(!station.Id.Contains(":"))
+            {
                 return 
                     await 
                         Client.GetInstance()
@@ -101,13 +103,16 @@ namespace Track.Api
                                 new KeyValuePair<string, string>(Arguments.Id.ToString().ToLower(), station.Id), 
                                 new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang)
                             } );
+            }
+            var time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, int.Parse(station.Id.Split(':')[0]), int.Parse(station.Id.Split(':')[1]), 0);
             return
                 await
                     Client.GetInstance()
                         .GetLiveBoard(new[]
                         {
                             new KeyValuePair<string, string>(Arguments.Station.ToString(), station.Name.ToUpper()),
-                            new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(),AppResources.ClientLang)
+                            new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(),AppResources.ClientLang),
+                            new KeyValuePair<string, string>(Arguments.Time.ToString().ToLower(),time.ToString("o"))
                         });
         }
 

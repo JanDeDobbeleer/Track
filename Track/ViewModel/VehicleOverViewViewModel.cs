@@ -79,6 +79,7 @@ namespace Track.ViewModel
             _helper = new Helper();
             StationOverViewCommand = new RelayCommand<Stop>((stop) =>
             {
+                stop.Stationinfo.Id = stop.Time;
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = stop.Stationinfo);
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });

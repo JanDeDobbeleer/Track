@@ -39,13 +39,15 @@
 					Text="refresh"
 					Command="{Binding RefreshCommand}"/>
                 <behaviors:ApplicationBarIconButton IsVisible="True"
-					IconUri="/Assets/AppBar/appbar.location.png"
-					Text="navigate"
-					Command="{Binding DirectionsCommand}"/>
-                <behaviors:ApplicationBarIconButton IsVisible="True"
 					IconUri="/Assets/AppBar/favs.png"
 					Text="favorite"
 					Command="{Binding SettingsCommand}"/>
+                <behaviors:ApplicationBarBehavior.MenuItems>
+                    <behaviors:ApplicationBarMenuItem
+                        IsVisible="True"
+                        Text="navigate"
+                        Command="{Binding DirectionsCommand}"/>
+                </behaviors:ApplicationBarBehavior.MenuItems>
             </behaviors:ApplicationBarBehavior>
         </i:Interaction.Behaviors>
         <Grid.RowDefinitions>

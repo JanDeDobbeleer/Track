@@ -5,6 +5,12 @@
         Lang,
         Format,
         Id,
-        Station
+        Station,
+        Hour,
+        Year,
+        Month,
+        Day,
+        Minutes,
+        Time
     }
 }
