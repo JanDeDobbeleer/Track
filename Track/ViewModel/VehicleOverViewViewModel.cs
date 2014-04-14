@@ -6,6 +6,7 @@ using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Microsoft.Practices.ServiceLocation;
 using Track.Annotations;
 using Track.Api;
 using TrackApi.Classes;
@@ -76,6 +77,11 @@ namespace Track.ViewModel
         {
             _navigationService = navigationService;
             _helper = new Helper();
+            StationOverViewCommand = new RelayCommand<Stop>((stop) =>
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = stop.Stationinfo);
+                _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
+            });
         }
 
         private async void GetVehicleInfo()

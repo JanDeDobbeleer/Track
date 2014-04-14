@@ -24,7 +24,7 @@ namespace TrackApi.Api
 
         public String LiveBoard
         {
-            get { return "/liveboard/?format=json&fast=true"; }
+            get { return "/liveboard/?format=json&fast=true"; } 
         }
 
         public String Vehicle
@@ -137,7 +137,7 @@ namespace TrackApi.Api
             foreach (var vp in valuePair)
             {
                 builder.Append("&");
-                builder.Append(vp.Key);
+                builder.Append(vp.Key.ToLower());
                 builder.Append("=");
                 builder.Append(vp.Value);
             }

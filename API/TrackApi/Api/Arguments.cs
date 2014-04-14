@@ -4,6 +4,7 @@
     {
         Lang,
         Format,
-        Id
+        Id,
+        Station
     }
 }

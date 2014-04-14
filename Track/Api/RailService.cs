@@ -92,7 +92,23 @@ namespace Track.Api
 
         public async Task<List<Departure>> GetLiveBoard(Station station)
         {
-            return await Client.GetInstance().GetLiveBoard(new[] { new KeyValuePair<string, string>(Arguments.Id.ToString().ToLower(), station.Id), new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang)} );
+            if(!string.IsNullOrWhiteSpace(station.Id))
+                return 
+                    await 
+                        Client.GetInstance()
+                            .GetLiveBoard(new[]
+                            {
+                                new KeyValuePair<string, string>(Arguments.Id.ToString().ToLower(), station.Id), 
+                                new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang)
+                            } );
+            return
+                await
+                    Client.GetInstance()
+                        .GetLiveBoard(new[]
+                        {
+                            new KeyValuePair<string, string>(Arguments.Station.ToString(), station.Name.ToUpper()),
+                            new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(),AppResources.ClientLang)
+                        });
         }
 
         public async Task<List<Stop>> GetVehicle(string vehicle)
