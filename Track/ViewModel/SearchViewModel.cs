@@ -5,7 +5,7 @@ using Track.Annotations;
 
 namespace Track.ViewModel
 {
-    class SearchViewModel : ViewModelBase, INotifyPropertyChanged
+    public class SearchViewModel : ViewModelBase, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

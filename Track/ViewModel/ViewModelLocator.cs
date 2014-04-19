@@ -14,7 +14,6 @@
 
 using System;
 using Cimbalino.Phone.Toolkit.Services;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
@@ -50,6 +49,7 @@ namespace Track.ViewModel
             SimpleIoc.Default.Register<MainpageViewModel>();
             SimpleIoc.Default.Register<StationOverviewViewModel>();
             SimpleIoc.Default.Register<VehicleOverviewViewModel>();
+            SimpleIoc.Default.Register<SearchViewModel>();
             SimpleIoc.Default.Register<IAsyncStorageService, AsyncStorageService>();
         }
 
@@ -66,6 +66,11 @@ namespace Track.ViewModel
         public VehicleOverviewViewModel VehicleOverView
         {
             get { return ServiceLocator.Current.GetInstance<VehicleOverviewViewModel>(); }
+        }
+
+        public SearchViewModel Search
+        {
+            get { return ServiceLocator.Current.GetInstance<SearchViewModel>(); }
         }
         
         public static void Cleanup()
