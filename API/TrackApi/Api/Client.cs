@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Localization.Resources;
 using PortableRest;
+using Tools;
 using TrackApi.Classes;
 
 namespace TrackApi.Api
@@ -77,11 +79,11 @@ namespace TrackApi.Api
             }
             catch (HttpRequestException)
             {
-                //TODO: show toast that indicates the call was not succesful
+                Message.ShowToast(AppResources.APIClientErrorDown);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //TODO: allow user to send an error log
+                Message.SendErrorEmail(e.Message + e.InnerException, "Client - GetLocations");
             }
             return ro.Station;
         }
@@ -96,14 +98,16 @@ namespace TrackApi.Api
                     Resource = LiveBoard + ConvertValuePairToQueryString(valuePair)
                 };
                 ro = await _restClient.ExecuteAsync<LiveBoardRootObject>(request);
+                if (true)
+                    throw new Exception("this just went bananas");
             }
             catch (HttpRequestException)
             {
-                //TODO: show toast that indicates the call was not succesful
+                Message.ShowToast(AppResources.APIClientErrorDown);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //TODO: allow user to send an error log
+                Message.SendErrorEmail(e.Message + e.InnerException, "Client - GetLiveBoard");
             }
             return ro.departures.departure;
         }
@@ -121,11 +125,11 @@ namespace TrackApi.Api
             }
             catch (HttpRequestException)
             {
-                //TODO: show toast that indicates the call was not succesful
+                Message.ShowToast(AppResources.APIClientErrorDown);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //TODO: allow user to send an error log
+                Message.SendErrorEmail(e.Message + e.InnerException, "Client - GetVehicle");
             }
             return ro.Stops.Stop;
         }

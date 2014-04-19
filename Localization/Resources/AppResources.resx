@@ -167,4 +167,16 @@
   <data name="StationOverViewPlatform" xml:space="preserve">
     <value>platform</value>
   </data>
+  <data name="APIClientErrorDown" xml:space="preserve">
+    <value>the API is not accepting any requests right now, please try again later</value>
+  </data>
+  <data name="MessageStationInfoError" xml:space="preserve">
+    <value>we could not load station info right now, please try again later</value>
+  </data>
+  <data name="MessageVehicleInfoError" xml:space="preserve">
+    <value>we could not load vehicle info right now, please try again later</value>
+  </data>
+  <data name="SearchViewHeader" xml:space="preserve">
+    <value>Search</value>
+  </data>
 </root>

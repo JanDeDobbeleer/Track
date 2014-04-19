@@ -61,6 +61,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to the API is not accepting any requests right now, please try again later.
+        /// </summary>
+        public static string APIClientErrorDown {
+            get {
+                return ResourceManager.GetString("APIClientErrorDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Track.
         /// </summary>
         public static string ApplicationTitle {
@@ -133,6 +142,24 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to we could not load station info right now, please try again later.
+        /// </summary>
+        public static string MessageStationInfoError {
+            get {
+                return ResourceManager.GetString("MessageStationInfoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to we could not load vehicle info right now, please try again later.
+        /// </summary>
+        public static string MessageVehicleInfoError {
+            get {
+                return ResourceManager.GetString("MessageVehicleInfoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to meters.
         /// </summary>
         public static string Meters {
@@ -183,6 +210,15 @@ namespace Localization.Resources {
         public static string ResourceLanguage {
             get {
                 return ResourceManager.GetString("ResourceLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchViewHeader {
+            get {
+                return ResourceManager.GetString("SearchViewHeader", resourceCulture);
             }
         }
         

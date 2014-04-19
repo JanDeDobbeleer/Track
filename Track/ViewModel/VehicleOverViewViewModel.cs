@@ -6,7 +6,9 @@ using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
+using Tools;
 using Track.Annotations;
 using Track.Api;
 using TrackApi.Classes;
@@ -95,6 +97,11 @@ namespace Track.ViewModel
                     Loading = true;
                 });
                 var list = await RailService.GetInstance().GetVehicle(Vehicle);
+                if (list == null)
+                {
+                    Message.ShowToast(AppResources.MessageVehicleInfoError);
+                    return;
+                }
                 _helper.AssignList(Stops, list);
                 Deployment.Current.Dispatcher.BeginInvoke(() => Loading = false);
             }
