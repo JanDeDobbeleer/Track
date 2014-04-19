@@ -39,29 +39,28 @@ namespace Tools
                     To = "trackapplication@outlook.com", 
                     Body = BuildErrorBody(error, location)
                 };
-            Deployment.Current.Dispatcher.BeginInvoke(task.Show);
+            task.Show();
         }
 
         private static string BuildErrorBody(string error, string location)
         {
             var builder = new StringBuilder();
             builder.Append(string.Format("Error at {0}" + Environment.NewLine,location));
-            builder.Append(DeviceInformation(builder));
-            builder.Append(string.Format("Log:" + Environment.NewLine + "{0}", error));
+            builder.Append(Environment.NewLine);
+            DeviceInformation(builder);
+            builder.Append(Environment.NewLine);
+            builder.Append(string.Format("Log:" + Environment.NewLine + Environment.NewLine + "{0}", error));
             return builder.ToString();
 
         }
 
-        private static string DeviceInformation(StringBuilder builder = null)
+        private static void DeviceInformation(StringBuilder builder = null)
         {
             if(builder == null)
                 builder = new StringBuilder();
             builder.Append(string.Format("Device: {0}" + Environment.NewLine, DeviceExtendedProperties.GetValue("DeviceManufacturer")));
             builder.Append(string.Format("Device name: {0}" + Environment.NewLine, DeviceExtendedProperties.GetValue("DeviceName")));
             builder.Append(string.Format("Firmware version: {0}" + Environment.NewLine, DeviceExtendedProperties.GetValue("DeviceFirmwareVersion")));
-            builder.Append(string.Format("Current memory usage: {0}" + Environment.NewLine, DeviceExtendedProperties.GetValue("DeviceCurrentMemoryUsage")));
-            builder.Append(string.Format("Peak memory usage: {0}" + Environment.NewLine, DeviceExtendedProperties.GetValue("ApplicationPeakMemoryUsage")));
-            return builder.ToString();
         }
     }
 }

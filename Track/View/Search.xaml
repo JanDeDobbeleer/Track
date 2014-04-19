@@ -7,8 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
     xmlns:behaviors="clr-namespace:Cimbalino.Phone.Toolkit.Behaviors;assembly=Cimbalino.Phone.Toolkit"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -28,8 +28,8 @@
             <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}" ForegroundColor="White">
                 <behaviors:ApplicationBarIconButton IsVisible="True"
 					IconUri="/Assets/AppBar/refresh.png"
-					Text="submit"
-					Command="{Binding RefreshCommand}"/>
+					Text="{Binding Path=LocalizedResources.AppBarButtomSubmit, Source={StaticResource LocalizedStrings}}"
+					Command="{Binding ConnectionViewCommand}"/>
             </behaviors:ApplicationBarBehavior>
         </i:Interaction.Behaviors>
         <Grid.RowDefinitions>
@@ -45,41 +45,25 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ListBox>
-                <TextBlock Style="{StaticResource DefaultTextStyle}" Text="from"/>
-                <TextBlock>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Tap">
-                            <command:EventToCommand Command="{Binding Main.DirectionsCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBlock>
-                <TextBlock Style="{StaticResource DefaultTextStyle}" Text="to"/>
-                <TextBlock>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Tap">
-                            <command:EventToCommand Command="{Binding Main.DirectionsCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBlock>
-                <TextBlock Style="{StaticResource DefaultTextStyle}" Text="date"/>
-                <TextBlock Style="{StaticResource DefaultTextStyle}" Text="{Binding Date, Mode=TwoWay}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Tap">
-                            <command:EventToCommand Command="{Binding Main.DirectionsCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBlock>
-                <TextBlock Style="{StaticResource DefaultTextStyle}" Text="time"/>
-                <TextBlock Style="{StaticResource DefaultTextStyle}" Text="{Binding Time, Mode=TwoWay}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Tap">
-                            <command:EventToCommand Command="{Binding Main.DirectionsCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TextBlock>
-            </ListBox>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,10,12,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Style="{StaticResource DefaultTextStyle}" Text="from"/>
+            <toolkit:AutoCompleteBox ItemsSource="{Binding Stations}" Grid.Row="1"/>
+            <TextBlock  Grid.Row="2" Style="{StaticResource DefaultTextStyle}" Text="to"/>
+            <toolkit:AutoCompleteBox ItemsSource="{Binding Stations}" Grid.Row="3"/>
+            <TextBlock  Grid.Row="4" Style="{StaticResource DefaultTextStyle}" Text="date"/>
+            <toolkit:DatePicker  Grid.Row="5" Value="{Binding Date, Mode=TwoWay}"/>
+            <TextBlock  Grid.Row="6" Style="{StaticResource DefaultTextStyle}" Text="time"/>
+            <toolkit:TimePicker  Grid.Row="7" Value="{Binding Time, Mode=TwoWay}"/>
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>

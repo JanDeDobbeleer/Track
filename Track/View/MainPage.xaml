@@ -80,7 +80,7 @@
                 <behaviors:ApplicationBarIconButton IsVisible="True"
                                                     IconUri="/Assets/AppBar/feature.search.png"
                                                     Text="search"
-                                                    Command="{Binding SettingsCommand}"/>
+                                                    Command="{Binding SearchCommand}"/>
             </behaviors:ApplicationBarBehavior>
         </i:Interaction.Behaviors>
         <Grid.RowDefinitions>

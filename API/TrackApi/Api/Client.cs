@@ -98,8 +98,6 @@ namespace TrackApi.Api
                     Resource = LiveBoard + ConvertValuePairToQueryString(valuePair)
                 };
                 ro = await _restClient.ExecuteAsync<LiveBoardRootObject>(request);
-                if (true)
-                    throw new Exception("this just went bananas");
             }
             catch (HttpRequestException)
             {

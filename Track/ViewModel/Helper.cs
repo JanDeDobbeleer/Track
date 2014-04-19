@@ -92,5 +92,16 @@ namespace Track.ViewModel
                 }
             });
         }
+
+        public void AssignList(ICollection<string> input, IEnumerable<string> names)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                foreach (var name in names)
+                {
+                    input.Add(name);
+                }
+            });
+        }
     }
 }

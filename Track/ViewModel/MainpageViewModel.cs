@@ -27,6 +27,7 @@ namespace Track.ViewModel
     {
         #region commands
         public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand SearchCommand { get; private set; }
         public RelayCommand<Station> DirectionsCommand { get; private set; }
         public RelayCommand<Station> StationOverviewCommand { get; private set; }
         #endregion
@@ -214,6 +215,7 @@ namespace Track.ViewModel
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = station);
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
+            SearchCommand = new RelayCommand(()=> _navigationService.NavigateTo(ViewModelLocator.SearchPageUri));
         }
 
         private void ClearItems()
@@ -255,7 +257,8 @@ namespace Track.ViewModel
         {
             Deployment.Current.Dispatcher.BeginInvoke(() => LoadingLocations = true);
             Geoposition geoposition = null;
-
+            var list = await RailService.GetInstance().GetLocations(new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
+            _helper.AssignList(ServiceLocator.Current.GetInstance<SearchViewModel>().Stations, list.Select(x => x.Name));
             var geolocator = new Geolocator
             {
                 DesiredAccuracy = PositionAccuracy.High
@@ -272,17 +275,16 @@ namespace Track.ViewModel
 #endif
             }
             CurrentPosition = geoposition.Coordinate.ToGeoCoordinate();
-            await Task.Run(() => GetLocations(CurrentPosition));
+            await Task.Run(() => GetLocations(CurrentPosition, list));
             Deployment.Current.Dispatcher.BeginInvoke(() => { LocationLoaded = true; });
             Messenger.Default.Send(new NotificationMessage("StationsLoaded"));
             Deployment.Current.Dispatcher.BeginInvoke(() => LoadingLocations = false);
         }
 
-        private async Task GetLocations(GeoCoordinate currentPhonePosition)
+        private async Task GetLocations(GeoCoordinate currentPhonePosition, List<Station> list)
         {
             try
             {
-                var list = await RailService.GetInstance().GetLocations(new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
                 //parallelize this for optimization
                 var tasks = Enumerable.Range(0, list.Count).Select(i =>
                     Task.Run(() =>

@@ -179,4 +179,10 @@
   <data name="SearchViewHeader" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="AppBarButtomSubmit" xml:space="preserve">
+    <value>submit</value>
+  </data>
+  <data name="AppBarButtonRefresh" xml:space="preserve">
+    <value>refresh</value>
+  </data>
 </root>
