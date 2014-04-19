@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Newtonsoft.Json;
 
 namespace TrackApi.Tools
@@ -12,10 +13,10 @@ namespace TrackApi.Tools
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (!reader.Value.ToString().Contains("[NMBS/SNCB]")) 
-                return reader.Value.ToString();
+            if (!reader.Value.ToString().Contains("[NMBS/SNCB]"))
+                return HttpUtility.HtmlDecode(reader.Value.ToString());
             var index = reader.Value.ToString().IndexOf("[NMBS/SNCB]", StringComparison.Ordinal);
-            return reader.Value.ToString().Remove(index).Trim();
+            return HttpUtility.HtmlDecode(reader.Value.ToString().Remove(index).Trim());
         }
 
         public override bool CanConvert(Type objectType)

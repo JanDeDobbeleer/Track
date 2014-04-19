@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
-using Cimbalino.Phone.Toolkit.Extensions;
 using Cimbalino.Phone.Toolkit.Services;
 using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using TrackApi.Api;
 using TrackApi.Classes;
+using TrackApi.Tools;
 
 namespace Track.Api
 {
@@ -104,7 +103,7 @@ namespace Track.Api
                                 new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang)
                             } );
             }
-            var time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, int.Parse(station.Id.Split(':')[0]), int.Parse(station.Id.Split(':')[1]), 0);
+            //var time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, int.Parse(station.Id.Split(':')[0]), int.Parse(station.Id.Split(':')[1]), 0);
             return
                 await
                     Client.GetInstance()
@@ -112,7 +111,8 @@ namespace Track.Api
                         {
                             new KeyValuePair<string, string>(Arguments.Station.ToString(), station.Name.ToUpper()),
                             new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(),AppResources.ClientLang),
-                            new KeyValuePair<string, string>(Arguments.Time.ToString().ToLower(),time.ToString("o"))
+                            new KeyValuePair<string, string>(Arguments.Date.ToString().ToLower(),DateTime.Now.ToShortDateString().ConvertDateToCorrectDateStamp()),
+                            new KeyValuePair<string, string>(Arguments.Time.ToString().ToLower(),station.Id.Remove(station.Id.IndexOf(':'), 1))
                         });
         }
 

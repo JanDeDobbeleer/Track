@@ -8,6 +8,7 @@ namespace TrackApi.Classes
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
         [JsonProperty(PropertyName = "station")]
+        [JsonConverter(typeof(StationNameConverter))]
         public string Station { get; set; }
         [JsonProperty(PropertyName = "stationinfo")]
         public Station Stationinfo { get; set; }

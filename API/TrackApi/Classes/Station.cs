@@ -2,6 +2,7 @@
 using System.Device.Location;
 using Localization.Resources;
 using Newtonsoft.Json;
+using TrackApi.Tools;
 
 namespace TrackApi.Classes
 {
@@ -14,6 +15,7 @@ namespace TrackApi.Classes
         [JsonProperty(PropertyName = "locationY")]
         public string LocationY { get; set; }
         [JsonProperty(PropertyName = "name")]
+        [JsonConverter(typeof(StationNameConverter))]
         public string Name { get; set; }
         [JsonProperty(PropertyName = "standardname")]
         public string Standardname { get; set; }

@@ -11,6 +11,7 @@
         Month,
         Day,
         Minutes,
-        Time
+        Time,
+        Date
     }
 }
