@@ -132,6 +132,24 @@ namespace TrackApi.Api
             return ro.Stops.Stop;
         }
 
+        public async void GetConnections(KeyValuePair<string, string>[] valuePair)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("http://api.irail.be/", UriKind.RelativeOrAbsolute);
+                    var str = "connections/?format=json" + ConvertValuePairToQueryString(valuePair);
+                    var temp = await client.GetStringAsync(str);
+                    var test = temp + "test";
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
         private string ConvertValuePairToQueryString(IEnumerable<KeyValuePair<string, string>> valuePair)
         {
             var builder = new StringBuilder();

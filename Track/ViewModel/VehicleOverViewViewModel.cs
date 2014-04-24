@@ -40,7 +40,7 @@ namespace Track.ViewModel
         }
 
         public const string StopsPropertyName = "Stops";
-        private ObservableCollection<Stop> _stops = new ObservableCollection<Stop>();
+        private ObservableCollection<Stop> _stops;
         public ObservableCollection<Stop> Stops
         {
             get
@@ -79,6 +79,7 @@ namespace Track.ViewModel
         {
             _navigationService = navigationService;
             _helper = new Helper();
+            Stops = new ObservableCollection<Stop>();
             StationOverViewCommand = new RelayCommand<Stop>((stop) =>
             {
                 stop.Stationinfo.Id = stop.Time;

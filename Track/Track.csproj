@@ -167,6 +167,7 @@
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\AppBar\appbar.information.png" />
     <Content Include="Assets\AppBar\appbar.location.png" />
+    <Content Include="Assets\AppBar\check.png" />
     <Content Include="Assets\AppBar\favs.png" />
     <Content Include="Assets\AppBar\feature.search.png" />
     <Content Include="Assets\AppBar\refresh.png" />

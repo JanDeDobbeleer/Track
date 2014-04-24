@@ -7,5 +7,11 @@
         public string station { get; set; }
         public Station stationinfo { get; set; }
         public Departures departures { get; set; }
+
+        public LiveBoardRootObject()
+        {
+            stationinfo = new Station();
+            departures = new Departures();
+        }
     }
 }

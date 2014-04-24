@@ -14,19 +14,18 @@ namespace Tools
     {
         public static void ShowToast(string message)
         {
-            Tools.SetProgressIndicator(false);
+            //Tools.SetProgressIndicator(false);
             var toast = new ToastPrompt
             {
                 Title = AppResources.ApplicationTitle,
                 Message = message,
-                //ImageSource = new BitmapImage(new Uri("/Assets/ToastIcon.png", UriKind.RelativeOrAbsolute)),
                 MillisecondsUntilHidden = 3000,
                 TextOrientation = Orientation.Vertical, 
                 TextWrapping = TextWrapping.Wrap,
-                Background = (SolidColorBrush)Application.Current.Resources["PhoneActiveBrush"],
+                Background = (SolidColorBrush)Application.Current.Resources["TrackColorBrush"],
                 Margin = new Thickness(0,-20,0,-25)
             };
-            toast.Show();
+            Deployment.Current.Dispatcher.BeginInvoke(toast.Show);
         }
 
         public static void SendErrorEmail(string error, string location)

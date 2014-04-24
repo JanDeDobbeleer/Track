@@ -43,7 +43,7 @@ namespace Track.ViewModel
         }
 
         public const string DeparturesPropertyName = "Departures";
-        private ObservableCollection<Departure> _departures = new ObservableCollection<Departure>();
+        private ObservableCollection<Departure> _departures;
         public ObservableCollection<Departure> Departures
         {
             get
@@ -92,6 +92,7 @@ namespace Track.ViewModel
                 if (list == null)
                 {
                     Message.ShowToast(AppResources.MessageStationInfoError);
+                    Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDepartures = false);
                     return;
                 }
                 _helper.AssignList(Departures, list);
@@ -99,7 +100,7 @@ namespace Track.ViewModel
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                Message.ShowToast(e.Message);
             }
         }
 
@@ -107,6 +108,7 @@ namespace Track.ViewModel
         {
             _navigationService = navigationService;
             _helper = new Helper();
+            Departures = new ObservableCollection<Departure>();
             DirectionsCommand = new RelayCommand(() => _helper.OpenMaps(Station));
             RefreshCommand = new RelayCommand(() => Task.WaitAll(Task.Factory.StartNew(() => GetLiveBoard(Station))));
             VehicleOverViewCommand = new RelayCommand<Departure>((departure) =>

@@ -185,4 +185,22 @@
   <data name="AppBarButtonRefresh" xml:space="preserve">
     <value>refresh</value>
   </data>
+  <data name="MessageValidStationName" xml:space="preserve">
+    <value>please provide a valid station name</value>
+  </data>
+  <data name="SearchViewDate" xml:space="preserve">
+    <value>date</value>
+  </data>
+  <data name="SearchViewFrom" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="SearchViewTime" xml:space="preserve">
+    <value>time</value>
+  </data>
+  <data name="SearchViewTo" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="ToastNoInternet" xml:space="preserve">
+    <value>we know it's sad, but we really need an internet connection to proceed, sorry about that.</value>
+  </data>
 </root>

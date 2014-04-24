@@ -169,6 +169,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to please provide a valid station name.
+        /// </summary>
+        public static string MessageValidStationName {
+            get {
+                return ResourceManager.GetString("MessageValidStationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to we could not load vehicle info right now, please try again later.
         /// </summary>
         public static string MessageVehicleInfoError {
@@ -232,11 +241,47 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to date.
+        /// </summary>
+        public static string SearchViewDate {
+            get {
+                return ResourceManager.GetString("SearchViewDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to from.
+        /// </summary>
+        public static string SearchViewFrom {
+            get {
+                return ResourceManager.GetString("SearchViewFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string SearchViewHeader {
             get {
                 return ResourceManager.GetString("SearchViewHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to time.
+        /// </summary>
+        public static string SearchViewTime {
+            get {
+                return ResourceManager.GetString("SearchViewTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to to.
+        /// </summary>
+        public static string SearchViewTo {
+            get {
+                return ResourceManager.GetString("SearchViewTo", resourceCulture);
             }
         }
         
@@ -255,6 +300,15 @@ namespace Localization.Resources {
         public static string StationOverViewPlatform {
             get {
                 return ResourceManager.GetString("StationOverViewPlatform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to we know it&apos;s sad, but we really need an internet connection to proceed, sorry about that..
+        /// </summary>
+        public static string ToastNoInternet {
+            get {
+                return ResourceManager.GetString("ToastNoInternet", resourceCulture);
             }
         }
     }

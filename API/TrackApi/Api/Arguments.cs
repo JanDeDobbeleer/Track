@@ -12,6 +12,15 @@
         Day,
         Minutes,
         Time,
-        Date
+        Date,
+        TimeSel,
+        Depart,
+        Arrive,
+        TypeOfTransport,
+        Train,
+        Bus,
+        Taxi,
+        To,
+        From
     }
 }

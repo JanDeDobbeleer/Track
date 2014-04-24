@@ -73,7 +73,7 @@ namespace Track.ViewModel
         }
 
         public const string LocationsPropertyName = "Locations";
-        private ObservableCollection<Station> _locations = new ObservableCollection<Station>();
+        private ObservableCollection<Station> _locations;
         public ObservableCollection<Station> Locations
         {
             get
@@ -94,7 +94,7 @@ namespace Track.ViewModel
         }
 
         public const string NearbyPropertyName = "Nearby";
-        private ObservableCollection<Station> _nearby = new ObservableCollection<Station>();
+        private ObservableCollection<Station> _nearby;
         public ObservableCollection<Station> Nearby
         {
             get
@@ -115,7 +115,7 @@ namespace Track.ViewModel
         }
 
         public const string DisruptionsPropertyName = "Disruptions";
-        private ObservableCollection<Disruption> _disruptions = new ObservableCollection<Disruption>();
+        private ObservableCollection<Disruption> _disruptions;
         public ObservableCollection<Disruption> Disruptions
         {
             get
@@ -195,6 +195,9 @@ namespace Track.ViewModel
         {
             _navigationService = navigationService;
             _helper = new Helper();
+            Locations = new ObservableCollection<Station>();
+            Disruptions =  new ObservableCollection<Disruption>();
+            Nearby = new ObservableCollection<Station>();
             Messenger.Default.Register<NotificationMessage>(this, async (message) =>
             {
                 if (!message.Notification.Equals("MainPageLoaded", StringComparison.OrdinalIgnoreCase)) 

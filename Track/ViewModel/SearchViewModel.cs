@@ -10,7 +10,10 @@ using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Localization.Resources;
+using Tools;
 using Track.Annotations;
+using Track.Api;
 using TrackApi.Classes;
 
 namespace Track.ViewModel
@@ -23,7 +26,7 @@ namespace Track.ViewModel
         private readonly Helper _helper;
 
         public const string StationsPropertyName = "Stations";
-        private ObservableCollection<string> _stations = new ObservableCollection<string>();
+        private ObservableCollection<string> _stations;
         public ObservableCollection<string> Stations
         {
             get
@@ -44,7 +47,7 @@ namespace Track.ViewModel
         }
 
         public const string DatePropertyName = "Date";
-        private string _date;
+        private string _date = DateTime.Now.ToString("MM/dd/yyyy");
         public string Date
         {
             get
@@ -54,12 +57,12 @@ namespace Track.ViewModel
             set
             {
                 _date = value;
-                OnPropertyChanged(DatePropertyName);
+                RaisePropertyChanged(DatePropertyName);
             }
         }
 
         public const string TimePropertyName = "Time";
-        private string _time;
+        private string _time = DateTime.Now.ToShortTimeString();
         public string Time
         {
             get
@@ -108,8 +111,27 @@ namespace Track.ViewModel
         {
             _helper = new Helper();
             _navigationService = navigationService;
-            Date = DateTime.Now.ToShortDateString();
-            Time = DateTime.Now.ToShortTimeString();
+            Stations = new ObservableCollection<string>();
+            ConnectionViewCommand = new RelayCommand(() =>
+            {
+                if (CheckForValidValues())
+                    RailService.GetInstance().GetConnections(Date, Time, From, To);
+            });
+        }
+
+        private bool CheckForValidValues()
+        {
+            if (string.IsNullOrWhiteSpace(From) || string.IsNullOrWhiteSpace(To))
+            {
+                Message.ShowToast(AppResources.MessageValidStationName);
+                return false;
+            }
+            if (!Stations.Contains(From.Trim()) || !Stations.Contains(To.Trim()))
+            {
+                Message.ShowToast(AppResources.MessageValidStationName);
+                return false;
+            }
+            return true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

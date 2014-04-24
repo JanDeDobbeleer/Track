@@ -6,5 +6,10 @@ namespace TrackApi.Classes
     {
         public string number { get; set; }
         public List<Departure> departure { get; set; }
+
+        public Departures()
+        {
+            departure = new List<Departure>();
+        }
     }
 }

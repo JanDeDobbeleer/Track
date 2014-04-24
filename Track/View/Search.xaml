@@ -21,13 +21,21 @@
     <phone:PhoneApplicationPage.DataContext>
         <Binding Path="Search" Source="{StaticResource Locator}"/>
     </phone:PhoneApplicationPage.DataContext>
+    
+    <phone:PhoneApplicationPage.Resources>
+        <Style TargetType="toolkit:AutoCompleteBox" x:Key="AutoCompleteBoxStyle">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="White">
         <i:Interaction.Behaviors>
             <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}" ForegroundColor="White">
                 <behaviors:ApplicationBarIconButton IsVisible="True"
-					IconUri="/Assets/AppBar/refresh.png"
+					IconUri="/Assets/AppBar/check.png"
 					Text="{Binding Path=LocalizedResources.AppBarButtomSubmit, Source={StaticResource LocalizedStrings}}"
 					Command="{Binding ConnectionViewCommand}"/>
             </behaviors:ApplicationBarBehavior>
@@ -56,14 +64,14 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Style="{StaticResource DefaultTextStyle}" Text="from"/>
-            <toolkit:AutoCompleteBox ItemsSource="{Binding Stations}" Grid.Row="1"/>
-            <TextBlock  Grid.Row="2" Style="{StaticResource DefaultTextStyle}" Text="to"/>
-            <toolkit:AutoCompleteBox ItemsSource="{Binding Stations}" Grid.Row="3"/>
-            <TextBlock  Grid.Row="4" Style="{StaticResource DefaultTextStyle}" Text="date"/>
-            <toolkit:DatePicker  Grid.Row="5" Value="{Binding Date, Mode=TwoWay}"/>
-            <TextBlock  Grid.Row="6" Style="{StaticResource DefaultTextStyle}" Text="time"/>
-            <toolkit:TimePicker  Grid.Row="7" Value="{Binding Time, Mode=TwoWay}"/>
+            <TextBlock Grid.Row="0" Style="{StaticResource DefaultTextStyle}" Text="{Binding Path=LocalizedResources.SearchViewFrom, Source={StaticResource LocalizedStrings}}" FontWeight="SemiBold" FontSize="25"/>
+            <toolkit:AutoCompleteBox ItemsSource="{Binding Stations}" Grid.Row="1" Style="{StaticResource AutoCompleteBoxStyle}" SelectedItem="{Binding From, Mode=TwoWay}"/>
+            <TextBlock  Grid.Row="2" Style="{StaticResource DefaultTextStyle}" Text="{Binding Path=LocalizedResources.SearchViewTo, Source={StaticResource LocalizedStrings}}" FontWeight="SemiBold" FontSize="25"/>
+            <toolkit:AutoCompleteBox ItemsSource="{Binding Stations}" Grid.Row="3" Style="{StaticResource AutoCompleteBoxStyle}" SelectedItem="{Binding To, Mode=TwoWay}"/>
+            <TextBlock  Grid.Row="4" Style="{StaticResource DefaultTextStyle}" Text="{Binding Path=LocalizedResources.SearchViewDate, Source={StaticResource LocalizedStrings}}" FontWeight="SemiBold" FontSize="25"/>
+            <toolkit:DatePicker  Grid.Row="5" Value="{Binding Date, Mode=TwoWay, StringFormat='ddMMYYYY'}" Foreground="Black" HorizontalAlignment="Right"/>
+            <TextBlock  Grid.Row="6" Style="{StaticResource DefaultTextStyle}" Text="{Binding Path=LocalizedResources.SearchViewTime, Source={StaticResource LocalizedStrings}}" FontWeight="SemiBold" FontSize="25"/>
+            <toolkit:TimePicker  Grid.Row="7" Value="{Binding Time, Mode=TwoWay}" Foreground="Black" HorizontalAlignment="Right"/>
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>

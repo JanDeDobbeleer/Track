@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ServiceModel.Channels;
 using System.Threading.Tasks;
+using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
 using Localization.Resources;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using TrackApi.Api;
 using TrackApi.Classes;
 using TrackApi.Tools;
+using Message = Tools.Message;
+using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
 namespace Track.Api
 {
@@ -48,6 +54,8 @@ namespace Track.Api
 
         public async Task<List<Station>> GetLocations(KeyValuePair<String, String> valuePair)
         {
+            if (CheckForInternetAccess())
+                return new List<Station>();
             var requestFromInternet = true;
             var stationCache = string.Empty;
             var stationCacheExists = await ServiceLocator.Current.GetInstance<IAsyncStorageService>().FileExistsAsync(Constants.LOCATIONSSTORE);
@@ -66,6 +74,7 @@ namespace Track.Api
                     {
                         locationsList = cache.CacheData;
                         requestFromInternet = false;
+                        //TODO: check the size
                     }
                 }
                 catch (Exception)
@@ -92,6 +101,8 @@ namespace Track.Api
 
         public async Task<List<Departure>> GetLiveBoard(Station station)
         {
+            if (CheckForInternetAccess())
+                return new List<Departure>();
             if(!station.Id.Contains(":"))
             {
                 return 
@@ -103,7 +114,6 @@ namespace Track.Api
                                 new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang)
                             } );
             }
-            //var time = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, int.Parse(station.Id.Split(':')[0]), int.Parse(station.Id.Split(':')[1]), 0);
             return
                 await
                     Client.GetInstance()
@@ -118,7 +128,32 @@ namespace Track.Api
 
         public async Task<List<Stop>> GetVehicle(string vehicle)
         {
+            if (CheckForInternetAccess())
+                return new List<Stop>();
             return await Client.GetInstance().GetVehicle(new KeyValuePair<string, string>("id", "BE.NMBS." + vehicle));
+        }
+
+        public void GetConnections(string date, string time, string from, string to)
+        {
+            if(CheckForInternetAccess())
+                return;
+            Client.GetInstance().GetConnections(new[]
+            {
+                new KeyValuePair<string, string>(Arguments.To.ToString().ToLower(), to),
+                new KeyValuePair<string, string>(Arguments.From.ToString().ToLower(), from),
+                new KeyValuePair<string, string>(Arguments.Date.ToString().ToLower(), date.AmericanDateToApiDate()),
+                new KeyValuePair<string, string>(Arguments.Time.ToString().ToLower(), time.Remove(time.IndexOf(':'), 1)),
+                new KeyValuePair<string, string>(Arguments.TimeSel.ToString().ToLower(), Arguments.Depart.ToString().ToLower()),
+                new KeyValuePair<string, string>(Arguments.TypeOfTransport.ToString().ToLower(), Arguments.Train.ToString().ToLower())
+            });
+        }
+
+        private bool CheckForInternetAccess()
+        {
+            if (NetworkInterface.GetIsNetworkAvailable()) 
+                return true;
+            Message.ShowToast(AppResources.ToastNoInternet);
+            return false;
         }
     }
 }
