@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ServiceModel.Channels;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
+using Cimbalino.Phone.Toolkit.Extensions;
 using Cimbalino.Phone.Toolkit.Services;
 using Localization.Resources;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Net.NetworkInformation;
 using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
+using Track.Database;
 using TrackApi.Api;
 using TrackApi.Classes;
 using TrackApi.Tools;
@@ -54,34 +53,24 @@ namespace Track.Api
 
         public async Task<List<Station>> GetLocations(KeyValuePair<String, String> valuePair)
         {
-            if (CheckForInternetAccess())
+            if (!CheckForInternetAccess())
                 return new List<Station>();
+            bool stationCacheExists = false;
             var requestFromInternet = true;
-            var stationCache = string.Empty;
-            var stationCacheExists = await ServiceLocator.Current.GetInstance<IAsyncStorageService>().FileExistsAsync(Constants.LOCATIONSSTORE);
-
-            if(stationCacheExists)
-                stationCache = await ServiceLocator.Current.GetInstance<IAsyncStorageService>().ReadAllTextAsync(Constants.LOCATIONSSTORE);
-
+            try
+            {
+                stationCacheExists = ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.Any();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             var locationsList = new List<Station>();
 
-            if (!string.IsNullOrEmpty(stationCache))
+            if (stationCacheExists)
             {
-                try
-                {
-                    var cache = JsonConvert.DeserializeObject<StorageCache>(stationCache);
-                    if ((DateTime.Now - cache.CacheDate).Days < 8)
-                    {
-                        locationsList = cache.CacheData;
-                        requestFromInternet = false;
-                        //TODO: check the size
-                    }
-                }
-                catch (Exception)
-                {
-                    //Something went wrong with the cache! So get new data from the internet to try to force a new cache
-                    requestFromInternet = true;
-                }
+                locationsList = ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.ToList();
+                requestFromInternet = false;
             }
 
             if (!requestFromInternet) 
@@ -89,8 +78,8 @@ namespace Track.Api
             try
             {
                 locationsList = await Client.GetInstance().GetLocations(valuePair);
-                var cache = new StorageCache { CacheDate = DateTime.Now, CacheData = locationsList };
-                await ServiceLocator.Current.GetInstance<IAsyncStorageService>().WriteAllTextAsync(Constants.LOCATIONSSTORE, JsonConvert.SerializeObject(cache));
+                ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.Clear();
+                ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.AddRange(locationsList);
             }
             catch (Exception)
             {
@@ -101,7 +90,7 @@ namespace Track.Api
 
         public async Task<List<Departure>> GetLiveBoard(Station station)
         {
-            if (CheckForInternetAccess())
+            if (!CheckForInternetAccess())
                 return new List<Departure>();
             if(!station.Id.Contains(":"))
             {
@@ -128,14 +117,14 @@ namespace Track.Api
 
         public async Task<List<Stop>> GetVehicle(string vehicle)
         {
-            if (CheckForInternetAccess())
+            if (!CheckForInternetAccess())
                 return new List<Stop>();
             return await Client.GetInstance().GetVehicle(new KeyValuePair<string, string>("id", "BE.NMBS." + vehicle));
         }
 
         public void GetConnections(string date, string time, string from, string to)
         {
-            if(CheckForInternetAccess())
+            if(!CheckForInternetAccess())
                 return;
             Client.GetInstance().GetConnections(new[]
             {

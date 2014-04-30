@@ -17,6 +17,12 @@
     shell:SystemTray.ForegroundColor="White"
     shell:SystemTray.Opacity="0">
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger>
+            <command:EventToCommand Command="{Binding PageLoaded, Mode=OneWay}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <phone:PhoneApplicationPage.FontFamily>
         <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
     </phone:PhoneApplicationPage.FontFamily>

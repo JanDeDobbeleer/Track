@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Maps.Controls;
-using Microsoft.Phone.Shell;
 using Microsoft.Practices.ServiceLocation;
-using Track.Common;
 using Track.ViewModel;
-using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace Track.View
 {
@@ -18,18 +14,11 @@ namespace Track.View
         public MainPage()
         {
             InitializeComponent();
-            Loaded += OnPageLoaded;
             Messenger.Default.Register<NotificationMessage>(this, (message) =>
             {
                 if (message.Notification.Equals("StationsLoaded", StringComparison.OrdinalIgnoreCase))
                     Deployment.Current.Dispatcher.BeginInvoke(AdjustMapView);
             });
-        }
-
-        private void OnPageLoaded(object sender, RoutedEventArgs e)
-        {
-            Messenger.Default.Send(new NotificationMessage("MainPageLoaded"));
-            Loaded -= OnPageLoaded;
         }
 
         private void AdjustMapView()

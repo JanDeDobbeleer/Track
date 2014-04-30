@@ -121,8 +121,9 @@
     <Compile Include="Controls\StationList.xaml.cs">
       <DependentUpon>StationList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Favorites\Favorite.cs" />
-    <Compile Include="Favorites\FavoriteList.cs" />
+    <Compile Include="Database\Favorite.cs" />
+    <Compile Include="Database\TackDataContext.cs" />
+    <Compile Include="Database\TrackDatabase.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\FinshedEventArgs.cs" />

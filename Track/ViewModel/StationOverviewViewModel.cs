@@ -10,7 +10,7 @@ using GalaSoft.MvvmLight.Command;
 using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Tools;
-using Track.Annotations;
+using Tools.Properties;
 using Track.Api;
 using TrackApi.Classes;
 
@@ -24,6 +24,7 @@ namespace Track.ViewModel
         public RelayCommand DirectionsCommand { get; private set; }
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand<Departure> VehicleOverViewCommand { get; private set; }
+        public RelayCommand PageLoaded { get; private set; }
 
         #region properties
         public const string StationPropertyName = "Station";
@@ -37,7 +38,6 @@ namespace Track.ViewModel
             set
             {
                 _station = value;
-                GetLiveBoard(value);
                 OnPropertyChanged(StationPropertyName);
             }
         }
@@ -116,6 +116,7 @@ namespace Track.ViewModel
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<VehicleOverviewViewModel>().Vehicle = departure.Vehicle);
                 _navigationService.NavigateTo(ViewModelLocator.VehicleOverviewPageUri);
             });
+            PageLoaded = new RelayCommand(() => GetLiveBoard(Station));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

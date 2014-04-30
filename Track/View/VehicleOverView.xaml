@@ -21,6 +21,12 @@
     shell:SystemTray.ForegroundColor="White"
     shell:SystemTray.Opacity="0">
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger>
+            <command:EventToCommand Command="{Binding PageLoaded, Mode=OneWay}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="White">
         <i:Interaction.Behaviors>

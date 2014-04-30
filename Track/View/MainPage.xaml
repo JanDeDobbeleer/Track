@@ -23,6 +23,12 @@
     shell:SystemTray.ForegroundColor="White"
     shell:SystemTray.Opacity="0">
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger>
+            <command:EventToCommand Command="{Binding PageLoaded, Mode=OneWay}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <phone:PhoneApplicationPage.Resources>
         <ControlTemplate x:Key="PushPinTemplate" TargetType="toolkit:Pushpin">
             <Grid Height="50" Width="50" RenderTransformOrigin="0.5,0.5" Margin="-26,0,0,0">

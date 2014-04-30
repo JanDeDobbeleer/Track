@@ -15,7 +15,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
-using Track.Annotations;
+using Tools.Properties;
 using Track.Api;
 using Track.Common;
 using TrackApi.Api;
@@ -30,6 +30,7 @@ namespace Track.ViewModel
         public RelayCommand SearchCommand { get; private set; }
         public RelayCommand<Station> DirectionsCommand { get; private set; }
         public RelayCommand<Station> StationOverviewCommand { get; private set; }
+        public RelayCommand PageLoaded { get; private set; }
         #endregion
 
         #region properties
@@ -198,10 +199,8 @@ namespace Track.ViewModel
             Locations = new ObservableCollection<Station>();
             Disruptions =  new ObservableCollection<Disruption>();
             Nearby = new ObservableCollection<Station>();
-            Messenger.Default.Register<NotificationMessage>(this, async (message) =>
+            PageLoaded = new RelayCommand(async () =>
             {
-                if (!message.Notification.Equals("MainPageLoaded", StringComparison.OrdinalIgnoreCase)) 
-                    return;
                 Task.WaitAll(Task.Factory.StartNew(() => GetDisruptions()));
                 await GetCurrentPosition();
             });

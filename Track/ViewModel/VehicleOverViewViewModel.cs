@@ -9,7 +9,7 @@ using GalaSoft.MvvmLight.Command;
 using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Tools;
-using Track.Annotations;
+using Tools.Properties;
 using Track.Api;
 using TrackApi.Classes;
 
@@ -22,6 +22,7 @@ namespace Track.ViewModel
         private readonly Helper _helper;
 
         public RelayCommand<Stop> StationOverViewCommand { get; private set; }
+        public RelayCommand PageLoaded { get; private set; }
 
         public const string VehiclePropertyName = "Vehicle";
         private string _vehicle;
@@ -34,7 +35,6 @@ namespace Track.ViewModel
             set
             {
                 _vehicle = value;
-                GetVehicleInfo();
                 OnPropertyChanged(VehiclePropertyName);
             }
         }
@@ -86,6 +86,7 @@ namespace Track.ViewModel
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = stop.Stationinfo);
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
+            PageLoaded = new RelayCommand(GetVehicleInfo);
         }
 
         private async void GetVehicleInfo()

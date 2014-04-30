@@ -6,6 +6,7 @@ using System.Windows.Navigation;
 using Localization.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Track.Database;
 
 namespace Track
 {
@@ -54,7 +55,18 @@ namespace Track
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
             //force white theme
-            ThemeManager.ToDarkTheme();
+            // Specify the local database connection string.
+            const string dbConnectionString = "Data Source=isostore:/Database.sdf";
+
+            // Create the database if it does not exist.
+            using (var db = new TrackDataContext(dbConnectionString))
+            {
+                if (db.DatabaseExists()) 
+                    return;
+                db.CreateDatabase();
+                // Save categories to the database.
+                db.SubmitChanges();
+            }
         }
 
         // Code to execute when the application is launching (eg, from Start)
