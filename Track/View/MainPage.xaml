@@ -14,6 +14,7 @@
     xmlns:behaviors="clr-namespace:Cimbalino.Phone.Toolkit.Behaviors;assembly=Cimbalino.Phone.Toolkit"
     xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
     xmlns:es="clr-namespace:Microsoft.Expression.Shapes;assembly=Microsoft.Expression.Drawing"
+    xmlns:toolkit1="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -22,6 +23,7 @@
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
     shell:SystemTray.ForegroundColor="White"
+    Background="White"
     shell:SystemTray.Opacity="0">
 
     <i:Interaction.Triggers>
@@ -87,10 +89,15 @@
                                                     IconUri="/Assets/AppBar/refresh.png"
                                                     Text="refresh"
                                                     Command="{Binding RefreshCommand}"/>
-                <behaviors:ApplicationBarIconButton IsVisible="True"
+                <!--<behaviors:ApplicationBarIconButton IsVisible="True"
                                                     IconUri="/Assets/AppBar/feature.search.png"
                                                     Text="search"
-                                                    Command="{Binding SearchCommand}"/>
+                                                    Command="{Binding SearchCommand}"/>-->
+                <behaviors:ApplicationBarBehavior.MenuItems>
+                    <behaviors:ApplicationBarMenuItem IsVisible="True"
+                                                      Text="about"
+                                                      Command="{Binding AboutCommand}"/>
+                </behaviors:ApplicationBarBehavior.MenuItems>
             </behaviors:ApplicationBarBehavior>
         </i:Interaction.Behaviors>
         <Grid.RowDefinitions>
@@ -178,16 +185,16 @@
                                             <i:EventTrigger EventName="Tap">
                                                 <command:EventToCommand Command="{Binding Main.StationOverviewCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
                                             </i:EventTrigger>
-                                        </i:Interaction.Triggers>  
+                                        </i:Interaction.Triggers>
                                     </TextBlock>
-                                    <Path Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource PathStyle}" Data="F1M582.961,492.242L557.554,517.865 557.554,467.049 582.961,467.049 582.961,492.242z">
+                                    <Path Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Style="{StaticResource PathStyle}" Data="F1M582.961,492.242L557.554,517.865 557.554,467.049 582.961,467.049 582.961,492.242z">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Tap">
                                                 <command:EventToCommand Command="{Binding Main.DirectionsCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Path>
-                                    <Path Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" Width="45" Height="45" Style="{StaticResource PathStyle}" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z">
+                                    <Path Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Width="45" Height="45" Style="{StaticResource PathStyle}" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Tap">
                                                 <command:EventToCommand Command="{Binding Main.FavoriteCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
@@ -226,8 +233,8 @@
                                         <ColumnDefinition Width="20"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Ellipse Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Stroke="{StaticResource TrackColorBrush}" Width="50" Height="50" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <Path Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Data="{Binding Type, Converter={StaticResource PathFavoriteConverter}}" Stretch="Uniform" Fill="{StaticResource TrackColorBrush}" Width="30" Height="30" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Ellipse Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Stroke="LightGray" Width="50" Height="50" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Path Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Data="{Binding Type, Converter={StaticResource PathFavoriteConverter}}" Stretch="Uniform" Fill="LightGray" Width="30" Height="30" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     <TextBlock Grid.Row="0"
                                                Grid.RowSpan="{Binding Type, Converter={StaticResource RowSpanConverter}}"
                                                Grid.Column="2"
@@ -260,6 +267,17 @@
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </TextBlock>
+                                    <toolkit1:ContextMenuService.ContextMenu>
+                                        <toolkit1:ContextMenu x:Name="ContextMenu" IsZoomEnabled="False">
+                                            <toolkit1:MenuItem Header="Remove">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <command:EventToCommand Command="{Binding Main.FavoriteRemoveCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </toolkit1:MenuItem>
+                                        </toolkit1:ContextMenu>
+                                    </toolkit1:ContextMenuService.ContextMenu>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -270,8 +288,8 @@
             <!--Pivot item three-->
             <phone:PivotItem Margin="10,-10,10,0">
                 <Grid>
-                    <Ellipse Stroke="{StaticResource TrackColorBrush}" Width="150" Height="150" StrokeThickness="10" Visibility="{Binding AllClearVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                    <Path Width="100" Height="100" Margin="1,0,0,10" Fill="{StaticResource TrackColorBrush}" Visibility="{Binding AllClearVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Data="F1M23.6804,40.528C23.6804,40.528 28.0085,39.4225 31.8777,34.2644 33.4441,32.0533 34.8249,28.0027 35.8387,24.4088 36.7605,22.3815 36.4839,21.4596 40.812,19.7096 43.5756,18.1452 47.9057,14.9205 49.8393,9.76236 50.392,7.45959 49.6101,2.33264 53.8016,2.39383 58.1765,2.47986 58.4988,6.90689 58.7748,9.94785 58.4057,15.3815 54.1693,20.6315 54.1693,20.6315L50.4852,26.6199C50.4852,26.6199 51.8563,26.5417 56.1968,26.7838 59.6415,26.9753 63.2456,26.3483 68.0789,27.817 79.0392,33.3444 69.7359,37.2136 69.7359,37.2136 75.7235,41.5417 70.3804,46.1472 70.3804,46.1472 74.1589,52.9636 67.9911,54.3815 68.3549,54.4381 69.5523,54.6217 73.6968,58.9519 66.6049,62.7272 66.6049,62.7272 58.8667,66.1373 54.6297,66.1373 51.866,66.5964 43.9448,66.6901 37.9579,64.2019 30.8647,63.0045 29.4929,63.778 23.5977,64.8835L23.6804,40.528z" Style="{StaticResource PathStyle}"/>
+                    <Ellipse Stroke="LightGray" Width="150" Height="150" StrokeThickness="10" Visibility="{Binding AllClearVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Path Width="100" Height="100" Margin="1,0,0,10" Visibility="{Binding AllClearVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Data="F1M23.6804,40.528C23.6804,40.528 28.0085,39.4225 31.8777,34.2644 33.4441,32.0533 34.8249,28.0027 35.8387,24.4088 36.7605,22.3815 36.4839,21.4596 40.812,19.7096 43.5756,18.1452 47.9057,14.9205 49.8393,9.76236 50.392,7.45959 49.6101,2.33264 53.8016,2.39383 58.1765,2.47986 58.4988,6.90689 58.7748,9.94785 58.4057,15.3815 54.1693,20.6315 54.1693,20.6315L50.4852,26.6199C50.4852,26.6199 51.8563,26.5417 56.1968,26.7838 59.6415,26.9753 63.2456,26.3483 68.0789,27.817 79.0392,33.3444 69.7359,37.2136 69.7359,37.2136 75.7235,41.5417 70.3804,46.1472 70.3804,46.1472 74.1589,52.9636 67.9911,54.3815 68.3549,54.4381 69.5523,54.6217 73.6968,58.9519 66.6049,62.7272 66.6049,62.7272 58.8667,66.1373 54.6297,66.1373 51.866,66.5964 43.9448,66.6901 37.9579,64.2019 30.8647,63.0045 29.4929,63.778 23.5977,64.8835L23.6804,40.528z" Style="{StaticResource PathStyle}"/>
                     <controls:LoadingBar
                              IsIndeterminate="{Binding LoadingDisruptions}"
                              Visibility="{Binding LoadingDisruptions, Converter={StaticResource BooleanToVisibilityConverter}}"

@@ -4,12 +4,15 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Device.Location;
 using System.Diagnostics;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using Windows.Devices.Geolocation;
 using Cimbalino.Phone.Toolkit.Services;
+using Coding4Fun.Toolkit.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -18,6 +21,7 @@ using Microsoft.Practices.ServiceLocation;
 using Tools.Properties;
 using Track.Api;
 using Track.Common;
+using Track.Controls;
 using Track.Database;
 using TrackApi.Api;
 using TrackApi.Classes;
@@ -29,15 +33,19 @@ namespace Track.ViewModel
         #region commands
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand SearchCommand { get; private set; }
+        public RelayCommand AboutCommand { get; private set; }
         public RelayCommand<Station> DirectionsCommand { get; private set; }
         public RelayCommand<Station> StationOverviewCommand { get; private set; }
         public RelayCommand<Station> FavoriteCommand { get; private set; }
         public RelayCommand<Favorite> FavoriteNavigationCommand { get; private set; }
+        public RelayCommand<Favorite> FavoriteRemoveCommand { get; private set; }
         #endregion
 
         #region properties
         private INavigationService _navigationService;
         private readonly Helper _helper;
+        private MessagePrompt _messagePrompt;
+        private const string LocationConsent = "LocationConsent";
 
         public const string CurrentPositionPropertyName = "CurrentPosition";
         private GeoCoordinate _currentPosition;
@@ -222,15 +230,20 @@ namespace Track.ViewModel
             Favorites = ServiceLocator.Current.GetInstance<TrackDatabase>().Favorites;
             //set commands to work
             DirectionsCommand = new RelayCommand<Station>((station) => _helper.OpenMaps(station));
-            RefreshCommand = new RelayCommand(async () =>
+            RefreshCommand = new RelayCommand(() =>
             {
-                while (_navigationService.CanGoBack)
+                if (!IsolatedStorageSettings.ApplicationSettings.Contains(LocationConsent) || !(bool)IsolatedStorageSettings.ApplicationSettings[LocationConsent])
                 {
-                    _navigationService.RemoveBackEntry();
+                    _messagePrompt = new MessagePrompt {Body = new MessagePromptBody(), IsCancelVisible = true, Background = (SolidColorBrush)Application.Current.Resources["TrackColorBrush"]};
+                    _messagePrompt.Completed += OnMessagePromptCompleted;
+                    _messagePrompt.Show();
                 }
-                ClearItems();   
+                else
+                {
+                    Refresh();
+                }
+                ClearItems();
                 Task.WaitAll(Task.Factory.StartNew(() => GetDisruptions()));
-                await GetCurrentPosition();
             });
             StationOverviewCommand = new RelayCommand<Station>(station =>
             {
@@ -240,6 +253,29 @@ namespace Track.ViewModel
             SearchCommand = new RelayCommand(()=> _navigationService.NavigateTo(ViewModelLocator.SearchPageUri));
             FavoriteCommand = new RelayCommand<Station>(station => ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(station.ToFavorite()));
             FavoriteNavigationCommand = new RelayCommand<Favorite>(favorite => favorite.Navigate());
+            FavoriteRemoveCommand = new RelayCommand<Favorite>(favorite => ServiceLocator.Current.GetInstance<TrackDatabase>().RemoveFavorite(favorite));
+            AboutCommand = new RelayCommand(() => _navigationService.NavigateTo(ViewModelLocator.AboutUri));
+        }
+
+        private async void Refresh()
+        {
+            while (_navigationService.CanGoBack)
+            {
+                _navigationService.RemoveBackEntry();
+            }
+            await GetCurrentPosition();
+        }
+
+        private void OnMessagePromptCompleted(object sender, PopUpEventArgs<string, PopUpResult> e)
+        {
+            if (e.PopUpResult == PopUpResult.Ok)
+            {
+                IsolatedStorageSettings.ApplicationSettings[LocationConsent] = true;
+                Refresh();
+            }
+            else
+                IsolatedStorageSettings.ApplicationSettings[LocationConsent] = false;
+            _messagePrompt.Completed -= OnMessagePromptCompleted;
         }
 
         private void ClearItems()

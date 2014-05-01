@@ -50,7 +50,7 @@
                 <behaviors:ApplicationBarIconButton IsVisible="True"
 					IconUri="/Assets/AppBar/favs.png"
 					Text="favorite"
-					Command="{Binding SettingsCommand}"/>
+					Command="{Binding FavoriteCommand}"/>
                 <behaviors:ApplicationBarBehavior.MenuItems>
                     <behaviors:ApplicationBarMenuItem
                         IsVisible="True"

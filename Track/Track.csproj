@@ -120,6 +120,9 @@
     <Compile Include="Controls\LoadingBar.xaml.cs">
       <DependentUpon>LoadingBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MessagePromptBody.xaml.cs">
+      <DependentUpon>MessagePromptBody.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PathControl.cs" />
     <Compile Include="Controls\SplitPanel.cs" />
     <Compile Include="Controls\StationList.xaml.cs">
@@ -216,6 +219,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\MessagePromptBody.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\StationList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -251,6 +258,10 @@
     </Reference>
     <Reference Include="Cimbalino.Phone.Toolkit.Background">
       <HintPath>..\packages\Cimbalino.Phone.Toolkit.Background.3.2.2\lib\wp8\Cimbalino.Phone.Toolkit.Background.dll</HintPath>
+    </Reference>
+    <Reference Include="Coding4Fun.Toolkit.Controls, Version=2.0.7.0, Culture=neutral, PublicKeyToken=c5fd7b72b1a17ce4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Coding4Fun.Toolkit.Controls.2.0.7\lib\windowsphone8\Coding4Fun.Toolkit.Controls.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras.WP8">
       <HintPath>..\packages\MvvmLightLibs.4.2.30.0\lib\wp8\GalaSoft.MvvmLight.Extras.WP8.dll</HintPath>
@@ -294,6 +305,10 @@
     <ProjectReference Include="..\Tools\Tools.csproj">
       <Project>{CF7909FE-98C4-48C2-B7EE-B2E9187B8BAE}</Project>
       <Name>Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Track.About\Track.About.csproj">
+      <Project>{5e7c6d79-534e-4d77-8215-2c3ae44ae5aa}</Project>
+      <Name>Track.About</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

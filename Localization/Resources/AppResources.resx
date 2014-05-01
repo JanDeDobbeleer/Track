@@ -203,4 +203,58 @@
   <data name="ToastNoInternet" xml:space="preserve">
     <value>we know it's sad, but we really need an internet connection to proceed, sorry about that.</value>
   </data>
+  <data name="AboutViewBy" xml:space="preserve">
+    <value>by Jan Joris</value>
+  </data>
+  <data name="AboutViewContactButton" xml:space="preserve">
+    <value>contact</value>
+  </data>
+  <data name="AboutViewDisclaimer" xml:space="preserve">
+    <value>&lt;Section xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"&gt;
+  &lt;Paragraph/&gt;&lt;Paragraph FontWeight="Light"&gt;
+      Hi there. Welcome to Track. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.&lt;/Paragraph&gt;
+  &lt;Paragraph/&gt;&lt;Paragraph FontWeight="Light"&gt;
+    Track is not finished just yet. A lot of functionality is still to be included. Expect searching connections, awesome live tiles and Cortana integration.
+  &lt;/Paragraph&gt;
+&lt;/Section&gt;</value>
+  </data>
+  <data name="AboutViewHeaderChangelog" xml:space="preserve">
+    <value>changelog</value>
+  </data>
+  <data name="AboutViewHeaderInfo" xml:space="preserve">
+    <value>info</value>
+  </data>
+  <data name="AboutViewHeaderiRail" xml:space="preserve">
+    <value>iRail</value>
+  </data>
+  <data name="AboutViewiRail" xml:space="preserve">
+    <value>&lt;Section xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"&gt;
+  &lt;Paragraph FontWeight="Light"&gt;
+  “By 2025 we will double the amount of public transit users,” says UITP (the international organisation for public transport). This is a noble goal that is great food for thought. Not only different transport networks will need to connect flawlessly, also social networks, GPS systems, calendars and publicly available data can be integrated to provide a networked mobility experience, leading to a more diverse use of transport.
+&lt;/Paragraph&gt;  
+&lt;Paragraph/&gt;
+  &lt;Paragraph FontWeight="Light"&gt;
+  iRail is a working group of Open Knowledge Belgium. The goal of the working group is summarized by 3 bullets. Support digital creativity concerning mobility, sustain and aggregate open data concerning mobility (like public transport) to offer an easy-to-use webservice for all third-party applications and a living lab: start all sorts of new projects and support them to become a spin-off.
+&lt;/Paragraph&gt;
+  &lt;Paragraph/&gt;
+&lt;/Section&gt;</value>
+  </data>
+  <data name="AboutViewReviewButton" xml:space="preserve">
+    <value>review</value>
+  </data>
+  <data name="AboutViewUnknownAssembly" xml:space="preserve">
+    <value>unknown</value>
+  </data>
+  <data name="AboutViewVersion" xml:space="preserve">
+    <value>version</value>
+  </data>
+  <data name="ChangeLog100_1" xml:space="preserve">
+    <value>• initial release</value>
+  </data>
+  <data name="FavoriteAdded" xml:space="preserve">
+    <value>you succesfully added {0} to favorites</value>
+  </data>
+  <data name="FavoriteExists" xml:space="preserve">
+    <value>you already have {0} in your favorites</value>
+  </data>
 </root>

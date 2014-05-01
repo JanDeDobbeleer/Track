@@ -23,7 +23,7 @@ namespace Tools
                 TextOrientation = Orientation.Vertical, 
                 TextWrapping = TextWrapping.Wrap,
                 Background = (SolidColorBrush)Application.Current.Resources["TrackColorBrush"],
-                Margin = new Thickness(0,-20,0,-25)
+                Margin = new Thickness(0,0,0,-25)
             };
             Deployment.Current.Dispatcher.BeginInvoke(toast.Show);
         }

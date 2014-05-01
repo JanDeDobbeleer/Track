@@ -61,6 +61,102 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to by Jan Joris.
+        /// </summary>
+        public static string AboutViewBy {
+            get {
+                return ResourceManager.GetString("AboutViewBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to contact.
+        /// </summary>
+        public static string AboutViewContactButton {
+            get {
+                return ResourceManager.GetString("AboutViewContactButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Section xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;
+        ///  &lt;Paragraph/&gt;&lt;Paragraph FontWeight=&quot;Light&quot;&gt;
+        ///      Hi there. Welcome to Track. This app has been built with passion, a lot of cursing, crying and occasional eufory. So, when you encounter an issue, please hit the contact button instead of handing out a 1 star review.&lt;/Paragraph&gt;
+        ///  &lt;Paragraph/&gt;&lt;Paragraph FontWeight=&quot;Light&quot;&gt;
+        ///    Track is not finished just yet. A lot of functionality is still to be included. Expect searching connec [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AboutViewDisclaimer {
+            get {
+                return ResourceManager.GetString("AboutViewDisclaimer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to changelog.
+        /// </summary>
+        public static string AboutViewHeaderChangelog {
+            get {
+                return ResourceManager.GetString("AboutViewHeaderChangelog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to info.
+        /// </summary>
+        public static string AboutViewHeaderInfo {
+            get {
+                return ResourceManager.GetString("AboutViewHeaderInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to iRail.
+        /// </summary>
+        public static string AboutViewHeaderiRail {
+            get {
+                return ResourceManager.GetString("AboutViewHeaderiRail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;Section xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;
+        ///  &lt;Paragraph FontWeight=&quot;Light&quot;&gt;
+        ///  “By 2025 we will double the amount of public transit users,” says UITP (the international organisation for public transport). This is a noble goal that is great food for thought. Not only different transport networks will need to connect flawlessly, also social networks, GPS systems, calendars and publicly available data can be integrated to provide a networked mobility experience, leading to a m [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AboutViewiRail {
+            get {
+                return ResourceManager.GetString("AboutViewiRail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to review.
+        /// </summary>
+        public static string AboutViewReviewButton {
+            get {
+                return ResourceManager.GetString("AboutViewReviewButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unknown.
+        /// </summary>
+        public static string AboutViewUnknownAssembly {
+            get {
+                return ResourceManager.GetString("AboutViewUnknownAssembly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to version.
+        /// </summary>
+        public static string AboutViewVersion {
+            get {
+                return ResourceManager.GetString("AboutViewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to the API is not accepting any requests right now, please try again later.
         /// </summary>
         public static string APIClientErrorDown {
@@ -97,11 +193,38 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to • initial release.
+        /// </summary>
+        public static string ChangeLog100_1 {
+            get {
+                return ResourceManager.GetString("ChangeLog100_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EN.
         /// </summary>
         public static string ClientLang {
             get {
                 return ResourceManager.GetString("ClientLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to you succesfully added {0} to favorites.
+        /// </summary>
+        public static string FavoriteAdded {
+            get {
+                return ResourceManager.GetString("FavoriteAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to you already have {0} in your favorites.
+        /// </summary>
+        public static string FavoriteExists {
+            get {
+                return ResourceManager.GetString("FavoriteExists", resourceCulture);
             }
         }
         

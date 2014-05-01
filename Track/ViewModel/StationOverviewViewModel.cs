@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using Cimbalino.Phone.Toolkit.Extensions;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -13,6 +12,8 @@ using Microsoft.Practices.ServiceLocation;
 using Tools;
 using Tools.Properties;
 using Track.Api;
+using Track.Common;
+using Track.Database;
 using TrackApi.Classes;
 
 namespace Track.ViewModel
@@ -27,6 +28,7 @@ namespace Track.ViewModel
         public RelayCommand<Departure> VehicleOverViewCommand { get; private set; }
         public RelayCommand PageLoaded { get; private set; }
         public RelayCommand HomeCommand { get; private set; }
+        public RelayCommand FavoriteCommand { get; private set; }
 
         #region properties
         public const string StationPropertyName = "Station";
@@ -120,6 +122,7 @@ namespace Track.ViewModel
             });
             PageLoaded = new RelayCommand(() => GetLiveBoard(Station));
             HomeCommand = new RelayCommand(() => _navigationService.NavigateTo(ViewModelLocator.HomePageUri));
+            FavoriteCommand = new RelayCommand(() => ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(Station.ToFavorite()));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Markup;
@@ -6,6 +7,8 @@ using System.Windows.Navigation;
 using Localization.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
+using Microsoft.Xna.Framework.GamerServices;
 using Track.Database;
 
 namespace Track
@@ -106,11 +109,26 @@ namespace Track
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
-            if (Debugger.IsAttached)
-            {
-                // An unhandled exception has occurred; break into the debugger
-                Debugger.Break();
-            }
+            Guide.BeginShowMessageBox("Well, this is embarrasing",
+                "I swear I tested this." + Environment.NewLine + "Do you want to email the exception log anyway?",
+                new List<string> { "yes", "no" },
+                0,
+                MessageBoxIcon.Error,
+                asyncResult =>
+                {
+                    int? returnValue = Guide.EndShowMessageBox(asyncResult);
+                    if (returnValue == 0)
+                    {
+                        EmailComposeTask email = new EmailComposeTask();
+                        email.Subject = "Track - Crappy developer";
+                        email.Body = "* MESSAGE *" + Environment.NewLine + e.ExceptionObject.Message + Environment.NewLine + "* STACKTRACE *" + Environment.NewLine + e.ExceptionObject.StackTrace;
+                        email.To = "trackapplication@outlook.com";
+                        email.Show();
+                    }
+                },
+                null);
+
+            e.Handled = true;
         }
 
         #region Phone application initialization

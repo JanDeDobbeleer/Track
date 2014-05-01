@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Cimbalino.Phone.Toolkit.Extensions;
+using Localization.Resources;
+using Tools;
 using TrackApi.Classes;
 
 namespace Track.Database
@@ -86,16 +88,28 @@ namespace Track.Database
 
         public void AddFavorite(Favorite favorite)
         {
-            try
+            var temp = from Favorite fav in _trackDb.Favorites
+                      where fav.Name.Equals(favorite.Name)
+                      select fav;
+            if (temp.Any())
             {
-                _trackDb.Favorites.InsertOnSubmit(favorite);
-                SubmitChanges();
-                Favorites.Add(favorite);
+                Message.ShowToast(string.Format(AppResources.FavoriteExists, favorite.Name));
+                return;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            _trackDb.Favorites.InsertOnSubmit(favorite);
+            SubmitChanges();
+            Favorites.Add(favorite);
+            Message.ShowToast(string.Format(AppResources.FavoriteAdded, favorite.Name));
+        }
+
+        public void RemoveFavorite(Favorite favorite)
+        {
+            var item = from Favorite fav in _trackDb.Favorites
+                       where fav.Id.Equals(favorite.Id)
+                       select fav;
+            _trackDb.Favorites.DeleteOnSubmit(item.FirstOrDefault());
+            SubmitChanges();
+            Favorites.Remove(favorite);
         }
 
         public void SubmitChanges()
