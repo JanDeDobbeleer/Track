@@ -1,5 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Data.Linq.Mapping;
+using System.Windows;
+using Cimbalino.Phone.Toolkit.Services;
+using Microsoft.Practices.ServiceLocation;
+using Track.ViewModel;
+using TrackApi.Classes;
 
 namespace Track.Database
 {
@@ -10,20 +15,35 @@ namespace Track.Database
     }
 
     [Table]
-    public class Favorite: INotifyPropertyChanged, INotifyPropertyChanging
+    public class Favorite : INotifyPropertyChanged, INotifyPropertyChanging
     {
         #region properties
+        public const string IdPropertyName = "Id";
+        private int _id;
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                NotifyPropertyChanging(IdPropertyName);
+                _id = value;
+                NotifyPropertyChanged(IdPropertyName);
+            }
+        }
+
         public const string NamePropertyName = "Name";
         private string _name;
         [Column]
-        public string Name {
+        public string Name
+        {
             get { return _name; }
             set
             {
                 NotifyPropertyChanging(NamePropertyName);
                 _name = value;
                 NotifyPropertyChanged(NamePropertyName);
-            } 
+            }
         }
 
         public const string DetailPropertyName = "Detail";
@@ -37,20 +57,6 @@ namespace Track.Database
                 NotifyPropertyChanging(DetailPropertyName);
                 _detail = value;
                 NotifyPropertyChanged(DetailPropertyName);
-            }
-        }
-
-        public const string NavigateUriPropertyName = "NavigateUri";
-        private string _navigateUri;
-        [Column]
-        public string NavigateUri
-        {
-            get { return _navigateUri; }
-            set
-            {
-                NotifyPropertyChanging(NavigateUriPropertyName);
-                _navigateUri = value;
-                NotifyPropertyChanged(NavigateUriPropertyName);
             }
         }
 
@@ -82,6 +88,22 @@ namespace Track.Database
             }
         }
         #endregion
+
+        public void Navigate()
+        {
+            switch (Type)
+            {
+                case Type.Station:
+                    var station = new Station {Name = Name, Id = QueryElement};
+                    Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = station);
+                    ServiceLocator.Current.GetInstance<INavigationService>().NavigateTo(ViewModelLocator.StationOverviewPageUri);
+                    break;
+                case Type.Vehicle:
+                    Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<VehicleOverviewViewModel>().Vehicle = QueryElement);
+                    ServiceLocator.Current.GetInstance<INavigationService>().NavigateTo(ViewModelLocator.VehicleOverviewPageUri);
+                    break;
+            }
+        }
 
         #region notify
         public event PropertyChangedEventHandler PropertyChanged;

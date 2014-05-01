@@ -18,6 +18,7 @@ using Microsoft.Practices.ServiceLocation;
 using Tools.Properties;
 using Track.Api;
 using Track.Common;
+using Track.Database;
 using TrackApi.Api;
 using TrackApi.Classes;
 
@@ -30,7 +31,8 @@ namespace Track.ViewModel
         public RelayCommand SearchCommand { get; private set; }
         public RelayCommand<Station> DirectionsCommand { get; private set; }
         public RelayCommand<Station> StationOverviewCommand { get; private set; }
-        public RelayCommand PageLoaded { get; private set; }
+        public RelayCommand<Station> FavoriteCommand { get; private set; }
+        public RelayCommand<Favorite> FavoriteNavigationCommand { get; private set; }
         #endregion
 
         #region properties
@@ -74,7 +76,7 @@ namespace Track.ViewModel
         }
 
         public const string LocationsPropertyName = "Locations";
-        private ObservableCollection<Station> _locations;
+        private ObservableCollection<Station> _locations = new ObservableCollection<Station>();
         public ObservableCollection<Station> Locations
         {
             get
@@ -95,7 +97,7 @@ namespace Track.ViewModel
         }
 
         public const string NearbyPropertyName = "Nearby";
-        private ObservableCollection<Station> _nearby;
+        private ObservableCollection<Station> _nearby = new ObservableCollection<Station>();
         public ObservableCollection<Station> Nearby
         {
             get
@@ -116,7 +118,7 @@ namespace Track.ViewModel
         }
 
         public const string DisruptionsPropertyName = "Disruptions";
-        private ObservableCollection<Disruption> _disruptions;
+        private ObservableCollection<Disruption> _disruptions  = new ObservableCollection<Disruption>();
         public ObservableCollection<Disruption> Disruptions
         {
             get
@@ -190,24 +192,42 @@ namespace Track.ViewModel
                 OnPropertyChanged(LoadingDisruptionsPropertyName);
             }
         }
+
+        public const string FavoritePropertyName = "Favorites";
+        private ObservableCollection<Favorite> _favorites = new ObservableCollection<Favorite>();
+        public ObservableCollection<Favorite> Favorites
+        {
+            get
+            {
+                return _favorites;
+            }
+
+            set
+            {
+                if (_favorites == value)
+                {
+                    return;
+                }
+
+                _favorites = value;
+                RaisePropertyChanged(FavoritePropertyName);
+            }
+        }
         #endregion
 
         public MainpageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
             _helper = new Helper();
-            Locations = new ObservableCollection<Station>();
-            Disruptions =  new ObservableCollection<Disruption>();
-            Nearby = new ObservableCollection<Station>();
-            PageLoaded = new RelayCommand(async () =>
-            {
-                Task.WaitAll(Task.Factory.StartNew(() => GetDisruptions()));
-                await GetCurrentPosition();
-            });
+            Favorites = ServiceLocator.Current.GetInstance<TrackDatabase>().Favorites;
             //set commands to work
             DirectionsCommand = new RelayCommand<Station>((station) => _helper.OpenMaps(station));
             RefreshCommand = new RelayCommand(async () =>
             {
+                while (_navigationService.CanGoBack)
+                {
+                    _navigationService.RemoveBackEntry();
+                }
                 ClearItems();   
                 Task.WaitAll(Task.Factory.StartNew(() => GetDisruptions()));
                 await GetCurrentPosition();
@@ -218,6 +238,8 @@ namespace Track.ViewModel
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
             SearchCommand = new RelayCommand(()=> _navigationService.NavigateTo(ViewModelLocator.SearchPageUri));
+            FavoriteCommand = new RelayCommand<Station>(station => ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(station.ToFavorite()));
+            FavoriteNavigationCommand = new RelayCommand<Favorite>(favorite => favorite.Navigate());
         }
 
         private void ClearItems()
@@ -299,7 +321,7 @@ namespace Track.ViewModel
                 //assign the visible pins on the map, limited to 10 to improve speed
                 _helper.AssignList(Locations,list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(10).ToList());
                 //assign the nearby list
-                _helper.AssignList(Nearby, list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(3).ToList());
+                _helper.AssignList(Nearby, list.OrderBy(item => item.DistanceToCurrentPhonePosition).Take(6).ToList());
             }
             catch (Exception e)
             {

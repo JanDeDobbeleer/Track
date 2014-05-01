@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using Localization.Resources;
 using Microsoft.Phone.Info;
@@ -64,7 +65,7 @@ namespace Track.ViewModel
         {
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                foreach (var station in stations)
+                foreach (var station in stations.Where(station => !input.Contains(station)))
                 {
                     input.Add(station);
                 }
@@ -75,7 +76,7 @@ namespace Track.ViewModel
         {
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                foreach (var departure in departures)
+                foreach (var departure in departures.Where(departure => !input.Contains(departure)))
                 {
                     input.Add(departure);
                 }
@@ -86,7 +87,7 @@ namespace Track.ViewModel
         {
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                foreach (var stop in stops)
+                foreach (var stop in stops.Where(stop => !input.Contains(stop)))
                 {
                     input.Add(stop);
                 }
@@ -97,7 +98,7 @@ namespace Track.ViewModel
         {
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                foreach (var name in names)
+                foreach (var name in names.Where(name => !input.Contains(name)))
                 {
                     input.Add(name);
                 }

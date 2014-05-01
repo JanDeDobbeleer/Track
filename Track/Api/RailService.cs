@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Threading.Tasks;
-using Cimbalino.Phone.Toolkit.Extensions;
-using Cimbalino.Phone.Toolkit.Services;
 using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
-using Newtonsoft.Json;
 using Track.Database;
 using TrackApi.Api;
 using TrackApi.Classes;
@@ -18,6 +16,7 @@ namespace Track.Api
 {
     public class RailService
     {
+        private const string RefreshDate = "RefreshDate";
         #region Constructor
         private static RailService _sInstance;
         private static readonly object SInstanceSync = new object();
@@ -55,36 +54,19 @@ namespace Track.Api
         {
             if (!CheckForInternetAccess())
                 return new List<Station>();
-            bool stationCacheExists = false;
-            var requestFromInternet = true;
-            try
-            {
-                stationCacheExists = ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.Any();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            var locationsList = new List<Station>();
 
-            if (stationCacheExists)
-            {
-                locationsList = ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.ToList();
-                requestFromInternet = false;
-            }
+            //Get the storage list only if you have cache, the date exists in storage (to be sure) and is not older than 7 days
+            if (ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.Any() && IsolatedStorageSettings.ApplicationSettings.Contains(RefreshDate) && (DateTime)IsolatedStorageSettings.ApplicationSettings[RefreshDate] >= DateTime.Now.AddDays(-7))
+                return ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.ToList();
 
-            if (!requestFromInternet) 
-                return locationsList;
-            try
-            {
-                locationsList = await Client.GetInstance().GetLocations(valuePair);
-                ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.Clear();
-                ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.AddRange(locationsList);
-            }
-            catch (Exception)
-            {
-                //TODO: Do something with exception
-            }
+            //Get the list from the API
+            var locationsList = await Client.GetInstance().GetLocations(valuePair);
+            //If the list is empty pray to the lord the one in the database holds values
+            if(locationsList.Count == 0)
+                return ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.ToList();
+            //Add the stations to the database and set the date for next time
+            ServiceLocator.Current.GetInstance<TrackDatabase>().AddStations(locationsList);
+            IsolatedStorageSettings.ApplicationSettings[RefreshDate] = DateTime.Now;
             return locationsList;
         }
 
@@ -92,16 +74,16 @@ namespace Track.Api
         {
             if (!CheckForInternetAccess())
                 return new List<Departure>();
-            if(!station.Id.Contains(":"))
+            if (!station.Id.Contains(":"))
             {
-                return 
-                    await 
+                return
+                    await
                         Client.GetInstance()
                             .GetLiveBoard(new[]
                             {
                                 new KeyValuePair<string, string>(Arguments.Id.ToString().ToLower(), station.Id), 
                                 new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang)
-                            } );
+                            });
             }
             return
                 await
@@ -124,7 +106,7 @@ namespace Track.Api
 
         public void GetConnections(string date, string time, string from, string to)
         {
-            if(!CheckForInternetAccess())
+            if (!CheckForInternetAccess())
                 return;
             Client.GetInstance().GetConnections(new[]
             {
@@ -139,7 +121,7 @@ namespace Track.Api
 
         private bool CheckForInternetAccess()
         {
-            if (NetworkInterface.GetIsNetworkAvailable()) 
+            if (NetworkInterface.GetIsNetworkAvailable())
                 return true;
             Message.ShowToast(AppResources.ToastNoInternet);
             return false;

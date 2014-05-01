@@ -19,6 +19,6 @@
                    Height="30"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"
-                   FontFamily="{StaticResource PhoneFontFamilyLight}"/>
+                   FontFamily="{StaticResource PhoneFontFamilySemiBold}"/>
     </StackPanel>
 </UserControl>

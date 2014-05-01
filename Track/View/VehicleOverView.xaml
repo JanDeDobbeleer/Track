@@ -23,7 +23,7 @@
 
     <i:Interaction.Triggers>
         <i:EventTrigger>
-            <command:EventToCommand Command="{Binding PageLoaded, Mode=OneWay}"/>
+            <command:EventToCommand Command="{Binding RefreshCommand, Mode=OneWay}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -32,13 +32,17 @@
         <i:Interaction.Behaviors>
             <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}" ForegroundColor="White">
                 <behaviors:ApplicationBarIconButton IsVisible="True"
+					IconUri="/Assets/AppBar/appbar.home.png"
+					Text="home"
+					Command="{Binding HomeCommand}"/>
+                <behaviors:ApplicationBarIconButton IsVisible="True"
 					IconUri="/Assets/AppBar/refresh.png"
 					Text="refresh"
 					Command="{Binding RefreshCommand}"/>
                 <behaviors:ApplicationBarIconButton IsVisible="True"
 					IconUri="/Assets/AppBar/favs.png"
 					Text="info"
-					Command="{Binding SettingsCommand}"/>
+					Command="{Binding FavoriteCommand}"/>
             </behaviors:ApplicationBarBehavior>
         </i:Interaction.Behaviors>
         <Grid.RowDefinitions>

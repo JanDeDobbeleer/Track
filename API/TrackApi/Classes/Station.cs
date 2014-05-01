@@ -13,7 +13,7 @@ namespace TrackApi.Classes
     {
         public const string IdPropertyName = "Id";
         private string _id;
-        [Column]
+        [Column(IsPrimaryKey = true, IsDbGenerated = false)]
         [JsonProperty(PropertyName = "id")]
         public string Id 
         {

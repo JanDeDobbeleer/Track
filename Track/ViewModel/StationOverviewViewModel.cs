@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using Cimbalino.Phone.Toolkit.Extensions;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -25,6 +26,7 @@ namespace Track.ViewModel
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand<Departure> VehicleOverViewCommand { get; private set; }
         public RelayCommand PageLoaded { get; private set; }
+        public RelayCommand HomeCommand { get; private set; }
 
         #region properties
         public const string StationPropertyName = "Station";
@@ -117,6 +119,7 @@ namespace Track.ViewModel
                 _navigationService.NavigateTo(ViewModelLocator.VehicleOverviewPageUri);
             });
             PageLoaded = new RelayCommand(() => GetLiveBoard(Station));
+            HomeCommand = new RelayCommand(() => _navigationService.NavigateTo(ViewModelLocator.HomePageUri));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

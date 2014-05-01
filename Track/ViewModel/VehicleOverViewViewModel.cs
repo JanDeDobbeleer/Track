@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
@@ -11,7 +12,10 @@ using Microsoft.Practices.ServiceLocation;
 using Tools;
 using Tools.Properties;
 using Track.Api;
+using Track.Common;
+using Track.Database;
 using TrackApi.Classes;
+using Type = Track.Database.Type;
 
 namespace Track.ViewModel
 {
@@ -22,7 +26,9 @@ namespace Track.ViewModel
         private readonly Helper _helper;
 
         public RelayCommand<Stop> StationOverViewCommand { get; private set; }
-        public RelayCommand PageLoaded { get; private set; }
+        public RelayCommand RefreshCommand { get; private set; }
+        public RelayCommand FavoriteCommand { get; private set; }
+        public RelayCommand HomeCommand { get; private set; }
 
         public const string VehiclePropertyName = "Vehicle";
         private string _vehicle;
@@ -86,7 +92,21 @@ namespace Track.ViewModel
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = stop.Stationinfo);
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
-            PageLoaded = new RelayCommand(GetVehicleInfo);
+            RefreshCommand = new RelayCommand(GetVehicleInfo);
+            FavoriteCommand = new RelayCommand(() =>
+            {
+                var fav = new Favorite
+                {
+                    Name = Vehicle,
+                    Type = Type.Vehicle,
+                    QueryElement = Vehicle,
+                    Detail =
+                        Stops.ElementAt(0).Station + " - " + Stops.ElementAt(0).Time + " • " + Stops.Last().Station + " - " +
+                        Stops.Last().Time
+                };
+                ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(fav);
+            });
+            HomeCommand = new RelayCommand(() => _navigationService.NavigateTo(ViewModelLocator.HomePageUri));
         }
 
         private async void GetVehicleInfo()

@@ -29,6 +29,7 @@ namespace Track.ViewModel
         public static readonly Uri StationOverviewPageUri = new Uri("/View/StationOverview.xaml", UriKind.Relative);
         public static readonly Uri VehicleOverviewPageUri = new Uri("/View/VehicleOverview.xaml", UriKind.Relative);
         public static readonly Uri SearchPageUri = new Uri("/View/Search.xaml", UriKind.Relative);
+        public static readonly Uri HomePageUri = new Uri("/View/MainPage.xaml", UriKind.Relative);
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>

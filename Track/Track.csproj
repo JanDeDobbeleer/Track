@@ -109,9 +109,13 @@
     <Compile Include="Common\AlphaKeyGroup.cs" />
     <Compile Include="Common\BooleanToVisibilityConverter.cs" />
     <Compile Include="Common\DelayVisibilityConverter.cs" />
+    <Compile Include="Common\FavoriteExtensions.cs" />
+    <Compile Include="Common\FavoriteTypeVisibility.cs" />
     <Compile Include="Common\Geocoding.cs" />
     <Compile Include="Common\IndexToBrushConverter.cs" />
     <Compile Include="Common\MapPushPinDependency.cs" />
+    <Compile Include="Common\PathFavoriteConverter.cs" />
+    <Compile Include="Common\RowSpanConverter.cs" />
     <Compile Include="Controls\IndexedPath.cs" />
     <Compile Include="Controls\LoadingBar.xaml.cs">
       <DependentUpon>LoadingBar.xaml</DependentUpon>
@@ -166,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AlignmentGrid.png" />
+    <Content Include="Assets\AppBar\appbar.home.png" />
     <Content Include="Assets\AppBar\appbar.information.png" />
     <Content Include="Assets\AppBar\appbar.location.png" />
     <Content Include="Assets\AppBar\check.png" />

@@ -40,8 +40,12 @@
         <i:Interaction.Behaviors>
             <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}" ForegroundColor="White">
                 <behaviors:ApplicationBarIconButton IsVisible="True"
-					IconUri="/Assets/AppBar/refresh.png"
+					IconUri="/Assets/AppBar/appbar.home.png"
 					Text="refresh"
+					Command="{Binding HomeCommand}"/>
+                <behaviors:ApplicationBarIconButton IsVisible="True"
+					IconUri="/Assets/AppBar/refresh.png"
+					Text="home"
 					Command="{Binding RefreshCommand}"/>
                 <behaviors:ApplicationBarIconButton IsVisible="True"
 					IconUri="/Assets/AppBar/favs.png"
