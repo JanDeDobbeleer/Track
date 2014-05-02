@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using TrackApi.Tools;
 
 namespace TrackApi.Classes
@@ -14,9 +15,14 @@ namespace TrackApi.Classes
         public Station Stationinfo { get; set; }
         [JsonProperty(PropertyName = "time")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
-        public string Time { get; set; }
+        public DateTime Time { get; set; }
         [JsonProperty(PropertyName = "delay")]
         [JsonConverter(typeof(DelayConverter))]
         public string Delay { get; set; }
+
+        public string TimeStamp
+        {
+            get { return Time.ToString("HH:mm"); }
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2014/deployment" AppPlatformVersion="8.1">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{0ac99867-bfe2-4031-bcd0-fb7fbbd3f872}" Title="Track" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Track author" Description="Sample description" Publisher="Track" PublisherID="{cbaedb56-5375-45a6-9262-b727920663ae}">
+  <App xmlns="" ProductID="{0ac99867-bfe2-4031-bcd0-fb7fbbd3f872}" Title="Track" RuntimeType="Silverlight" Version="1.0.0.64" Genre="apps.normal" Author="Track author" Description="Sample description" Publisher="Track" PublisherID="{cbaedb56-5375-45a6-9262-b727920663ae}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -21,12 +21,18 @@
           <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileSmall.png</SmallImageURI>
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileMedium.png</BackgroundImageURI>
-          <Title></Title>
-          <BackContent></BackContent>
-          <BackBackgroundImageURI></BackBackgroundImageURI>
-          <BackTitle></BackTitle>
-          <DeviceLockImageURI></DeviceLockImageURI>
-          <HasLarge></HasLarge>
+          <Title>
+          </Title>
+          <BackContent>
+          </BackContent>
+          <BackBackgroundImageURI>
+          </BackBackgroundImageURI>
+          <BackTitle>
+          </BackTitle>
+          <DeviceLockImageURI>
+          </DeviceLockImageURI>
+          <HasLarge>
+          </HasLarge>
         </TemplateFlip>
       </PrimaryToken>
     </Tokens>

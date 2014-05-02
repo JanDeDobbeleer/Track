@@ -18,8 +18,8 @@
     shell:SystemTray.Opacity="0">
 
     <i:Interaction.Triggers>
-        <i:EventTrigger>
-            <command:EventToCommand Command="{Binding PageLoaded, Mode=OneWay}"/>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding RefreshCommand, Mode=OneWay}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
@@ -47,11 +47,19 @@
 					IconUri="/Assets/AppBar/refresh.png"
 					Text="home"
 					Command="{Binding RefreshCommand}"/>
-                <behaviors:ApplicationBarIconButton IsVisible="True"
-					IconUri="/Assets/AppBar/favs.png"
-					Text="favorite"
-					Command="{Binding FavoriteCommand}"/>
                 <behaviors:ApplicationBarBehavior.MenuItems>
+                    <behaviors:ApplicationBarMenuItem
+                        IsVisible="True"
+                        Text="later"
+                        Command="{Binding LaterCommand}"/>
+                    <behaviors:ApplicationBarMenuItem
+                        IsVisible="True"
+                        Text="earlier"
+                        Command="{Binding EarlierCommand}"/>
+                    <behaviors:ApplicationBarMenuItem
+                        IsVisible="True"
+                        Text="favorite"
+                        Command="{Binding FavoriteCommand}"/>
                     <behaviors:ApplicationBarMenuItem
                         IsVisible="True"
                         Text="navigate"
@@ -97,7 +105,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding Time}" Style="{StaticResource DefaultTextStyle}" FontWeight="Light" FontSize="30"/>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="{Binding TimeStamp}" Style="{StaticResource DefaultTextStyle}" FontWeight="Light" FontSize="30"/>
                             <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding Station}" Style="{StaticResource DefaultTextStyle}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" FontSize="30">
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="Tap">

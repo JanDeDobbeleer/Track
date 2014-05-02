@@ -17,8 +17,7 @@ namespace TrackApi.Tools
             var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             try
             {
-                dtDateTime = dtDateTime.AddSeconds(double.Parse(reader.Value.ToString())).ToLocalTime();
-                return dtDateTime.TimeOfDay.ToString().Contains(":00") ? dtDateTime.TimeOfDay.ToString().Remove(dtDateTime.TimeOfDay.ToString().IndexOf(":00", StringComparison.Ordinal),3) : dtDateTime.TimeOfDay.ToString();
+                return dtDateTime.AddSeconds(double.Parse(reader.Value.ToString())).ToLocalTime();
             }
             catch (Exception)
             {

@@ -211,6 +211,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to it&apos;s a bit empty in here, try adding some favorites.
+        /// </summary>
+        public static string EmptyFavorites {
+            get {
+                return ResourceManager.GetString("EmptyFavorites", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to you succesfully added {0} to favorites.
         /// </summary>
         public static string FavoriteAdded {
@@ -283,7 +292,7 @@ namespace Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to we could not load station info right now, please try again later.
+        ///   Looks up a localized string similar to we could not load the station info right now, please try again later.
         /// </summary>
         public static string MessageStationInfoError {
             get {
@@ -301,7 +310,7 @@ namespace Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to we could not load vehicle info right now, please try again later.
+        ///   Looks up a localized string similar to we could not load the vehicle info right now, please try again later.
         /// </summary>
         public static string MessageVehicleInfoError {
             get {
@@ -382,7 +391,7 @@ namespace Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search.
+        ///   Looks up a localized string similar to Search station.
         /// </summary>
         public static string SearchViewHeader {
             get {

@@ -27,7 +27,7 @@
     shell:SystemTray.Opacity="0">
 
     <i:Interaction.Triggers>
-        <i:EventTrigger>
+        <i:EventTrigger EventName="Loaded">
             <command:EventToCommand Command="{Binding RefreshCommand, Mode=OneWay}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
@@ -89,10 +89,10 @@
                                                     IconUri="/Assets/AppBar/refresh.png"
                                                     Text="refresh"
                                                     Command="{Binding RefreshCommand}"/>
-                <!--<behaviors:ApplicationBarIconButton IsVisible="True"
+                <behaviors:ApplicationBarIconButton IsVisible="True"
                                                     IconUri="/Assets/AppBar/feature.search.png"
                                                     Text="search"
-                                                    Command="{Binding SearchCommand}"/>-->
+                                                    Command="{Binding SearchCommand}"/>
                 <behaviors:ApplicationBarBehavior.MenuItems>
                     <behaviors:ApplicationBarMenuItem IsVisible="True"
                                                       Text="about"
@@ -215,15 +215,21 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <es:RegularPolygon Margin="75,-1,0,0" Grid.Row="0" Fill="{StaticResource TrackColorBrush}" HorizontalAlignment="Left" Height="26.667" InnerRadius="1" PointCount="3" Stretch="Fill" UseLayoutRounding="False" VerticalAlignment="Top" Width="53.333" RenderTransformOrigin="0.5,0.5">
+                    <es:RegularPolygon Margin="75,-1,0,0" Grid.Row="0" Visibility="{Binding FavoriteTriangle, Converter={StaticResource BooleanToVisibilityConverter}}" Fill="{StaticResource TrackColorBrush}" HorizontalAlignment="Left" Height="26.667" InnerRadius="1" PointCount="3" Stretch="Fill" UseLayoutRounding="False" VerticalAlignment="Top" Width="53.333" RenderTransformOrigin="0.5,0.5">
                         <es:RegularPolygon.RenderTransform>
                             <CompositeTransform Rotation="180"/>
                         </es:RegularPolygon.RenderTransform>
                     </es:RegularPolygon>
+                    <TextBlock Grid.Row="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource DefaultTextStyle}"
+                               Text="{Binding Path=LocalizedResources.EmptyFavorites, Source={StaticResource LocalizedStrings}}"
+                               Visibility="{Binding EmptyFavorites, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     <ListBox Grid.Row="1" ItemsSource="{Binding Favorites}" Margin="10,0,0,0">
                         <ListBox.ItemTemplate >
                             <DataTemplate>
-                                <Grid Margin="0,0,0,0">
+                                <Grid Margin="0,0,0,10">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>

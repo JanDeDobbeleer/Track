@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using Cimbalino.Phone.Toolkit.Extensions;
 using Localization.Resources;
 using Tools;
@@ -93,13 +94,13 @@ namespace Track.Database
                       select fav;
             if (temp.Any())
             {
-                Message.ShowToast(string.Format(AppResources.FavoriteExists, favorite.Name));
+                Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(string.Format(AppResources.FavoriteExists, favorite.Name)));
                 return;
             }
             _trackDb.Favorites.InsertOnSubmit(favorite);
             SubmitChanges();
             Favorites.Add(favorite);
-            Message.ShowToast(string.Format(AppResources.FavoriteAdded, favorite.Name));
+            Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(string.Format(AppResources.FavoriteAdded, favorite.Name)));
         }
 
         public void RemoveFavorite(Favorite favorite)

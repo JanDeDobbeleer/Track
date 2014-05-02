@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Track.Database;
@@ -62,7 +63,7 @@ namespace Track.Api
             //Get the list from the API
             var locationsList = await Client.GetInstance().GetLocations(valuePair);
             //If the list is empty pray to the lord the one in the database holds values
-            if(locationsList.Count == 0)
+            if (locationsList.Count == 0)
                 return ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.ToList();
             //Add the stations to the database and set the date for next time
             ServiceLocator.Current.GetInstance<TrackDatabase>().AddStations(locationsList);
@@ -74,27 +75,17 @@ namespace Track.Api
         {
             if (!CheckForInternetAccess())
                 return new List<Departure>();
-            if (!station.Id.Contains(":"))
+            var param = new List<KeyValuePair<string, string>>
             {
-                return
-                    await
-                        Client.GetInstance()
-                            .GetLiveBoard(new[]
-                            {
-                                new KeyValuePair<string, string>(Arguments.Id.ToString().ToLower(), station.Id), 
-                                new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang)
-                            });
-            }
-            return
-                await
-                    Client.GetInstance()
-                        .GetLiveBoard(new[]
-                        {
-                            new KeyValuePair<string, string>(Arguments.Station.ToString(), station.Name.ToUpper()),
-                            new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(),AppResources.ClientLang),
-                            new KeyValuePair<string, string>(Arguments.Date.ToString().ToLower(),DateTime.Now.ToShortDateString().ConvertDateToCorrectDateStamp()),
-                            new KeyValuePair<string, string>(Arguments.Time.ToString().ToLower(),station.Id.Remove(station.Id.IndexOf(':'), 1))
-                        });
+                new KeyValuePair<string, string>(Arguments.Lang.ToString().ToLower(), AppResources.ClientLang),
+                new KeyValuePair<string, string>(Arguments.Date.ToString().ToLower(),
+                    station.TimeStamp.ToString("MMddyy")),
+                new KeyValuePair<string, string>(Arguments.Time.ToString().ToLower(), station.TimeStamp.ToString("HHmm")),
+                !string.IsNullOrWhiteSpace(station.Id)
+                    ? new KeyValuePair<string, string>(Arguments.Id.ToString().ToLower(), station.Id)
+                    : new KeyValuePair<string, string>(Arguments.Station.ToString().ToLower(), station.Name)
+            };
+            return await Client.GetInstance().GetLiveBoard(param.ToArray());
         }
 
         public async Task<List<Stop>> GetVehicle(string vehicle)
@@ -123,7 +114,7 @@ namespace Track.Api
         {
             if (NetworkInterface.GetIsNetworkAvailable())
                 return true;
-            Message.ShowToast(AppResources.ToastNoInternet);
+            Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.ToastNoInternet));
             return false;
         }
     }

@@ -18,7 +18,7 @@ namespace TrackApi.Classes
         public Station Stationinfo { get; set; }
         [JsonProperty(PropertyName = "time")]
         [JsonConverter(typeof(UnixDateTimeConverter))]
-        public String Time { get; set; }
+        public DateTime Time { get; set; }
         [JsonProperty(PropertyName = "vehicle")]
         [JsonConverter(typeof(VehicleNameConverter))]
         public string Vehicle { get; set; }
@@ -29,6 +29,11 @@ namespace TrackApi.Classes
         public PlatformInfo PlatformInfo { get; set; }
         [JsonProperty(PropertyName = "left")]
         public string Left { get; set; }
+
+        public string TimeStamp
+        {
+            get { return Time.ToString("HH:mm"); }
+        }
 
         public string VehicleName()
         {

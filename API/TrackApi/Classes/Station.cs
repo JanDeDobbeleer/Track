@@ -130,6 +130,8 @@ namespace TrackApi.Classes
             }
         }
 
+        public DateTime TimeStamp { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(string propertyName)

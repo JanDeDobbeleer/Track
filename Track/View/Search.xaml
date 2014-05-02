@@ -56,22 +56,9 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,10,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Style="{StaticResource DefaultTextStyle}" Text="{Binding Path=LocalizedResources.SearchViewFrom, Source={StaticResource LocalizedStrings}}" FontWeight="SemiBold" FontSize="25"/>
-            <toolkit:AutoCompleteBox ItemsSource="{Binding Stations}" Grid.Row="1" Style="{StaticResource AutoCompleteBoxStyle}" SelectedItem="{Binding From, Mode=TwoWay}"/>
-            <TextBlock  Grid.Row="2" Style="{StaticResource DefaultTextStyle}" Text="{Binding Path=LocalizedResources.SearchViewTo, Source={StaticResource LocalizedStrings}}" FontWeight="SemiBold" FontSize="25"/>
-            <toolkit:AutoCompleteBox ItemsSource="{Binding Stations}" Grid.Row="3" Style="{StaticResource AutoCompleteBoxStyle}" SelectedItem="{Binding To, Mode=TwoWay}"/>
-            <TextBlock  Grid.Row="4" Style="{StaticResource DefaultTextStyle}" Text="{Binding Path=LocalizedResources.SearchViewDate, Source={StaticResource LocalizedStrings}}" FontWeight="SemiBold" FontSize="25"/>
-            <toolkit:DatePicker  Grid.Row="5" Value="{Binding Date, Mode=TwoWay, StringFormat='ddMMYYYY'}" Foreground="Black" HorizontalAlignment="Right"/>
-            <TextBlock  Grid.Row="6" Style="{StaticResource DefaultTextStyle}" Text="{Binding Path=LocalizedResources.SearchViewTime, Source={StaticResource LocalizedStrings}}" FontWeight="SemiBold" FontSize="25"/>
-            <toolkit:TimePicker  Grid.Row="7" Value="{Binding Time, Mode=TwoWay}" Foreground="Black" HorizontalAlignment="Right"/>
+            <toolkit:AutoCompleteBox ItemsSource="{Binding Stations}" Grid.Row="0" Style="{StaticResource AutoCompleteBoxStyle}" SelectedItem="{Binding From, Mode=TwoWay}"/>
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>

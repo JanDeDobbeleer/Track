@@ -88,7 +88,7 @@ namespace Track.ViewModel
             Stops = new ObservableCollection<Stop>();
             StationOverViewCommand = new RelayCommand<Stop>((stop) =>
             {
-                stop.Stationinfo.Id = stop.Time;
+                stop.Stationinfo.TimeStamp = stop.Time;
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = stop.Stationinfo);
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
@@ -121,15 +121,17 @@ namespace Track.ViewModel
                 var list = await RailService.GetInstance().GetVehicle(Vehicle);
                 if (list == null)
                 {
-                    Message.ShowToast(AppResources.MessageVehicleInfoError);
+                    Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageVehicleInfoError));
                     return;
                 }
                 _helper.AssignList(Stops, list);
+                if (list.Count == 0)
+                    Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageVehicleInfoError));
                 Deployment.Current.Dispatcher.BeginInvoke(() => Loading = false);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                MessageBox.Show(e.Message);
+                Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageVehicleInfoError));
             }
         }
 

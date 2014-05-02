@@ -2,13 +2,16 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Localization.Resources;
+using Microsoft.Practices.ServiceLocation;
 using Tools;
 using Tools.Properties;
 using Track.Api;
+using TrackApi.Classes;
 
 namespace Track.ViewModel
 {
@@ -108,24 +111,20 @@ namespace Track.ViewModel
             Stations = new ObservableCollection<string>();
             ConnectionViewCommand = new RelayCommand(() =>
             {
-                if (CheckForValidValues())
-                    RailService.GetInstance().GetConnections(Date, Time, From, To);
+                if (!CheckForValidValues()) 
+                    return;
+                var station = new Station { TimeStamp = DateTime.Now, Name = From };
+                Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = station);
+                _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
         }
 
         private bool CheckForValidValues()
         {
-            if (string.IsNullOrWhiteSpace(From) || string.IsNullOrWhiteSpace(To))
-            {
-                Message.ShowToast(AppResources.MessageValidStationName);
-                return false;
-            }
-            if (!Stations.Contains(From.Trim()) || !Stations.Contains(To.Trim()))
-            {
-                Message.ShowToast(AppResources.MessageValidStationName);
-                return false;
-            }
-            return true;
+            if (!string.IsNullOrWhiteSpace(From) && Stations.Contains(From.Trim())) 
+                return true;
+            Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageValidStationName));
+            return false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

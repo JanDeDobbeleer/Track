@@ -1,4 +1,6 @@
-﻿namespace Tools
+﻿using System.Windows;
+
+namespace Tools
 {
     public static class Error
     {
@@ -6,7 +8,7 @@
         {
             if (result != null)
                 return false;
-            Message.ShowToast(message);
+            Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(message));
             return true;
         }
     }

@@ -25,7 +25,7 @@ namespace Tools
                 Background = (SolidColorBrush)Application.Current.Resources["TrackColorBrush"],
                 Margin = new Thickness(0,0,0,-25)
             };
-            Deployment.Current.Dispatcher.BeginInvoke(toast.Show);
+            toast.Show();
         }
 
         public static void SendErrorEmail(string error, string location)

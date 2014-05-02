@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,13 +78,11 @@ namespace TrackApi.Api
                 };
                 ro = await _restClient.ExecuteAsync<StationRootObject>(request);
             }
-            catch (HttpRequestException)
-            {
-                Message.ShowToast(AppResources.APIClientErrorDown);
-            }
             catch (Exception e)
             {
-                Message.SendErrorEmail(e.Message + e.InnerException, "Client - GetLocations");
+#if(DEBUG)
+                Debug.WriteLine(e.Message);
+#endif
             }
             return ro.Station;
         }
@@ -99,13 +98,11 @@ namespace TrackApi.Api
                 };
                 ro = await _restClient.ExecuteAsync<LiveBoardRootObject>(request);
             }
-            catch (HttpRequestException)
-            {
-                Message.ShowToast(AppResources.APIClientErrorDown);
-            }
             catch (Exception e)
             {
-                Message.SendErrorEmail(e.Message + e.InnerException, "Client - GetLiveBoard");
+#if(DEBUG)
+                Debug.WriteLine(e.Message);
+#endif
             }
             return ro.departures.departure;
         }
@@ -121,13 +118,11 @@ namespace TrackApi.Api
                 };
                 ro = await _restClient.ExecuteAsync<VehicleRootObject>(request);
             }
-            catch (HttpRequestException)
-            {
-                Message.ShowToast(AppResources.APIClientErrorDown);
-            }
             catch (Exception e)
             {
-                Message.SendErrorEmail(e.Message + e.InnerException, "Client - GetVehicle");
+#if(DEBUG)
+                Debug.WriteLine(e.Message);
+#endif
             }
             return ro.Stops.Stop;
         }
@@ -146,7 +141,9 @@ namespace TrackApi.Api
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+#if(DEBUG)
+                Debug.WriteLine(e.Message);
+#endif
             }
         }
 

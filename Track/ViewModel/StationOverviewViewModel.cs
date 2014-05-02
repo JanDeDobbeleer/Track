@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -27,10 +28,13 @@ namespace Track.ViewModel
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand<Departure> VehicleOverViewCommand { get; private set; }
         public RelayCommand PageLoaded { get; private set; }
+        public RelayCommand LaterCommand { get; private set; }
+        public RelayCommand EarlierCommand { get; private set; }
         public RelayCommand HomeCommand { get; private set; }
         public RelayCommand FavoriteCommand { get; private set; }
 
         #region properties
+
         public const string StationPropertyName = "Station";
         private Station _station;
         public Station Station
@@ -95,16 +99,21 @@ namespace Track.ViewModel
                 var list = await RailService.GetInstance().GetLiveBoard(station);
                 if (list == null)
                 {
-                    Message.ShowToast(AppResources.MessageStationInfoError);
-                    Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDepartures = false);
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageStationInfoError));
+                        LoadingDepartures = false;
+                    });
                     return;
                 }
                 _helper.AssignList(Departures, list);
+                if(list.Count == 0)
+                    Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageStationInfoError));
                 Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDepartures = false);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Message.ShowToast(e.Message);
+                Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageStationInfoError));
             }
         }
 
@@ -120,9 +129,18 @@ namespace Track.ViewModel
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<VehicleOverviewViewModel>().Vehicle = departure.Vehicle);
                 _navigationService.NavigateTo(ViewModelLocator.VehicleOverviewPageUri);
             });
-            PageLoaded = new RelayCommand(() => GetLiveBoard(Station));
             HomeCommand = new RelayCommand(() => _navigationService.NavigateTo(ViewModelLocator.HomePageUri));
             FavoriteCommand = new RelayCommand(() => ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(Station.ToFavorite()));
+            LaterCommand = new RelayCommand(() =>
+            {
+                Station.TimeStamp = Station.TimeStamp.AddHours(1);
+                RefreshCommand.Execute(Station);
+            });
+            EarlierCommand = new RelayCommand(() =>
+            {
+                Station.TimeStamp = Station.TimeStamp.AddHours(-1);
+                RefreshCommand.Execute(Station);
+            });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

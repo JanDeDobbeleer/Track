@@ -221,6 +221,44 @@ namespace Track.ViewModel
                 RaisePropertyChanged(FavoritePropertyName);
             }
         }
+
+        public const string EmptyFavoritesVisibilityPropertyName = "EmptyFavorites";
+        private bool _emptyFavorites;
+
+        public bool EmptyFavorites
+        {
+            get
+            {
+                return _emptyFavorites;
+            }
+            private set
+            {
+                if (_emptyFavorites == value)
+                    return;
+
+                _emptyFavorites = value;
+                OnPropertyChanged(EmptyFavoritesVisibilityPropertyName);
+            }
+        }
+
+        public const string FavoritesTrianglePropertyName = "FavoriteTriangle";
+        private bool _favoriteTriangle;
+
+        public bool FavoriteTriangle
+        {
+            get
+            {
+                return _favoriteTriangle;
+            }
+            private set
+            {
+                if (_favoriteTriangle == value)
+                    return;
+
+                _favoriteTriangle = value;
+                OnPropertyChanged(FavoritesTrianglePropertyName);
+            }
+        }
         #endregion
 
         public MainpageViewModel(INavigationService navigationService)
@@ -242,19 +280,43 @@ namespace Track.ViewModel
                 {
                     Refresh();
                 }
+                CheckForEmptyFavorites();
                 ClearItems();
                 Task.WaitAll(Task.Factory.StartNew(() => GetDisruptions()));
             });
             StationOverviewCommand = new RelayCommand<Station>(station =>
             {
+                station.TimeStamp = DateTime.Now;
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = station);
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
             SearchCommand = new RelayCommand(()=> _navigationService.NavigateTo(ViewModelLocator.SearchPageUri));
-            FavoriteCommand = new RelayCommand<Station>(station => ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(station.ToFavorite()));
+            FavoriteCommand = new RelayCommand<Station>(station =>
+            {
+                ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(station.ToFavorite());
+                CheckForEmptyFavorites();
+            });
             FavoriteNavigationCommand = new RelayCommand<Favorite>(favorite => favorite.Navigate());
-            FavoriteRemoveCommand = new RelayCommand<Favorite>(favorite => ServiceLocator.Current.GetInstance<TrackDatabase>().RemoveFavorite(favorite));
+            FavoriteRemoveCommand = new RelayCommand<Favorite>(favorite =>
+            {
+                ServiceLocator.Current.GetInstance<TrackDatabase>().RemoveFavorite(favorite);
+                CheckForEmptyFavorites();
+            });
             AboutCommand = new RelayCommand(() => _navigationService.NavigateTo(ViewModelLocator.AboutUri));
+        }
+
+        private void CheckForEmptyFavorites()
+        {
+            if (Favorites.Any())
+            {
+                FavoriteTriangle = true;
+                EmptyFavorites = false;
+            }
+            else
+            {
+                FavoriteTriangle = false;
+                EmptyFavorites = true;
+            }
         }
 
         private async void Refresh()

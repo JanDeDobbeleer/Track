@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Data.Linq.Mapping;
 using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
@@ -94,7 +95,7 @@ namespace Track.Database
             switch (Type)
             {
                 case Type.Station:
-                    var station = new Station {Name = Name, Id = QueryElement};
+                    var station = new Station {Name = Name, Id = QueryElement, TimeStamp = DateTime.Now};
                     Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = station);
                     ServiceLocator.Current.GetInstance<INavigationService>().NavigateTo(ViewModelLocator.StationOverviewPageUri);
                     break;

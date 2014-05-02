@@ -171,13 +171,13 @@
     <value>the API is not accepting any requests right now, please try again later</value>
   </data>
   <data name="MessageStationInfoError" xml:space="preserve">
-    <value>we could not load station info right now, please try again later</value>
+    <value>we could not load the station info right now, please try again later</value>
   </data>
   <data name="MessageVehicleInfoError" xml:space="preserve">
-    <value>we could not load vehicle info right now, please try again later</value>
+    <value>we could not load the vehicle info right now, please try again later</value>
   </data>
   <data name="SearchViewHeader" xml:space="preserve">
-    <value>Search</value>
+    <value>Search station</value>
   </data>
   <data name="AppBarButtomSubmit" xml:space="preserve">
     <value>submit</value>
@@ -256,5 +256,8 @@
   </data>
   <data name="FavoriteExists" xml:space="preserve">
     <value>you already have {0} in your favorites</value>
+  </data>
+  <data name="EmptyFavorites" xml:space="preserve">
+    <value>it's a bit empty in here, try adding some favorites</value>
   </data>
 </root>
