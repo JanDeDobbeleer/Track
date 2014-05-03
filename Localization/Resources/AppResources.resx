@@ -177,13 +177,7 @@
     <value>we could not load the vehicle info right now, please try again later</value>
   </data>
   <data name="SearchViewHeader" xml:space="preserve">
-    <value>Search station</value>
-  </data>
-  <data name="AppBarButtomSubmit" xml:space="preserve">
-    <value>submit</value>
-  </data>
-  <data name="AppBarButtonRefresh" xml:space="preserve">
-    <value>refresh</value>
+    <value>station</value>
   </data>
   <data name="MessageValidStationName" xml:space="preserve">
     <value>please provide a valid station name</value>
@@ -230,10 +224,6 @@
   <data name="AboutViewiRail" xml:space="preserve">
     <value>&lt;Section xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"&gt;
   &lt;Paragraph FontWeight="Light"&gt;
-  “By 2025 we will double the amount of public transit users,” says UITP (the international organisation for public transport). This is a noble goal that is great food for thought. Not only different transport networks will need to connect flawlessly, also social networks, GPS systems, calendars and publicly available data can be integrated to provide a networked mobility experience, leading to a more diverse use of transport.
-&lt;/Paragraph&gt;  
-&lt;Paragraph/&gt;
-  &lt;Paragraph FontWeight="Light"&gt;
   iRail is a working group of Open Knowledge Belgium. The goal of the working group is summarized by 3 bullets. Support digital creativity concerning mobility, sustain and aggregate open data concerning mobility (like public transport) to offer an easy-to-use webservice for all third-party applications and a living lab: start all sorts of new projects and support them to become a spin-off.
 &lt;/Paragraph&gt;
   &lt;Paragraph/&gt;
@@ -259,5 +249,38 @@
   </data>
   <data name="EmptyFavorites" xml:space="preserve">
     <value>it's a bit empty in here, try adding some favorites</value>
+  </data>
+  <data name="AppBarAbout" xml:space="preserve">
+    <value>about</value>
+  </data>
+  <data name="AppBarEarlier" xml:space="preserve">
+    <value>earlier</value>
+  </data>
+  <data name="AppBarFavorite" xml:space="preserve">
+    <value>favorite</value>
+  </data>
+  <data name="AppBarHome" xml:space="preserve">
+    <value>home</value>
+  </data>
+  <data name="AppBarLater" xml:space="preserve">
+    <value>later</value>
+  </data>
+  <data name="AppBarNavigate" xml:space="preserve">
+    <value>navigate</value>
+  </data>
+  <data name="AppBarRefresh" xml:space="preserve">
+    <value>refresh</value>
+  </data>
+  <data name="AppBarSearch" xml:space="preserve">
+    <value>search</value>
+  </data>
+  <data name="AppBarSubmit" xml:space="preserve">
+    <value>submit</value>
+  </data>
+  <data name="ContextmenuRemove" xml:space="preserve">
+    <value>remove</value>
+  </data>
+  <data name="ToastNoStationsLoaded" xml:space="preserve">
+    <value>we were unable to load the station list, please try again later</value>
   </data>
 </root>

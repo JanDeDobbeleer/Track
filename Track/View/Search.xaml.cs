@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
+﻿using System.Windows;
+using System.Windows.Input;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 
 namespace Track.View
 {
@@ -15,6 +9,12 @@ namespace Track.View
         public Search()
         {
             InitializeComponent();
+        }
+
+        //Hack this focus as I can't get Focusmanager to work here
+        private void Search_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            AutoCompleteBox.Focus();
         }
     }
 }

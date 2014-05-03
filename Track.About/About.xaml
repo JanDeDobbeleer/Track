@@ -18,8 +18,8 @@
     <phone:PhoneApplicationPage.Resources>
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="LightGray"/>
-            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="BorderBrush" Value="{StaticResource TrackColorBrush}"/>
+            <Setter Property="Foreground" Value="Black"/>
             <Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
             <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
             <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
@@ -38,7 +38,7 @@
                                                 <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneButtonBasePressedForegroundBrush}"/>
                                             </ObjectAnimationUsingKeyFrames>
                                             <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="LightGray"/>
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TrackColorBrush}"/>
                                             </ObjectAnimationUsingKeyFrames>
                                         </Storyboard>
                                     </VisualState>
@@ -66,10 +66,12 @@
             </Setter>
         </Style>
         <Style x:Key="HyperlinkButtonStyle" TargetType="HyperlinkButton" x:Name="HyperLinkStyle">
-            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="Foreground" Value="Black"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
             <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="HyperlinkButton">

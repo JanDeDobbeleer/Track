@@ -18,6 +18,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
+using Tools;
 using Tools.Properties;
 using Track.Api;
 using Track.Common;
@@ -293,7 +294,7 @@ namespace Track.ViewModel
             SearchCommand = new RelayCommand(()=> _navigationService.NavigateTo(ViewModelLocator.SearchPageUri));
             FavoriteCommand = new RelayCommand<Station>(station =>
             {
-                ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(station.ToFavorite());
+                ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(station.ToFavorite(), true);
                 CheckForEmptyFavorites();
             });
             FavoriteNavigationCommand = new RelayCommand<Favorite>(favorite => favorite.Navigate());
@@ -380,6 +381,11 @@ namespace Track.ViewModel
             Deployment.Current.Dispatcher.BeginInvoke(() => LoadingLocations = true);
             Geoposition geoposition = null;
             var list = await RailService.GetInstance().GetLocations(new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
+            if (list.Count == 0)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.ToastNoStationsLoaded, true));
+                return;
+            }
             _helper.AssignList(ServiceLocator.Current.GetInstance<SearchViewModel>().Stations, list.Select(x => x.Name));
             var geolocator = new Geolocator
             {

@@ -41,28 +41,28 @@
             <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}" ForegroundColor="White">
                 <behaviors:ApplicationBarIconButton IsVisible="True"
 					IconUri="/Assets/AppBar/appbar.home.png"
-					Text="refresh"
+					Text="{Binding Path=LocalizedResources.AppBarHome, Source={StaticResource LocalizedStrings}}"
 					Command="{Binding HomeCommand}"/>
                 <behaviors:ApplicationBarIconButton IsVisible="True"
 					IconUri="/Assets/AppBar/refresh.png"
-					Text="home"
+					Text="{Binding Path=LocalizedResources.AppBarRefresh, Source={StaticResource LocalizedStrings}}"
 					Command="{Binding RefreshCommand}"/>
                 <behaviors:ApplicationBarBehavior.MenuItems>
                     <behaviors:ApplicationBarMenuItem
                         IsVisible="True"
-                        Text="later"
+                        Text="{Binding Path=LocalizedResources.AppBarLater, Source={StaticResource LocalizedStrings}}"
                         Command="{Binding LaterCommand}"/>
                     <behaviors:ApplicationBarMenuItem
                         IsVisible="True"
-                        Text="earlier"
+                        Text="{Binding Path=LocalizedResources.AppBarEarlier, Source={StaticResource LocalizedStrings}}"
                         Command="{Binding EarlierCommand}"/>
                     <behaviors:ApplicationBarMenuItem
                         IsVisible="True"
-                        Text="favorite"
+                        Text="{Binding Path=LocalizedResources.AppBarFavorite, Source={StaticResource LocalizedStrings}}"
                         Command="{Binding FavoriteCommand}"/>
                     <behaviors:ApplicationBarMenuItem
                         IsVisible="True"
-                        Text="navigate"
+                        Text="{Binding Path=LocalizedResources.AppBarNavigate, Source={StaticResource LocalizedStrings}}"
                         Command="{Binding DirectionsCommand}"/>
                 </behaviors:ApplicationBarBehavior.MenuItems>
             </behaviors:ApplicationBarBehavior>

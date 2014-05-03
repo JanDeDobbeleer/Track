@@ -87,15 +87,15 @@
             <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}" ForegroundColor="White">
                 <behaviors:ApplicationBarIconButton IsVisible="True"
                                                     IconUri="/Assets/AppBar/refresh.png"
-                                                    Text="refresh"
+                                                    Text="{Binding Path=LocalizedResources.AppBarRefresh, Source={StaticResource LocalizedStrings}}"
                                                     Command="{Binding RefreshCommand}"/>
                 <behaviors:ApplicationBarIconButton IsVisible="True"
                                                     IconUri="/Assets/AppBar/feature.search.png"
-                                                    Text="search"
+                                                    Text="{Binding Path=LocalizedResources.AppBarSearch, Source={StaticResource LocalizedStrings}}"
                                                     Command="{Binding SearchCommand}"/>
                 <behaviors:ApplicationBarBehavior.MenuItems>
                     <behaviors:ApplicationBarMenuItem IsVisible="True"
-                                                      Text="about"
+                                                      Text="{Binding Path=LocalizedResources.AppBarAbout, Source={StaticResource LocalizedStrings}}"
                                                       Command="{Binding AboutCommand}"/>
                 </behaviors:ApplicationBarBehavior.MenuItems>
             </behaviors:ApplicationBarBehavior>
@@ -239,8 +239,8 @@
                                         <ColumnDefinition Width="20"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Ellipse Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Stroke="LightGray" Width="50" Height="50" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <Path Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Data="{Binding Type, Converter={StaticResource PathFavoriteConverter}}" Stretch="Uniform" Fill="LightGray" Width="30" Height="30" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Ellipse Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Stroke="{StaticResource TrackColorBrush}" Width="43" Height="43" StrokeThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Path Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Data="{Binding Type, Converter={StaticResource PathFavoriteConverter}}" Stretch="Uniform" Fill="Black" Width="25" Height="25" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     <TextBlock Grid.Row="0"
                                                Grid.RowSpan="{Binding Type, Converter={StaticResource RowSpanConverter}}"
                                                Grid.Column="2"
@@ -275,7 +275,7 @@
                                     </TextBlock>
                                     <toolkit1:ContextMenuService.ContextMenu>
                                         <toolkit1:ContextMenu x:Name="ContextMenu" IsZoomEnabled="False">
-                                            <toolkit1:MenuItem Header="Remove">
+                                            <toolkit1:MenuItem Header="{Binding Path=LocalizedResources.ContextmenuRemove, Source={StaticResource LocalizedStrings}}">
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="Click">
                                                         <command:EventToCommand Command="{Binding Main.FavoriteRemoveCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />

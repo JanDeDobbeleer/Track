@@ -12,9 +12,10 @@ namespace Tools
 {
     public static class Message
     {
-        public static void ShowToast(string message)
+        public static void ShowToast(string message, bool mainpage = false)
         {
             //Tools.SetProgressIndicator(false);
+            var margin = (mainpage) ? new Thickness(0, -23, 0, 0) : new Thickness(0, 0, 0, -25);
             var toast = new ToastPrompt
             {
                 Title = AppResources.ApplicationTitle,
@@ -23,7 +24,7 @@ namespace Tools
                 TextOrientation = Orientation.Vertical, 
                 TextWrapping = TextWrapping.Wrap,
                 Background = (SolidColorBrush)Application.Current.Resources["TrackColorBrush"],
-                Margin = new Thickness(0,0,0,-25)
+                Margin = margin
             };
             toast.Show();
         }

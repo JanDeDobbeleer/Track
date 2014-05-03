@@ -121,7 +121,8 @@ namespace Localization.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;Section xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;&gt;
         ///  &lt;Paragraph FontWeight=&quot;Light&quot;&gt;
-        ///  “By 2025 we will double the amount of public transit users,” says UITP (the international organisation for public transport). This is a noble goal that is great food for thought. Not only different transport networks will need to connect flawlessly, also social networks, GPS systems, calendars and publicly available data can be integrated to provide a networked mobility experience, leading to a m [rest of string was truncated]&quot;;.
+        ///  iRail is a working group of Open Knowledge Belgium. The goal of the working group is summarized by 3 bullets. Support digital creativity concerning mobility, sustain and aggregate open data concerning mobility (like public transport) to offer an easy-to-use webservice for all third-party applications and a living lab: start all sorts of new projects and support them to become a spin-off.
+        ///&lt;/Parag [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AboutViewiRail {
             get {
@@ -166,20 +167,83 @@ namespace Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to submit.
+        ///   Looks up a localized string similar to about.
         /// </summary>
-        public static string AppBarButtomSubmit {
+        public static string AppBarAbout {
             get {
-                return ResourceManager.GetString("AppBarButtomSubmit", resourceCulture);
+                return ResourceManager.GetString("AppBarAbout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to earlier.
+        /// </summary>
+        public static string AppBarEarlier {
+            get {
+                return ResourceManager.GetString("AppBarEarlier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to favorite.
+        /// </summary>
+        public static string AppBarFavorite {
+            get {
+                return ResourceManager.GetString("AppBarFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to home.
+        /// </summary>
+        public static string AppBarHome {
+            get {
+                return ResourceManager.GetString("AppBarHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to later.
+        /// </summary>
+        public static string AppBarLater {
+            get {
+                return ResourceManager.GetString("AppBarLater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to navigate.
+        /// </summary>
+        public static string AppBarNavigate {
+            get {
+                return ResourceManager.GetString("AppBarNavigate", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to refresh.
         /// </summary>
-        public static string AppBarButtonRefresh {
+        public static string AppBarRefresh {
             get {
-                return ResourceManager.GetString("AppBarButtonRefresh", resourceCulture);
+                return ResourceManager.GetString("AppBarRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to search.
+        /// </summary>
+        public static string AppBarSearch {
+            get {
+                return ResourceManager.GetString("AppBarSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to submit.
+        /// </summary>
+        public static string AppBarSubmit {
+            get {
+                return ResourceManager.GetString("AppBarSubmit", resourceCulture);
             }
         }
         
@@ -207,6 +271,15 @@ namespace Localization.Resources {
         public static string ClientLang {
             get {
                 return ResourceManager.GetString("ClientLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to remove.
+        /// </summary>
+        public static string ContextmenuRemove {
+            get {
+                return ResourceManager.GetString("ContextmenuRemove", resourceCulture);
             }
         }
         
@@ -391,7 +464,7 @@ namespace Localization.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search station.
+        ///   Looks up a localized string similar to station.
         /// </summary>
         public static string SearchViewHeader {
             get {
@@ -441,6 +514,15 @@ namespace Localization.Resources {
         public static string ToastNoInternet {
             get {
                 return ResourceManager.GetString("ToastNoInternet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to we were unable to load the station list, please try again later.
+        /// </summary>
+        public static string ToastNoStationsLoaded {
+            get {
+                return ResourceManager.GetString("ToastNoStationsLoaded", resourceCulture);
             }
         }
     }

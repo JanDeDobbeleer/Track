@@ -66,11 +66,11 @@ namespace TrackApi.Api
                 /*if (ro.Disruptions.Count == 0)
                     ro.Disruptions = TestData();*/
             }
-            catch (HttpRequestException re)
+            catch (HttpRequestException)
             {
                 //TODO: show toast that indicates the call was not succesful
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //TODO: allow user to send an error log
             }

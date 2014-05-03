@@ -101,8 +101,8 @@ namespace Track.ViewModel
                     Type = Type.Vehicle,
                     QueryElement = Vehicle,
                     Detail =
-                        Stops.ElementAt(0).Station + " - " + Stops.ElementAt(0).Time + " • " + Stops.Last().Station + " - " +
-                        Stops.Last().Time
+                        Stops.ElementAt(0).Station + " - " + Stops.ElementAt(0).TimeStamp + " • " + Stops.Last().Station + " - " +
+                        Stops.Last().TimeStamp
                 };
                 ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(fav);
             });

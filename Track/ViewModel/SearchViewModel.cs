@@ -10,7 +10,6 @@ using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Tools;
 using Tools.Properties;
-using Track.Api;
 using TrackApi.Classes;
 
 namespace Track.ViewModel
@@ -115,6 +114,7 @@ namespace Track.ViewModel
                     return;
                 var station = new Station { TimeStamp = DateTime.Now, Name = From };
                 Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = station);
+                From = string.Empty;
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
         }

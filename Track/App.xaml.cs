@@ -109,22 +109,30 @@ namespace Track
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            if (e.ExceptionObject.Message.Contains("ApplicationBarBehavior"))
+            {
+                e.Handled = true;
+                return;
+            }
             Guide.BeginShowMessageBox("Well, this is embarrasing",
-                "I swear I tested this." + Environment.NewLine + "Do you want to email the exception log anyway?",
+                "It seems you can never test enough." + Environment.NewLine + "Do you want to email the exception log so I can fix this??",
                 new List<string> { "yes", "no" },
                 0,
                 MessageBoxIcon.Error,
                 asyncResult =>
                 {
-                    int? returnValue = Guide.EndShowMessageBox(asyncResult);
-                    if (returnValue == 0)
+                    var returnValue = Guide.EndShowMessageBox(asyncResult);
+                    if (returnValue != 0) 
+                        return;
+                    var email = new EmailComposeTask
                     {
-                        EmailComposeTask email = new EmailComposeTask();
-                        email.Subject = "Track - Crappy developer";
-                        email.Body = "* MESSAGE *" + Environment.NewLine + e.ExceptionObject.Message + Environment.NewLine + "* STACKTRACE *" + Environment.NewLine + e.ExceptionObject.StackTrace;
-                        email.To = "trackapplication@outlook.com";
-                        email.Show();
-                    }
+                        Subject = "Track - Application error",
+                        Body =
+                            "* MESSAGE *" + Environment.NewLine + e.ExceptionObject.Message + Environment.NewLine +
+                            "* STACKTRACE *" + Environment.NewLine + e.ExceptionObject.StackTrace,
+                        To = "trackapplication@outlook.com"
+                    };
+                    email.Show();
                 },
                 null);
 

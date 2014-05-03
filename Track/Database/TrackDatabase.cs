@@ -87,20 +87,20 @@ namespace Track.Database
             }
         }
 
-        public void AddFavorite(Favorite favorite)
+        public void AddFavorite(Favorite favorite, bool mainpage = false)
         {
             var temp = from Favorite fav in _trackDb.Favorites
                       where fav.Name.Equals(favorite.Name)
                       select fav;
             if (temp.Any())
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(string.Format(AppResources.FavoriteExists, favorite.Name)));
+                Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(string.Format(AppResources.FavoriteExists, favorite.Name), mainpage));
                 return;
             }
             _trackDb.Favorites.InsertOnSubmit(favorite);
             SubmitChanges();
             Favorites.Add(favorite);
-            Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(string.Format(AppResources.FavoriteAdded, favorite.Name)));
+            Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(string.Format(AppResources.FavoriteAdded, favorite.Name), mainpage));
         }
 
         public void RemoveFavorite(Favorite favorite)

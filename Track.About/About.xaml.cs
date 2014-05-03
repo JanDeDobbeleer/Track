@@ -59,10 +59,10 @@ namespace Track.About
                 Content = "iRail",
                 NavigateUri = new Uri("https://hello.irail.be/about/", UriKind.RelativeOrAbsolute),
                 TargetName = "blank",
-                HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 10, 0, 0),
-                Style = HyperLinkStyle,
-                Foreground = new SolidColorBrush(Colors.LightGray)
+                Foreground = new SolidColorBrush(Colors.Black),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
             };
             return link;
         }
