@@ -9,5 +9,10 @@ namespace TrackApi.Classes
         public string Number { get; set; }
         [JsonProperty(PropertyName = "stop")]
         public List<Stop> Stop { get; set; }
+
+        public Stops()
+        {
+            Stop = new List<Stop>();
+        }
     }
 }

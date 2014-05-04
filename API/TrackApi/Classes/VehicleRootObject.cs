@@ -14,5 +14,10 @@ namespace TrackApi.Classes
         public VehicleInfo Vehicleinfo { get; set; }
         [JsonProperty(PropertyName = "stops")]
         public Stops Stops { get; set; }
+
+        public VehicleRootObject()
+        {
+            Stops = new Stops();
+        }
     }
 }
