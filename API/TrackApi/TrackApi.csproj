@@ -92,8 +92,10 @@
     <PlatformTarget />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Api\ApiException.cs" />
     <Compile Include="Api\Arguments.cs" />
     <Compile Include="Api\Client.cs" />
+    <Compile Include="Api\ConnectionException.cs" />
     <Compile Include="Api\Rss.cs" />
     <Compile Include="Classes\Departure.cs" />
     <Compile Include="Classes\Departures.cs" />

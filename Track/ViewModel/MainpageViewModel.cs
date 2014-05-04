@@ -273,7 +273,7 @@ namespace Track.ViewModel
             {
                 if (!IsolatedStorageSettings.ApplicationSettings.Contains(LocationConsent) || !(bool)IsolatedStorageSettings.ApplicationSettings[LocationConsent])
                 {
-                    _messagePrompt = new MessagePrompt {Body = new MessagePromptBody(), IsCancelVisible = true, Background = (SolidColorBrush)Application.Current.Resources["TrackColorBrush"]};
+                    _messagePrompt = new MessagePrompt {Body = new MessagePromptBody(), IsCancelVisible = true, Background = (SolidColorBrush)Application.Current.Resources["TrackColorBrush"], Foreground = new SolidColorBrush(Colors.White)};
                     _messagePrompt.Completed += OnMessagePromptCompleted;
                     _messagePrompt.Show();
                 }
@@ -383,7 +383,7 @@ namespace Track.ViewModel
             var list = await RailService.GetInstance().GetLocations(new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
             if (list.Count == 0)
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.ToastNoStationsLoaded, true));
+                Deployment.Current.Dispatcher.BeginInvoke(() => LoadingLocations = false);
                 return;
             }
             _helper.AssignList(ServiceLocator.Current.GetInstance<SearchViewModel>().Stations, list.Select(x => x.Name));

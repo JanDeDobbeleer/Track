@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using Localization.Resources;
 using PortableRest;
-using Tools;
 using TrackApi.Classes;
 
 namespace TrackApi.Api
@@ -69,6 +69,8 @@ namespace TrackApi.Api
 
         public async Task<List<Station>> GetLocations(KeyValuePair<string, string> valuePair)
         {
+            if (!NetworkInterface.GetIsNetworkAvailable())
+                throw new ConnectionException(AppResources.ToastNoInternet);
             var ro = new StationRootObject();
             try
             {
@@ -78,8 +80,13 @@ namespace TrackApi.Api
                 };
                 ro = await _restClient.ExecuteAsync<StationRootObject>(request);
             }
+            catch (ConnectionException)
+            {
+                throw new ConnectionException(AppResources.ToastNoInternet);
+            }
             catch (Exception e)
             {
+                throw new ApiException(AppResources.APIClientErrorDown);
 #if(DEBUG)
                 Debug.WriteLine(e.Message);
 #endif
@@ -89,6 +96,8 @@ namespace TrackApi.Api
 
         public async Task<List<Departure>> GetLiveBoard(KeyValuePair<string, string>[] valuePair)
         {
+            if (!NetworkInterface.GetIsNetworkAvailable())
+                throw new ConnectionException(AppResources.ToastNoInternet);
             var ro = new LiveBoardRootObject();
             try
             {
@@ -98,8 +107,13 @@ namespace TrackApi.Api
                 };
                 ro = await _restClient.ExecuteAsync<LiveBoardRootObject>(request);
             }
+            catch (ConnectionException)
+            {
+                throw new ConnectionException(AppResources.ToastNoInternet);
+            }
             catch (Exception e)
             {
+                throw new ApiException(AppResources.APIClientErrorDown);
 #if(DEBUG)
                 Debug.WriteLine(e.Message);
 #endif
@@ -109,6 +123,8 @@ namespace TrackApi.Api
 
         public async Task<List<Stop>> GetVehicle(KeyValuePair<string, string> valuePair)
         {
+            if (!NetworkInterface.GetIsNetworkAvailable())
+                throw new ConnectionException(AppResources.ToastNoInternet);
             var ro = new VehicleRootObject();
             try
             {
@@ -118,8 +134,13 @@ namespace TrackApi.Api
                 };
                 ro = await _restClient.ExecuteAsync<VehicleRootObject>(request);
             }
+            catch (ConnectionException)
+            {
+                throw new ConnectionException(AppResources.ToastNoInternet);
+            }
             catch (Exception e)
             {
+                throw new ApiException(AppResources.APIClientErrorDown);
 #if(DEBUG)
                 Debug.WriteLine(e.Message);
 #endif
@@ -139,8 +160,13 @@ namespace TrackApi.Api
                     var test = temp + "test";
                 }
             }
+            catch (ConnectionException)
+            {
+                throw new ConnectionException(AppResources.ToastNoInternet);
+            }
             catch (Exception e)
             {
+                throw new ApiException(AppResources.APIClientErrorDown);
 #if(DEBUG)
                 Debug.WriteLine(e.Message);
 #endif

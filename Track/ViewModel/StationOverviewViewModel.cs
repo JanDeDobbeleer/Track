@@ -89,32 +89,19 @@ namespace Track.ViewModel
 
         private async void GetLiveBoard(Station station)
         {
-            try
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    Departures.Clear();
-                    LoadingDepartures = true;
-                });
-                var list = await RailService.GetInstance().GetLiveBoard(station);
-                if (list == null)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageStationInfoError));
-                        LoadingDepartures = false;
-                    });
-                    return;
-                }
-                _helper.AssignList(Departures, list);
-                if(list.Count == 0)
-                    Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageStationInfoError));
+                Departures.Clear();
+                LoadingDepartures = true;
+            });
+            var list = await RailService.GetInstance().GetLiveBoard(station);
+            if (list.Count == 0)
+            {
                 Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDepartures = false);
+                return;
             }
-            catch (Exception)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageStationInfoError));
-            }
+            _helper.AssignList(Departures, list);
+            Deployment.Current.Dispatcher.BeginInvoke(() => LoadingDepartures = false);
         }
 
         public StationOverviewViewModel(INavigationService navigationService)

@@ -111,28 +111,19 @@ namespace Track.ViewModel
 
         private async void GetVehicleInfo()
         {
-            try
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    Stops.Clear();
-                    Loading = true;
-                });
-                var list = await RailService.GetInstance().GetVehicle(Vehicle);
-                if (list == null)
-                {
-                    Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageVehicleInfoError));
-                    return;
-                }
-                _helper.AssignList(Stops, list);
-                if (list.Count == 0)
-                    Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageVehicleInfoError));
+                Stops.Clear();
+                Loading = true;
+            });
+            var list = await RailService.GetInstance().GetVehicle(Vehicle);
+            if (list.Count == 0)
+            {
                 Deployment.Current.Dispatcher.BeginInvoke(() => Loading = false);
+                return;
             }
-            catch (Exception)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageVehicleInfoError));
-            }
+            _helper.AssignList(Stops, list);
+            Deployment.Current.Dispatcher.BeginInvoke(() => Loading = false);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
