@@ -395,12 +395,14 @@ namespace Track.ViewModel
             {
                 geoposition = await geolocator.GetGeopositionAsync(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10));
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                //TODO: Handle exception!
-#if(DEBUG)
-                Debug.WriteLine("MainViewmodel - GetCurrentPosition: " + e.Message);
-#endif
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    LoadingLocations = false;
+                    Message.ShowToast(AppResources.ToastNoLocationSet, true);
+                });
+                return;
             }
             CurrentPosition = geoposition.Coordinate.ToGeoCoordinate();
             await Task.Run(() => GetLocations(CurrentPosition, list));

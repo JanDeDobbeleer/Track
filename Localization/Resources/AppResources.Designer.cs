@@ -518,6 +518,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to we were unable to get your location, please try again later.
+        /// </summary>
+        public static string ToastNoLocationSet {
+            get {
+                return ResourceManager.GetString("ToastNoLocationSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to we were unable to load the station list, please try again later.
         /// </summary>
         public static string ToastNoStationsLoaded {

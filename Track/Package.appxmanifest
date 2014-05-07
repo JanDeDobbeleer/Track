@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="14705JanJoris.Track" Publisher="CN=0F32D1C4-EDDB-4B7A-993A-265CF1981007" Version="1.0.0.76" />
+  <Identity Name="14705JanJoris.Track" Publisher="CN=0F32D1C4-EDDB-4B7A-993A-265CF1981007" Version="1.0.0.78" />
   <mp:PhoneIdentity PhoneProductId="0ac99867-bfe2-4031-bcd0-fb7fbbd3f872" PhonePublisherId="cbaedb56-5375-45a6-9262-b727920663ae" />
   <Properties>
     <DisplayName>Track</DisplayName>
