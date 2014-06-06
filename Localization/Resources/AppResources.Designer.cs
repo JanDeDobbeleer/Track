@@ -275,6 +275,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to favorite.
+        /// </summary>
+        public static string ContextmenuFavorite {
+            get {
+                return ResourceManager.GetString("ContextmenuFavorite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to remove.
         /// </summary>
         public static string ContextmenuRemove {

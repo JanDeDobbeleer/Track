@@ -286,4 +286,7 @@
   <data name="ToastNoLocationSet" xml:space="preserve">
     <value>we were unable to get your location, please try again later</value>
   </data>
+  <data name="ContextmenuFavorite" xml:space="preserve">
+    <value>favorite</value>
+  </data>
 </root>

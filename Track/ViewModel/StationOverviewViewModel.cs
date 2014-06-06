@@ -16,6 +16,7 @@ using Track.Api;
 using Track.Common;
 using Track.Database;
 using TrackApi.Classes;
+using Type = Track.Database.Type;
 
 namespace Track.ViewModel
 {

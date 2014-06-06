@@ -127,7 +127,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>    
                             </TextBlock>
-                            <TextBlock Grid.Column="3" Grid.Row="0" HorizontalAlignment="Right" Style="{StaticResource DefaultTextStyle}" FontWeight="Light" Text="{Binding Platform}" FontSize="30"/>
+                            <TextBlock Grid.Column="3" Grid.Row="0" HorizontalAlignment="Right" Style="{StaticResource DefaultTextStyle}" FontWeight="Light" Text="{Binding Platform}" FontSize="30"/>       
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
