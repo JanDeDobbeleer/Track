@@ -31,6 +31,7 @@ namespace Track.ViewModel
         public static readonly Uri SearchPageUri = new Uri("/View/Search.xaml", UriKind.Relative);
         public static readonly Uri HomePageUri = new Uri("/View/MainPage.xaml", UriKind.Relative);
         public static readonly Uri AboutUri = new Uri("/Track.About;component/About.xaml", UriKind.Relative);
+        public static readonly Uri ConnectionUri = new Uri("/View/Connection.xaml", UriKind.Relative);
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
@@ -55,6 +56,7 @@ namespace Track.ViewModel
             SimpleIoc.Default.Register<VehicleOverviewViewModel>();
             SimpleIoc.Default.Register<SearchViewModel>();
             SimpleIoc.Default.Register<TrackDatabase>();
+            SimpleIoc.Default.Register<ConnectionViewModel>();
         }
 
         public MainpageViewModel Main
@@ -75,6 +77,11 @@ namespace Track.ViewModel
         public SearchViewModel Search
         {
             get { return ServiceLocator.Current.GetInstance<SearchViewModel>(); }
+        }
+
+        public ConnectionViewModel Connection
+        {
+            get { return ServiceLocator.Current.GetInstance<ConnectionViewModel>(); }
         }
 
         public TrackDatabase Database

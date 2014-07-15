@@ -62,7 +62,11 @@ namespace Track.Api
                 var locationsList = await Client.GetInstance().GetLocations(valuePair);
                 //If the list is empty pray to the lord the one in the database holds values
                 if (locationsList.Count == 0)
+                {
+                    if(!ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.Any())
+                        throw new ConnectionException(AppResources.MessageStationInfoError);
                     return ServiceLocator.Current.GetInstance<TrackDatabase>().Stations.ToList();
+                }
                 //Add the stations to the database and set the date for next time
                 ServiceLocator.Current.GetInstance<TrackDatabase>().AddStations(locationsList);
                 IsolatedStorageSettings.ApplicationSettings[RefreshDate] = DateTime.Now;

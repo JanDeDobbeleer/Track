@@ -135,12 +135,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Common\FinshedEventArgs.cs" />
     <Compile Include="Common\InfoLocation.cs" />
+    <Compile Include="ViewModel\ConnectionViewModel.cs" />
     <Compile Include="ViewModel\Helper.cs" />
     <Compile Include="ViewModel\MainpageViewModel.cs" />
     <Compile Include="ViewModel\SearchViewModel.cs" />
     <Compile Include="ViewModel\StationOverviewViewModel.cs" />
     <Compile Include="ViewModel\VehicleOverviewViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Connection.xaml.cs">
+      <DependentUpon>Connection.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -234,6 +238,10 @@
     <Page Include="Themes\ResourceDictionary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Connection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MainPage.xaml">
       <SubType>Designer</SubType>

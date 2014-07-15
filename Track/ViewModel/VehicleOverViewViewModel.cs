@@ -122,7 +122,7 @@ namespace Track.ViewModel
             Deployment.Current.Dispatcher.BeginInvoke(() => Loading = false);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public new event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

@@ -12,6 +12,13 @@ namespace Track.Controls
     public partial class StationList : UserControl
     {
         public ObservableCollection<Station> Stations { get; private set; }
+        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(string), typeof(StationList), new PropertyMetadata(SelectedItemPropertyChanged));
+
+        public string SelectedItem
+        {
+            get { return (string)GetValue(SelectedItemProperty); }
+            set { SetValue(SelectedItemProperty, value); }
+        }
 
         public StationList()
         {
@@ -33,6 +40,16 @@ namespace Track.Controls
                     s => s.Name, true);
                 LongListSelector.ItemsSource = dataSource;
             });
+        }
+
+        private void SelectedItemPropertyChanged(string station)
+        {
+            //todo: add this to be able to change if needed
+        }
+
+        private static void SelectedItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((StationList)d).SelectedItemPropertyChanged((string)e.NewValue);
         }
     }
 }

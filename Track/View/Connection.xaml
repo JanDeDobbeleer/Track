@@ -1,0 +1,67 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Track.View.Connection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:behaviors="clr-namespace:Cimbalino.Phone.Toolkit.Behaviors;assembly=Cimbalino.Phone.Toolkit"
+    xmlns:controls="clr-namespace:Track.Controls"
+    xmlns:command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras.WP8"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <phone:PhoneApplicationPage.DataContext>
+        <Binding Path="Connection" Source="{StaticResource Locator}"/>
+    </phone:PhoneApplicationPage.DataContext>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <i:Interaction.Behaviors>
+            <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}" ForegroundColor="White">
+                <behaviors:ApplicationBarIconButton IsVisible="True"
+					IconUri="/Assets/AppBar/check.png"
+					Text="{Binding LocalizedResources.AppBarSubmit, Source={StaticResource LocalizedStrings}}"
+					Command="{Binding ConnectionViewCommand}"/>
+            </behaviors:ApplicationBarBehavior>
+        </i:Interaction.Behaviors>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Background="{StaticResource TrackColorBrush}">
+            <TextBlock Text="{Binding LocalizedResources.ConnectionViewHeader, Source={StaticResource LocalizedStrings}}" Margin="12,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" Foreground="White"/>
+            <Rectangle Fill="{StaticResource TrackColorBrush}" Height="5" Width="{Binding ActualWidth, ElementName=LayoutRoot}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="from" Style="{StaticResource DefaultTextStyle}"/>
+            <TextBox Grid.Row="1" BorderBrush="{StaticResource TrackColorBrush}" IsReadOnly="True">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Tap">
+                        <command:EventToCommand Command="{Binding ShowListCommand, Mode=TwoWay}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+            <TextBlock Grid.Row="2" Text="to" Style="{StaticResource DefaultTextStyle}"/>
+        </Grid>
+        <controls:StationList Grid.Row="0" Grid.RowSpan="2" Visibility="{Binding ListVisible, Converter={StaticResource BooleanToVisibilityConverter}}" SelectedItem="{Binding SelectedStation}"/>
+    </Grid>
+
+</phone:PhoneApplicationPage>

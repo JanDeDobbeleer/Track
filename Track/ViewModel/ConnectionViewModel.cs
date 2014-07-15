@@ -4,19 +4,15 @@ using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Localization.Resources;
-using Microsoft.Practices.ServiceLocation;
-using Tools;
-using TrackApi.Classes;
 
 namespace Track.ViewModel
 {
-    public class SearchViewModel : ViewModelBase
+    public class ConnectionViewModel : ViewModelBase
     {
         #region properties
         private readonly INavigationService _navigationService;
         public RelayCommand ConnectionViewCommand { get; private set; }
-        private readonly Helper _helper;
+        public RelayCommand ShowListCommand { get; private set; }
 
         public const string StationsPropertyName = "Stations";
         private ObservableCollection<string> _stations;
@@ -98,30 +94,45 @@ namespace Track.ViewModel
                 RaisePropertyChanged(ToPropertyName);
             }
         }
-        #endregion
 
-        public SearchViewModel(INavigationService navigationService)
+        public const string SelectedStationPropertyName = "SelectedStation";
+        private string _selectedStation;
+        public string SelectedStation
         {
-            _helper = new Helper();
-            _navigationService = navigationService;
-            Stations = new ObservableCollection<string>();
-            ConnectionViewCommand = new RelayCommand(() =>
+            get
             {
-                if (!CheckForValidValues()) 
-                    return;
-                var station = new Station { TimeStamp = DateTime.Now, Name = From };
-                Deployment.Current.Dispatcher.BeginInvoke(() => ServiceLocator.Current.GetInstance<StationOverviewViewModel>().Station = station);
-                From = string.Empty;
-                _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
-            });
+                return _selectedStation;
+            }
+            set
+            {
+                _selectedStation = value;
+                RaisePropertyChanged(SelectedStationPropertyName);
+            }
         }
 
-        private bool CheckForValidValues()
+        public const string ListVisiblePropertyName = "ListVisible";
+        private bool _listVisible = false;
+        public bool ListVisible
         {
-            if (!string.IsNullOrWhiteSpace(From) && Stations.Contains(From.Trim())) 
-                return true;
-            Deployment.Current.Dispatcher.BeginInvoke(() => Message.ShowToast(AppResources.MessageValidStationName));
-            return false;
+            get
+            {
+                return _listVisible;
+            }
+            private set
+            {
+                if (_listVisible == value)
+                    return;
+
+                _listVisible = value;
+                RaisePropertyChanged(ListVisiblePropertyName);
+            }
+        }
+        #endregion
+
+        public ConnectionViewModel(INavigationService navigationService)
+        {
+            _navigationService = navigationService;
+            ShowListCommand = new RelayCommand(() => Deployment.Current.Dispatcher.BeginInvoke(() => ListVisible = true));
         }
     }
 }

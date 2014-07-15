@@ -289,4 +289,16 @@
   <data name="ContextmenuFavorite" xml:space="preserve">
     <value>favorite</value>
   </data>
+  <data name="ConnectionViewHeader" xml:space="preserve">
+    <value>connection</value>
+  </data>
+  <data name="MessageLocationDisabled" xml:space="preserve">
+    <value>it seems like location services are disabled on your phone, please activate it to be able to find the stations nearby</value>
+  </data>
+  <data name="AppBarConnection" xml:space="preserve">
+    <value>connection</value>
+  </data>
+  <data name="AppBarStation" xml:space="preserve">
+    <value>search station</value>
+  </data>
 </root>

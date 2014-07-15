@@ -34,6 +34,7 @@ namespace Track.ViewModel
         #region commands
         public RelayCommand RefreshCommand { get; private set; }
         public RelayCommand SearchCommand { get; private set; }
+        public RelayCommand ConnectionCommand { get; private set; }
         public RelayCommand AboutCommand { get; private set; }
         public RelayCommand<Station> DirectionsCommand { get; private set; }
         public RelayCommand<Station> StationOverviewCommand { get; private set; }
@@ -183,6 +184,23 @@ namespace Track.ViewModel
             }
         }
 
+        public const string NoLocationsVisibilityPropertyName = "NoLocationsVisibility";
+        private bool _noLocationsVisibility = false;
+        public bool NoLocationsVisibility
+        {
+            get
+            {
+                return _noLocationsVisibility;
+            }
+            private set
+            {
+                if (_noLocationsVisibility == value)
+                    return;
+                _noLocationsVisibility = value;
+                OnPropertyChanged(NoLocationsVisibilityPropertyName);
+            }
+        }
+
         public const string LoadingDisruptionsPropertyName = "LoadingDisruptions";
         private bool _loadingDisruptions = false;
 
@@ -292,6 +310,7 @@ namespace Track.ViewModel
                 _navigationService.NavigateTo(ViewModelLocator.StationOverviewPageUri);
             });
             SearchCommand = new RelayCommand(()=> _navigationService.NavigateTo(ViewModelLocator.SearchPageUri));
+            ConnectionCommand = new RelayCommand(() => _navigationService.NavigateTo(ViewModelLocator.ConnectionUri));
             FavoriteCommand = new RelayCommand<Station>(station =>
             {
                 ServiceLocator.Current.GetInstance<TrackDatabase>().AddFavorite(station.ToFavorite(), true);
@@ -378,12 +397,20 @@ namespace Track.ViewModel
 
         private async Task GetCurrentPosition()
         {
-            Deployment.Current.Dispatcher.BeginInvoke(() => LoadingLocations = true);
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                LoadingLocations = true;
+                NoLocationsVisibility = false;
+            });
             Geoposition geoposition = null;
             var list = await RailService.GetInstance().GetLocations(new KeyValuePair<String, String>(Arguments.Lang.ToString(), AppResources.ClientLang));
             if (list.Count == 0)
             {
-                Deployment.Current.Dispatcher.BeginInvoke(() => LoadingLocations = false);
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    LoadingLocations = false;
+                    NoLocationsVisibility = true;
+                });
                 return;
             }
             _helper.AssignList(ServiceLocator.Current.GetInstance<SearchViewModel>().Stations, list.Select(x => x.Name));
@@ -391,6 +418,16 @@ namespace Track.ViewModel
             {
                 DesiredAccuracy = PositionAccuracy.High
             };
+            if (geolocator.LocationStatus == PositionStatus.Disabled)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    LoadingLocations = false;
+                    NoLocationsVisibility = true;
+                    Message.ShowToast(AppResources.MessageLocationDisabled, true);
+                });
+                return;
+            }
             try
             {
                 geoposition = await geolocator.GetGeopositionAsync(TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10));
@@ -400,6 +437,7 @@ namespace Track.ViewModel
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     LoadingLocations = false;
+                    NoLocationsVisibility = true;
                     Message.ShowToast(AppResources.ToastNoLocationSet, true);
                 });
                 return;
@@ -438,7 +476,7 @@ namespace Track.ViewModel
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public new event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

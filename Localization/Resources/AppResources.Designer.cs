@@ -176,6 +176,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to connection.
+        /// </summary>
+        public static string AppBarConnection {
+            get {
+                return ResourceManager.GetString("AppBarConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to earlier.
         /// </summary>
         public static string AppBarEarlier {
@@ -239,6 +248,15 @@ namespace Localization.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to search station.
+        /// </summary>
+        public static string AppBarStation {
+            get {
+                return ResourceManager.GetString("AppBarStation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to submit.
         /// </summary>
         public static string AppBarSubmit {
@@ -271,6 +289,15 @@ namespace Localization.Resources {
         public static string ClientLang {
             get {
                 return ResourceManager.GetString("ClientLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to connection.
+        /// </summary>
+        public static string ConnectionViewHeader {
+            get {
+                return ResourceManager.GetString("ConnectionViewHeader", resourceCulture);
             }
         }
         
@@ -370,6 +397,15 @@ namespace Localization.Resources {
         public static string MainViewStations {
             get {
                 return ResourceManager.GetString("MainViewStations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to it seems like location services are disabled on your phone, please activate it to be able to find the stations nearby.
+        /// </summary>
+        public static string MessageLocationDisabled {
+            get {
+                return ResourceManager.GetString("MessageLocationDisabled", resourceCulture);
             }
         }
         

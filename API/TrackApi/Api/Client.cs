@@ -86,11 +86,13 @@ namespace TrackApi.Api
             }
             catch (Exception e)
             {
-                throw new ApiException(AppResources.APIClientErrorDown);
 #if(DEBUG)
                 Debug.WriteLine(e.Message);
 #endif
+                throw new ApiException(AppResources.APIClientErrorDown);
             }
+            if(ro == null)
+                ro = new StationRootObject();
             return ro.Station;
         }
 
@@ -113,11 +115,13 @@ namespace TrackApi.Api
             }
             catch (Exception e)
             {
-                throw new ApiException(AppResources.APIClientErrorDown);
 #if(DEBUG)
                 Debug.WriteLine(e.Message);
 #endif
+                throw new ApiException(AppResources.APIClientErrorDown);
             }
+            if(ro == null)
+                ro = new LiveBoardRootObject();
             return ro.departures.departure;
         }
 
@@ -140,11 +144,13 @@ namespace TrackApi.Api
             }
             catch (Exception e)
             {
-                throw new ApiException(AppResources.APIClientErrorDown);
 #if(DEBUG)
                 Debug.WriteLine(e.Message);
 #endif
+                throw new ApiException(AppResources.APIClientErrorDown);
             }
+            if(ro == null)
+                ro = new VehicleRootObject();
             return ro.Stops.Stop;
         }
 
@@ -166,10 +172,10 @@ namespace TrackApi.Api
             }
             catch (Exception e)
             {
-                throw new ApiException(AppResources.APIClientErrorDown);
 #if(DEBUG)
                 Debug.WriteLine(e.Message);
 #endif
+                throw new ApiException(AppResources.APIClientErrorDown);
             }
         }
 

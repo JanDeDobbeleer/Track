@@ -7,18 +7,21 @@
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}">
+    Foreground="{StaticResource PhoneForegroundBrush}"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
     
     <UserControl.Resources>
         <Style x:Key="LongListSelectorJumpListStyle" TargetType="phone:LongListSelector">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
             <Setter Property="GridCellSize"  Value="113,113"/>
             <Setter Property="LayoutMode" Value="Grid" />
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <Border Background="{StaticResource PhoneAccentBrush}" Width="113" Height="113" Margin="6" >
+                        <Border Background="{StaticResource TrackColorBrush}" Width="113" Height="113" Margin="6" >
                             <TextBlock Text="{Binding Key}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" FontSize="48" Padding="6" 
-                                Foreground="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Center"/>
+                                Foreground="Black" VerticalAlignment="Center"/>
                         </Border>
                     </DataTemplate>
                 </Setter.Value>
@@ -26,9 +29,9 @@
         </Style>
         <DataTemplate x:Key="AddrBookGroupHeaderTemplate">
             <Border Background="Transparent" Padding="5">
-                <Border Background="{StaticResource PhoneAccentBrush}" BorderBrush="{StaticResource PhoneAccentBrush}" BorderThickness="2" Width="80" 
+                <Border Background="{StaticResource TrackColorBrush}" BorderBrush="{StaticResource TrackColorBrush}" BorderThickness="2" Width="80" 
                         Height="80" Margin="7,0,18,0" HorizontalAlignment="Left">
-                    <TextBlock Text="{Binding Key}" Foreground="{StaticResource PhoneForegroundBrush}" FontSize="60" Padding="6" 
+                    <TextBlock Text="{Binding Key}" Foreground="Black" FontSize="60" Padding="6" 
             FontFamily="{StaticResource PhoneFontFamilySemiLight}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 </Border>
             </Border>
@@ -36,7 +39,7 @@
     </UserControl.Resources>
     
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
-        <phone:LongListSelector x:Name="LongListSelector" ItemsSource="{Binding StationList}" JumpListStyle="{StaticResource LongListSelectorJumpListStyle}" IsGroupingEnabled="True" LayoutMode="List" HideEmptyGroups ="true" GroupHeaderTemplate="{StaticResource AddrBookGroupHeaderTemplate}">
+        <phone:LongListSelector x:Name="LongListSelector" JumpListStyle="{StaticResource LongListSelectorJumpListStyle}" IsGroupingEnabled="True" LayoutMode="List" HideEmptyGroups ="true" GroupHeaderTemplate="{StaticResource AddrBookGroupHeaderTemplate}" SelectedItem="{Binding SelectedItem}">
             <phone:LongListSelector.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Name}" Margin="13,0,0,0" FontSize="{StaticResource PhoneFontSizeLarge}"/>

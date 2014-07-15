@@ -1,28 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using Cimbalino.Phone.Toolkit.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Localization.Resources;
 using Microsoft.Practices.ServiceLocation;
-using Tools;
-using Tools.Properties;
 using Track.Api;
 using Track.Common;
 using Track.Database;
 using TrackApi.Classes;
-using Type = Track.Database.Type;
 
 namespace Track.ViewModel
 {
-    public class StationOverviewViewModel : ViewModelBase, INotifyPropertyChanged
+    public class StationOverviewViewModel : ViewModelBase
     {
-        private INavigationService _navigationService;
+        private readonly INavigationService _navigationService;
         private readonly Helper _helper;
 
         public RelayCommand DirectionsCommand { get; private set; }
@@ -47,7 +39,7 @@ namespace Track.ViewModel
             set
             {
                 _station = value;
-                OnPropertyChanged(StationPropertyName);
+                RaisePropertyChanged(StationPropertyName);
             }
         }
 
@@ -83,7 +75,7 @@ namespace Track.ViewModel
                     return;
 
                 _loadingDepartures = value;
-                OnPropertyChanged(LoadingPropertyName);
+                RaisePropertyChanged(LoadingPropertyName);
             }
         }
         #endregion
@@ -129,15 +121,6 @@ namespace Track.ViewModel
                 Station.TimeStamp = Station.TimeStamp.AddHours(-1);
                 RefreshCommand.Execute(Station);
             });
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

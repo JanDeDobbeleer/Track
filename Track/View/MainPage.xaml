@@ -21,10 +21,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Main, Source={StaticResource Locator}}"
-    shell:SystemTray.ForegroundColor="White"
-    Background="White"
-    shell:SystemTray.Opacity="0">
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -82,7 +79,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Margin="0,35,0,0">
+    <Grid x:Name="LayoutRoot" Margin="0,0,0,0">
         <i:Interaction.Behaviors>
             <behaviors:ApplicationBarBehavior BackgroundColor="{StaticResource TrackColor}" ForegroundColor="White">
                 <behaviors:ApplicationBarIconButton IsVisible="True"
@@ -91,9 +88,12 @@
                                                     Command="{Binding RefreshCommand}"/>
                 <behaviors:ApplicationBarIconButton IsVisible="True"
                                                     IconUri="/Assets/AppBar/feature.search.png"
-                                                    Text="{Binding Path=LocalizedResources.AppBarSearch, Source={StaticResource LocalizedStrings}}"
-                                                    Command="{Binding SearchCommand}"/>
+                                                    Text="{Binding Path=LocalizedResources.AppBarConnection, Source={StaticResource LocalizedStrings}}"
+                                                    Command="{Binding ConnectionCommand}"/>
                 <behaviors:ApplicationBarBehavior.MenuItems>
+                    <behaviors:ApplicationBarMenuItem IsVisible="True"
+                                                      Text="{Binding Path=LocalizedResources.AppBarStation, Source={StaticResource LocalizedStrings}}"
+                                                      Command="{Binding SearchCommand}"/>
                     <behaviors:ApplicationBarMenuItem IsVisible="True"
                                                       Text="{Binding Path=LocalizedResources.AppBarAbout, Source={StaticResource LocalizedStrings}}"
                                                       Command="{Binding AboutCommand}"/>
@@ -101,18 +101,21 @@
             </behaviors:ApplicationBarBehavior>
         </i:Interaction.Behaviors>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="15"/>
+            <RowDefinition Height="6"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="6"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Rectangle Grid.Row="0" Fill="{StaticResource TrackColorBrush}" Margin="0,-35,0,65" RenderTransformOrigin="0.5,-1.2"/>
-        <Rectangle Grid.Row="1" Fill="{StaticResource TrackColorBrush}" Margin="0,-15,0,0"/>
+        <Rectangle Grid.Row="0" Fill="{StaticResource TrackColorBrush}"  Margin="0,0,0,-1"/>
+        <Rectangle Grid.Row="2" Fill="{StaticResource TrackColorBrush}" Margin="0,-1,0,0"/>
+        <Rectangle Grid.Row="1" Fill="{StaticResource TrackColorBrush}"/>
         <ListBox x:Name="ImageBar"
-                     Grid.Row="0"
+                     Grid.Row="1"
                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
                      ItemContainerStyle="{StaticResource ListBoxItemStyle}"                     
                      SelectedIndex="{Binding SelectedIndex, ElementName=ContentPivot, Mode=TwoWay}"
-                     Background="{StaticResource TrackColorBrush}">
+                     Background="{StaticResource TrackColorBrush}"
+                     VerticalAlignment="Center">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <controls:SplitPanel />
@@ -130,7 +133,7 @@
         </ListBox>
 
         <!--Pivot Control-->
-        <phone:Pivot x:Name="ContentPivot" Grid.Row="2" Background="White">
+        <phone:Pivot x:Name="ContentPivot" Grid.Row="3" Background="White">
             <!--Pivot item one-->
             <phone:PivotItem Margin="0,0,0,0">
                 <Grid>
@@ -159,6 +162,7 @@
                              Foreground="Black"
                              Text="{Binding Path=LocalizedResources.Loading, Source={StaticResource LocalizedStrings}}"
                              Style="{StaticResource LoadingBarStyle}"/>
+                    <Path Grid.Row="2" Margin="1,0,0,0" Width="150" Height="150" Visibility="{Binding NoLocationsVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" Data="M32,39.704002C39.487766,39.704002 46.095413,43.433239 50.098,49.125999 44.997589,45.458061 38.76125,43.27314 32,43.27314 25.23875,43.27314 19.002413,45.458061 13.902,49.125999 17.904589,43.433239 24.512236,39.704002 32,39.704002z M41.9907,22.009001C44.746445,22.009001 46.986,24.246023 46.986,27.00515 46.986,29.763077 44.746445,32 41.9907,32 39.234856,32 36.996002,29.763077 36.996002,27.00515 36.996002,24.246023 39.234856,22.009001 41.9907,22.009001z M22.00955,22.009001C24.765379,22.009001 27.005001,24.246023 27.005001,27.00515 27.005001,29.763077 24.765379,32 22.00955,32 19.253624,32 17.014,29.763077 17.014,27.00515 17.014,24.246023 19.253624,22.009001 22.00955,22.009001z M32,4.9947796C17.110001,4.9947801 4.99547,17.109301 4.99547,32 4.99547,46.890701 17.110001,59.005199 32,59.005199 46.889999,59.005199 59.005199,46.890701 59.005199,32 59.005199,17.109301 46.889999,4.9947801 32,4.9947796z M32,0C49.673199,0 64,14.3268 64,32 64,49.673199 49.673199,64 32,64 14.3268,64 0,49.673199 0,32 0,14.3268 14.3268,0 32,0z" Style="{StaticResource PathStyle}"/>
                     <ListBox Grid.Row="2" ItemsSource="{Binding Locations}" Margin="0,-10,0,0">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -187,20 +191,22 @@
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </TextBlock>
-                                    <Path Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Style="{StaticResource PathStyle}" Data="F1M582.961,492.242L557.554,517.865 557.554,467.049 582.961,467.049 582.961,492.242z">
+                                    <Path Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Style="{StaticResource PathStyle}" Data="F1M582.961,492.242L557.554,517.865 557.554,467.049 582.961,467.049 582.961,492.242z"/>
+                                    <Rectangle Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Fill="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Tap">
                                                 <command:EventToCommand Command="{Binding Main.DirectionsCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
-                                    </Path>
-                                    <Path Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Width="45" Height="45" Style="{StaticResource PathStyle}" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z">
+                                    </Rectangle>
+                                    <Path Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="3" Width="45" Height="45" Style="{StaticResource PathStyle}" Data="M1540.22,2082.07L1546.95,2102.78 1568.73,2102.78 1551.11,2115.58 1557.84,2136.29 1540.22,2123.49 1522.6,2136.29 1529.33,2115.58 1511.71,2102.78 1533.49,2102.78 1540.22,2082.07z"/>
+                                    <Rectangle Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" Fill="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Tap">
                                                 <command:EventToCommand Command="{Binding Main.FavoriteCommand, Mode=TwoWay, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
-                                    </Path>
+                                    </Rectangle>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
